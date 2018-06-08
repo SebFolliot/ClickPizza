@@ -34,6 +34,7 @@ nav a:hover {
 nav a {
     color: white !important;
 }
+
 .icon-bar {
     background-color: white !important;
 }
@@ -60,12 +61,23 @@ nav a {
     margin-top: -50px;
 }
 
+#info {
+    max-width: 40%;
+    margin-left: 30%;
+    margin-top: 20px;
+}
+
 #title_message {
     text-align: center;
     margin-bottom: 50px;
 }
 
-#clickpizza, #googlemap h3 {
+.modal-header {
+    background-color: #e9f8ba;
+}
+
+#clickpizza,
+#googlemap h3 {
     color: #669900;
 }
 
@@ -90,7 +102,8 @@ section {
 }
 
 
-#googlemap h3, #googlemap p {
+#googlemap h3,
+#googlemap p {
     margin-left: 25%;
     font-weight: bold;
 }
