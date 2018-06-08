@@ -1,0 +1,160 @@
+body {
+    padding-top: 200px;
+    font-size: 15px !important;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+a:hover {
+    font-style: italic;
+    font-weight: bold;
+}
+
+#logo {
+    position: absolute;
+    top: -20px;
+}
+
+nav {
+    background-color: #669900 !important;
+    min-height: 100px !important;
+    color: white;
+}
+
+#menu_connection {
+    color: white;
+}
+
+nav a:hover {
+    color: red;
+}
+
+nav a {
+    color: white !important;
+}
+.icon-bar {
+    background-color: white !important;
+}
+
+.navbar-toggle:hover {
+    background-color: rgb(124, 185, 0) !important;
+}
+
+.navbar-toggle {
+    border-color: #669900 !important;
+    background-color: #669900 !important;
+}
+
+#menu_header {
+    padding-top: 15px;
+}
+
+#loyalty_program a {
+    color: #669900;
+    font-weight: bold;
+    font-size: 18px;
+    float: right;
+    border-bottom: 3px solid #669900;
+    margin-top: -50px;
+}
+
+#title_message {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+#clickpizza, #googlemap h3 {
+    color: #669900;
+}
+
+#slogan {
+    font-size: 20px;
+}
+
+section {
+    text-align: center;
+}
+
+#list_menus a {
+    font-weight: bold;
+    color: #669900;
+    text-align: left;
+    font-size: 18px;
+}
+
+#list_menus a:hover {
+    background-color: #669900;
+    color: white;
+}
+
+
+#googlemap h3, #googlemap p {
+    margin-left: 25%;
+    font-weight: bold;
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.footer {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+}
+
+footer a {
+    color: white;
+}
+
+footer a:hover {
+    color: white;
+}
+
+#logo_contact {
+    display: flex;
+    justify-content: center;
+}
+
+#contact {
+    border-left: 1px solid white;
+    padding-top: 40px;
+    padding-left: 20px;
+}
+
+#logo_footer {
+    padding-right: 10px;
+}
+
+.recommendation {
+    font-size: 11px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+
+/* Tout type d'écran dont la largeur fait au maximum 500px) */
+
+@media all and (max-width: 500px) {
+    nav img {
+        width: 60%;
+    }
+    #logo {
+        top: 20px;
+    }
+}
+
+/* Tout type d'écran dont la largeur fait au maximum 380px) */
+
+@media all and (max-width: 380px) {
+    nav img {
+        width: 40%;
+    }
+    #logo {
+        top: -10px;
+        left: -10px;
+    }
+}
