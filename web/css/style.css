@@ -12,6 +12,29 @@ a:hover {
     font-weight: bold;
 }
 
+form {
+    background-color: #e9f8ba !important;
+    margin-bottom: 100px !important;
+    border: 3px solid #669900 !important;
+}
+
+input:focus {
+    border-color: #669900 !important;
+    box-shadow: 0px 0px 4px #669900 !important;
+}
+
+#title_form {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+.btn-default {
+    background-color: #669900 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
 #logo {
     position: absolute;
     top: -20px;
@@ -148,6 +171,7 @@ footer a:hover {
     padding-bottom: 10px;
     margin-top: 10px;
 }
+
 
 /* Tout type d'écran dont la largeur fait au maximum 500px) */
 
