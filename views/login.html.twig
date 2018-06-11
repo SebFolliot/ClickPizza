@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %} {% block title %}Page d'authentification{% endblock %} {% block content %}
+
+<h2 id="title_form">Authentification utilisateur</h2>
+{% if error %}
+<div class="alert alert-danger">
+<strong>Erreur d'authentification</strong>
+</div>
+{% endif %}
+<form class="well form-horizontal" role="form" method="post" action="{{ path('login_check') }}">
+    <div class="form-group">
+        <label id="login">Votre login :</label><br />
+        <input type="text" name="_username" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <label id="pwd">Votre mot de passe :</label><br />
+        <input type="password" name="_password" class="form-control" required/>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-default">Se connecter</button>
+        <button type="button" class="btn btn-default">Mot de passe oublié</button>
+    </div>
+</form>
+{% endblock %}
