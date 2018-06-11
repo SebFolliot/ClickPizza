@@ -27,10 +27,19 @@
                     <a id="logo" class="navbar-brand" href="{{ path('home') }}"><img src="../web/images/logo.png" alt="logo reastaurant clickpizza" /></a>
                 </div>
                 <div id="menu_header" class="collapse navbar-collapse pull-right">
+                    
+                    
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {{ app.user.username }} <a href="{{ path('logout') }}"><i class="fas fa-power-off" title="Se déconnecter"></i></a> {% if (app.user.civility == 'M.') %}  <i class="fas fa-male fa-2x"></i> {% else  %} <i class="fas fa-female fa-2x"></i> {% endif %}
+                    {% else %}                    
+                    
                     <p id="menu_connection"><strong>ESPACE CLIENT</strong></p>
-                    <a href="">Se connecter</a>
+                    <a href="{{ path('login') }}">Se connecter</a>
                     <span>|</span>
                     <a href="">Créer un compte</a>
+                    
+                    {% endif %}
+                    
                 </div>
             </div>
         </nav>
