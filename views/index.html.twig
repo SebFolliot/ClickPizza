@@ -1,4 +1,5 @@
-{% extends "layout.html.twig" %} {% block title %}Accueil{% endblock %} {% block content %}
+{% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
+
 <p id="loyalty_program"><a href="#info" data-toggle="modal">Programme de fidélité</a>
     <div class="modal fade" id="info" role="dialog" aria-labelledby="modalTitre" aria-hidden="true">
         <div class="modal-content">
@@ -8,8 +9,9 @@
             </div>
             <div class="modal-body">
                 <blockquote>
-                    Toutes les 3 commandes, vous bénéficiez d'une remise de 10% sur le total de votre commande.<hr />
-                <small class="pull-right">L'équipe ClickPizza</small></blockquote>
+                    Toutes les 3 commandes, vous bénéficiez d'une remise de 10% sur le total de votre commande.
+                    <hr />
+                    <small class="pull-right">L'équipe ClickPizza</small></blockquote>
             </div>
         </div>
     </div>
@@ -45,8 +47,10 @@
                         <th>{{ commodity.description }}</th>
                     </tr>
                 </thead>
-
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <button class="btn btn-default">Ajouter au panier</button> {% endif %}
             </table>
+                            
         </div>
     </article>
     {% endfor %}
