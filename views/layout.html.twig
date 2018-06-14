@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- style -->
-    <link href="{{ asset('/web/css/style.css?t<?= time(); ?>') }}" rel="stylesheet" />
+    <link href="{{ asset('/web/css/style.css?t<?= timestamp(); ?>') }}" rel="stylesheet" />
     <link href="{{ asset('/web/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous" />
     <!-- titre -->
@@ -27,23 +27,29 @@
                     <a id="logo" class="navbar-brand" href="{{ path('home') }}"><img src="../web/images/logo.png" alt="logo reastaurant clickpizza" /></a>
                 </div>
                 <div id="menu_header" class="collapse navbar-collapse pull-right">
-                    
-                    
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {{ app.user.username }} <a href="{{ path('logout') }}"><i class="fas fa-power-off" title="Se déconnecter"></i></a> {% if (app.user.civility == 'M.') %}  <i class="fas fa-male fa-2x"></i> {% else  %} <i class="fas fa-female fa-2x"></i> {% endif %}
-                    {% else %}                    
-                    
-                    <p id="menu_connection"><strong>ESPACE CLIENT</strong></p>
-                    <a href="{{ path('login') }}">Se connecter</a>
-                    <span>|</span>
-                    <a href="">Créer un compte</a>
-                    
-                    {% endif %}
-                    
-                </div>
+                    <ul class="nav navbar-nav" id="authenticated_user" style="text-align:center">
+                        <li class="dropdown">
+                            <a data-toggle="dropdown"><i class="fas fa-user fa-2x"></i><br /> {{ app.user.username }} </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('logout') }}"><i class="fas fa-power-off"></i> Se déconnecter</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a id="basket" href=""><i class="fas fa-shopping-basket fa-2x"></i><br />Mon panier</a>
+                        </li>
+                    </ul>
+
+
+                </div> {% else %}
+                <p id="menu_connection"><strong>ESPACE CLIENT</strong></p>
+                <a href="{{ path('login') }}">Se connecter</a>
+                <span>|</span>
+                <a href="{{ path('create_account') }}">Créer un compte</a> {% endif %}
             </div>
         </nav>
-        
+
         <div id="content">{% block content %}{% endblock %}</div>
 
         <footer class="footer">
