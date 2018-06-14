@@ -23,7 +23,7 @@ input:focus {
     box-shadow: 0px 0px 4px #669900 !important;
 }
 
-#title_form {
+.title_form {
     text-align: center;
     font-weight: bold;
     margin-bottom: 40px;
@@ -88,6 +88,20 @@ nav a {
     max-width: 40%;
     margin-left: 30%;
     margin-top: 20px;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    background-color: #669900 !important;
+}
+
+.dropdown-menu {
+    background-color: #669900 !important;
+    border: 2px solid #e9f8ba !important;
+}
+
+.dropdown-menu a {
+    background-color: #669900 !important;
+    font-weight: bold !important;
 }
 
 #title_message {
