@@ -79,4 +79,39 @@ class UserDAO extends DAO implements UserProviderInterface
         return $user;
     }
     
+    /**
+     * Add a user in the database
+     */
+    
+    public function add(User $user) {
+        $userData = array(
+        'user_login' => $user->getUsername(),
+        'user_civility' => $user->getCivility(),
+        'user_name' => $user->getName(),
+        'user_first_name' => $user->getFirstName(),
+        'user_email' => $user->getEmail(),
+        'user_pwd' => $user->getPassword(),
+        'user_salt' => $user->getSalt(),
+        'user_phone_number' => $user->getPhoneNumber(),
+        'user_order_number' => $user->getOrderNumber(),
+        'user_role' => $user->getRole()
+        );
+        
+    /*    if ($user->getId()) {
+            // Utilisateur déjà enregistré
+            $this->getDb()->update('t_user', $userData, array('user_id' => $user->getId()));
+        }  
+        else {  */
+            // Utilisateur pas encore enregistré
+            $this->getDb()->insert('t_user', $userData);
+            $id = $this->getDb()->lastInsertId();
+            $user->setId($id);
+         
+    }
+    
+    public function delete($id) {
+        // Suppression d'un utilisateur
+        $this->getDb()->delete('t_user', array('user_id' => $id));
+    }
+    
 }
