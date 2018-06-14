@@ -1,23 +1,29 @@
-{% extends 'layout.html.twig' %} {% block title %}Page d'authentification{% endblock %} {% block content %}
+{% extends 'layout.html.twig' %} {% block title %}{{ title }}{% endblock %} {% block content %}
 
-<h2 id="title_form">Authentification utilisateur</h2>
+<h2 class="text-center" style="font-weight: bold">{{ block ('title') }}</h2>
 {% if error %}
 <div class="alert alert-danger">
-<strong>Erreur d'authentification</strong>
+    <strong>Erreur d'authentification</strong>
 </div>
 {% endif %}
 <form class="well form-horizontal" role="form" method="post" action="{{ path('login_check') }}">
     <div class="form-group">
-        <label id="login">Votre login :</label><br />
-        <input type="text" name="_username" class="form-control" required/>
+        <label class="col-sm-5 control-label" id="login">Votre login :</label>
+        <div class="col-sm-4">
+            <input type="text" name="_username" class="form-control" required/>
+        </div>
     </div>
     <div class="form-group">
-        <label id="pwd">Votre mot de passe :</label><br />
-        <input type="password" name="_password" class="form-control" required/>
+        <label class="col-sm-5 control-label" id="pwd">Votre mot de passe :</label>
+        <div class="col-sm-4">
+            <input type="password" name="_password" class="form-control" required/>
+        </div>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-default">Se connecter</button>
-        <button type="button" class="btn btn-default">Mot de passe oublié</button>
+        <div style="text-align: center">
+            <button type="submit" class="btn btn-default">Se connecter</button>
+            <button type="button" class="btn btn-default">Mot de passe oublié</button>
+        </div>
     </div>
 </form>
 {% endblock %}
