@@ -97,15 +97,10 @@ class UserDAO extends DAO implements UserProviderInterface
         'user_role' => $user->getRole()
         );
         
-    /*    if ($user->getId()) {
-            // Utilisateur déjà enregistré
-            $this->getDb()->update('t_user', $userData, array('user_id' => $user->getId()));
-        }  
-        else {  */
-            // Utilisateur pas encore enregistré
-            $this->getDb()->insert('t_user', $userData);
-            $id = $this->getDb()->lastInsertId();
-            $user->setId($id);
+        // Création d'un user
+        $this->getDb()->insert('t_user', $userData);
+        $id = $this->getDb()->lastInsertId();
+        $user->setId($id);
          
     }
     
