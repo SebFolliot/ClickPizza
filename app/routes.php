@@ -8,28 +8,36 @@ use ClickPizza\Form\CreateAccountUserType;
 
 // Page d'accueil
 $app->get('/', function () use ($app) {
-    $commodities = $app['dao.commodity']->pizzaList();
+    $commodities = $app['dao.commodity']->commodityList('Pizza');
     return $app['twig']->render('index.html.twig', array(
         'commodities' => $commodities,
         'title'       => 'Accueil'
     ));
 })->bind('home');
 
+$app->get('/salad', function () use ($app) {
+    $commodities = $app['dao.commodity']->commodityList('Salade');
+    return $app['twig']->render('index.html.twig', array(
+        'commodities' => $commodities,
+        'title'       => 'Accueil'
+    ));
+})->bind('salad');
+
 $app->get('/drink', function () use ($app) {
-    $commodities = $app['dao.commodity']->drinkList();
+    $commodities = $app['dao.commodity']->commodityList('Boisson');
     return $app['twig']->render('index.html.twig', array(
         'commodities' => $commodities,
         'title'       => 'Accueil'
     ));
 })->bind('drink');
 
-$app->get('/salad', function () use ($app) {
-    $commodities = $app['dao.commodity']->saladList();
+$app->get('/dessert', function () use ($app) {
+    $commodities = $app['dao.commodity']->commodityList('Dessert');
     return $app['twig']->render('index.html.twig', array(
         'commodities' => $commodities,
         'title'       => 'Accueil'
     ));
-})->bind('salad');
+})->bind('dessert');
 
 // Formulaire de connexion
 $app->get('/login', function(Request $request) use ($app) {
