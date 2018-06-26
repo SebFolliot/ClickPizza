@@ -5,29 +5,13 @@ use ClickPizza\Entity\Commodity;
 
 class CommodityDAO extends DAO 
 {
-    /**
-     * @Return array the list of all commodity of pizza type
-     */
-    public function pizzaList()
-    {
-        $sql = "SELECT * FROM commodity WHERE com_type='Pizza'";
-        $result = $this->getDb()->fetchAll($sql);
-    
-        $commodities = array();
-        foreach ($result as $row) {
-            $commodityId = $row['com_id'];
-            $commodities[$commodityId] = $this->buildEntityObject($row);
-        }
-        return $commodities;
-    }
-    
      /**
-     * @Return array the list of all commodity of drink
+     * @Returns in a table the list of products sorted by type
      */
-    public function drinkList()
+    public function commodityList($type)
     {
-        $sql = "SELECT * FROM commodity WHERE com_type='Boisson'";
-        $result = $this->getDb()->fetchAll($sql);
+        $sql = "SELECT * FROM commodity WHERE com_type=?";
+        $result = $this->getDb()->fetchAll($sql, array($type));
     
         $commodities = array();
         foreach ($result as $row) {
@@ -35,23 +19,8 @@ class CommodityDAO extends DAO
             $commodities[$commodityId] = $this->buildEntityObject($row);
         }
         return $commodities;
-    }
-    
-     /**
-     * @Return array the list of all commodity of salad
-     */
-    public function saladList()
-    {
-        $sql = "SELECT * FROM commodity WHERE com_type='Salade'";
-        $result = $this->getdb()->fetchAll($sql);
-    
-        $commodities = array();
-        foreach ($result as $row) {
-            $commodityId = $row['com_id'];
-            $commodities[$commodityId] = $this->buildEntityObject($row);
-        }
-        return $commodities;
-    }
+    } 
+
     
     /**
      * Internal method that instantiates an object of the Commodity class     from an SQL result line.
