@@ -10,10 +10,11 @@ use ClickPizza\Entity\User;
 
 class UserDAO extends DAO implements UserProviderInterface
 {
-        /**
-         * @return \ClickPizza\Entity\User or an exception if no user found
-         */
-        public function userList($id) {
+   /**
+    * @return \ClickPizza\Entity\User or an exception if no user found
+    */
+   public function userList($id) 
+   {
         $sql = "select * from t_user where user_id=?";
         $row = $this->getDb()->fetchAssoc($sql, array($id));
 
@@ -63,7 +64,8 @@ class UserDAO extends DAO implements UserProviderInterface
      *
      * @return \ClickPizza\Entity\User
      */
-    protected function buildEntityObject(array $row) {
+    protected function buildEntityObject(array $row) 
+    {
         $user = new User();
         $user->setId($row['user_id']);
         $user->setUsername($row['user_login']);
@@ -82,8 +84,8 @@ class UserDAO extends DAO implements UserProviderInterface
     /**
      * Add a user in the database
      */
-    
-    public function add(User $user) {
+      public function add(User $user) 
+      {
         $userData = array(
         'user_login' => $user->getUsername(),
         'user_civility' => $user->getCivility(),
@@ -97,15 +99,16 @@ class UserDAO extends DAO implements UserProviderInterface
         'user_role' => $user->getRole()
         );
         
-        // Création d'un user
         $this->getDb()->insert('t_user', $userData);
         $id = $this->getDb()->lastInsertId();
         $user->setId($id);
-         
-    }
+      }
     
-    public function delete($id) {
-        // Suppression d'un utilisateur
+    /** 
+     * Delete a user in the database
+     */    
+    public function delete($id) 
+    {
         $this->getDb()->delete('t_user', array('user_id' => $id));
     }
     
