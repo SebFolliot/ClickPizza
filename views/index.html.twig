@@ -28,7 +28,7 @@
             <li><a href="{{ path('home') }}">Nos pizzas</a></li>
             <li><a href="{{ path('salad') }}">Nos salades</a></li>
             <li><a href="{{ path('drink') }}">Nos boissons</a></li>
-            <li><a href="">Nos desserts</a></li>
+            <li><a href="{{ path('dessert') }}">Nos desserts</a></li>
         </ul>
     </aside>
 
@@ -47,10 +47,14 @@
                         <th>{{ commodity.description }}</th>
                     </tr>
                 </thead>
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                <button class="btn btn-default">Ajouter au panier</button> {% endif %}
+                <tfoot>
+                    <tr>
+                        <th style="text-align: center" colspan="2">{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <button class="btn btn-default">Ajouter au panier</button> {% endif %}
+                        </th>
+                    </tr>
+                </tfoot>
             </table>
-                            
         </div>
     </article>
     {% endfor %}
