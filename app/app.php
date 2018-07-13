@@ -3,11 +3,11 @@
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 
-// Enregistrer les erreurs globales et les gestionnaires d'exceptions
+// Save global errors and exception handlers
 ErrorHandler::register();
 ExceptionHandler::register();
 
-// Enregistrer les fournisseurs de services
+// Register service providers
 $app->register(new Silex\Provider\DoctrineServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => __DIR__.'/../views',
@@ -33,12 +33,18 @@ $app->register(new Silex\Provider\SecurityServiceProvider(), array(
             },
         ),
     ),
+    'security.role_hierarchy' => array(
+        'ROLE_ADMIN' => array('ROLE_USER'),
+    ),
+    'security.acces_rules' => array(
+        array('^/admin', 'ROLE_ADMIN'),
+    ),
 ));
 $app->register(new Silex\Provider\FormServiceProvider());
 $app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(new Silex\Provider\TranslationServiceProvider());
 
-// Enregistrer les services
+// Register services
 $app['dao.commodity'] = function ($app) {
     return new ClickPizza\DAO\CommodityDAO($app['db']);
 };
@@ -46,3 +52,6 @@ $app['dao.user'] = function ($app) {
     return new ClickPizza\DAO\UserDAO($app['db']);
 };
 
+$app['dao.caddy'] = function ($app) {
+    return new ClickPizza\DAO\CaddyDAO($app['db']);
+};
