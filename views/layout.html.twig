@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <!-- title -->
+    <title>ClickPizza - {% block title endblock %}</title>
     <!-- meta -->
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,8 +12,7 @@
     <link href="{{ asset('/web/css/style.css?t<?= timestamp(); ?>') }}" rel="stylesheet" />
     <link href="{{ asset('/web/lib/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous" />
-    <!-- titre -->
-    <title>ClickPizza - {% block title endblock %}</title>
+
 </head>
 
 <body>
@@ -27,7 +28,19 @@
                     <a id="logo" class="navbar-brand" href="{{ path('home') }}"><img src="../web/images/logo.png" alt="logo reastaurant clickpizza" /></a>
                 </div>
                 <div id="menu_header" class="collapse navbar-collapse pull-right">
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+                    {% if app.user and is_granted('ROLE_ADMIN') %}
+                    <ul class="nav navbar-nav" id="authenticated_user" style="text-align:center">
+                        <li class="dropdown">
+                            <a data-toggle="dropdown"><i class="fas fa-user fa-2x"></i><br /> {{ app.user.username }} </a>
+                            <ul class="dropdown-menu">
+                                <li class="nav navbar-nav"><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Portail admin</a></li>
+                                <li><a href="{{ path('logout') }}"><i class="fas fa-power-off"></i> Se déconnecter</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    {% else %} {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <ul class="nav navbar-nav" id="authenticated_user" style="text-align:center">
                         <li class="dropdown">
                             <a data-toggle="dropdown"><i class="fas fa-user fa-2x"></i><br /> {{ app.user.username }} </a>
@@ -37,21 +50,20 @@
                             </ul>
                         </li>
                         <li>
-                            <a id="basket" href=""><i class="fas fa-shopping-basket fa-2x"></i><br />Mon panier</a>
+                            <a id="basket" href="../views/vue_caddy_test.php"><i class="fas fa-shopping-basket fa-2x"></i><br />Mon panier</a>
                         </li>
                     </ul>
-
 
                 </div> {% else %}
                 <p id="menu_connection"><strong>ESPACE CLIENT</strong></p>
                 <a href="{{ path('login') }}">Se connecter</a>
                 <span>|</span>
-                <a href="{{ path('create_account') }}">Créer un compte</a> {% endif %}
+                <a href="{{ path('create_account') }}">Créer un compte</a> {% endif %} {% endif %}
             </div>
         </nav>
 
         <div id="content">{% block content %}{% endblock %}</div>
-
+        {% if app.user and is_granted('ROLE_ADMIN') %}{%else%}
         <footer class="footer">
             <div id="logo_contact">
                 <img id="logo_footer" src="../web/images/logo_min.png" alt="logo clickpizza" title="ClickPizza" />
@@ -63,11 +75,14 @@
             <p class="recommendation">Pour votre santé, évitez de manger entre les repas, <a href="http://www.mangerbouger.fr" target="_blank">www.mangerbouger.fr</a><br /> L’abus d’alcool est dangereux pour la santé. Sachez consommer et apprécier avec modération
             </p>
             <p>Site créé pour projet personnel - OpenClassrooms</p>
-        </footer>
+        </footer>{% endif %}
 
         <script type="text/javascript" src="../web/lib/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="../web/js/ajax.js"></script>
         <script type="text/javascript" src="../web/lib/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="../web/js/tooltip.js"></script>
+        <script type="text/javascript" src="../web/js/chrono.js"></script>
+        <script type="text/javascript" src="../web/js/messageAddCaddy.js"></script>
 </body>
 
 </html>
