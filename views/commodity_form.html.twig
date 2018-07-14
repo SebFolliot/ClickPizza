@@ -1,0 +1,49 @@
+{% extends 'layout.html.twig' %} {% block title %}{{ title }}{% endblock %} {% block content %}
+
+<h2 class="text-center">{{ block('title') }}</h2>
+{% for flashMessage in app.session.flashbag.get('success') %}
+<div class="alert alert-success">
+    {{ flashMessage }}
+</div>
+{% endfor %}
+
+<div>
+    {{ form_start(commodityForm, { 'attr': {'class': 'form-horizontal well'} }) }}
+    <div class="form-group">
+        {{ form_label(commodityForm.type, null, { 'label': 'Type', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
+        <div class="col-sm-2">
+            {{ form_errors(commodityForm.type) }} {{ form_widget(commodityForm.type, { 'attr': { 'class': 'form-control' }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(commodityForm.title, null, { 'label': 'Nom du produit', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
+        <div class="col-sm-4">
+            {{ form_errors(commodityForm.title) }} {{ form_widget(commodityForm.title, { 'attr': { 'class': 'form-control', 'rows': '8' }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(commodityForm.description, null, { 'label': 'Description', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
+        <div class="col-sm-4">
+            {{ form_errors(commodityForm.description) }} {{ form_widget(commodityForm.description, { 'attr': { 'class': 'form-control' }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(commodityForm.picture, null, { 'label': 'Image', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
+        <div class="col-sm-4">
+            {{ form_errors(commodityForm.picture) }} {{ form_widget(commodityForm.picture, { 'attr': { 'class': 'form-control', 'style': 'height: 50px' }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        {{ form_label(commodityForm.price, null, { 'label': 'Prix', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
+        <div class="col-sm-4">
+            {{ form_errors(commodityForm.price) }} {{ form_widget(commodityForm.price, { 'attr': { 'class': 'form-control' }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-5 col-sm-3">
+            <input type="submit" class="btn btn-default" value="Valider" />
+        </div>
+    </div>
+    {{ form_end(commodityForm) }}
+</div>
+{% endblock %}
