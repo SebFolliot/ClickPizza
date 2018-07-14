@@ -25,14 +25,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a id="logo" class="navbar-brand" href="{{ path('home') }}"><img src="../web/images/logo.png" alt="logo reastaurant clickpizza" /></a>
+                    <a id="logo" class="navbar-brand" href="{{ path('home') }}"><img src="/../web/images/logo.png" alt="logo reastaurant clickpizza" /></a>
                 </div>
                 <div id="menu_header" class="collapse navbar-collapse pull-right">
 
                     {% if app.user and is_granted('ROLE_ADMIN') %}
-                    <ul class="nav navbar-nav" id="authenticated_user" style="text-align:center">
+                    <ul class="nav navbar-nav" id="authenticated_admin" style="text-align:center">
                         <li class="dropdown">
-                            <a data-toggle="dropdown"><i class="fas fa-user fa-2x"></i><br /> {{ app.user.username }} </a>
+                            <a data-toggle="dropdown"><i class="fas fa-user-plus fa-2x"></i><br /> {{ app.user.username }} </a>
                             <ul class="dropdown-menu">
                                 <li class="nav navbar-nav"><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Portail admin</a></li>
                                 <li><a href="{{ path('logout') }}"><i class="fas fa-power-off"></i> Se déconnecter</a>
@@ -77,12 +77,12 @@
             <p>Site créé pour projet personnel - OpenClassrooms</p>
         </footer>{% endif %}
 
-        <script type="text/javascript" src="../web/lib/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="../web/js/ajax.js"></script>
-        <script type="text/javascript" src="../web/lib/bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="../web/js/tooltip.js"></script>
-        <script type="text/javascript" src="../web/js/chrono.js"></script>
-        <script type="text/javascript" src="../web/js/messageAddCaddy.js"></script>
+        <script type="text/javascript" src="/../web/lib/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="/../web/js/ajax.js"></script>
+        <script type="text/javascript" src="/../web/lib/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/../web/js/tooltip.js"></script>
+        <script type="text/javascript" src="/../web/js/chrono.js"></script>
+        <script type="text/javascript" src="/../web/js/messageAddCaddy.js"></script>
 </body>
 
 </html>
