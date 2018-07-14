@@ -1,3 +1,3 @@
 $(function() {
-    $('i').tooltip();
+    $('.fa-info-circle').tooltip();
 });
