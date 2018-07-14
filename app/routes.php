@@ -4,6 +4,9 @@ use Symfony\Component\HttpFoundation\Request;
 use ClickPizza\Entity\User;
 use ClickPizza\Entity\Commodity;
 use ClickPizza\Form\CreateAccountUserType;
+use ClickPizza\DAO\CaddyDAO;
+use ClickPizza\Form\Type\CommodityType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
 // Home page
@@ -46,3 +49,58 @@ $app->get('/login', "ClickPizza\Controller\UserController::loginAction")
 // Create a user account
 $app->match('/create_account', "ClickPizza\Controller\UserController::createAccountAction")
     ->bind('create_account');
+
+// Admin home page
+$app->get('/admin', function () use ($app) {
+    $users = $app['dao.user']->allUsers();
+    $commodities = $app['dao.commodity']->allCommodities();
+    return $app['twig']->render('admin.html.twig', array(
+        'users' => $users,
+        'commodities' => $commodities,
+        'title' => 'Administration'));
+})->bind('admin');
+
+// Edit a commodity (Admin)
+$app->match('/admin/commodity/{id}/edit', function($id, Request $request) use ($app) {
+    $commodity = $app['dao.commodity']->commodityId($id);
+    $commodityForm = $app['form.factory']->create(CommodityType::class, $commodity);
+    $commodityForm->handleRequest($request);
+    if ($commodityForm->isSubmitted() && $commodityForm->isValid()) {
+        $directory = __DIR__.'/../web/images/upload';
+        $file = $commodityForm['picture']->getData();
+        $file->move($directory, $file->getClientOriginalName());
+        $commodity->setPicture($file->getClientOriginalName());
+        $app['dao.commodity']->update($commodity);
+        $app['session']->getFlashBag()->add('success', 'Le produit a été mis à jour avec succès.');
+    }
+    return $app['twig']->render('commodity_form.html.twig', array(
+        'title' => 'Modifier le produit',
+        'commodityForm' => $commodityForm->createView()));
+})->bind('admin_commodity_edit');
+
+// Add a new commodity (Admin)
+$app->match('/admin/commodity/add', function(Request $request) use ($app) {
+    $commodity = new Commodity();
+    $commodityForm = $app['form.factory']->create(CommodityType::class, $commodity);
+    $commodityForm->handleRequest($request);
+    if ($commodityForm->isSubmitted() && $commodityForm->isValid()) {
+        
+        $directory = __DIR__.'/../web/images/upload';
+        $file = $commodityForm['picture']->getData();
+        $file->move($directory, $file->getClientOriginalName());
+        $commodity->setPicture($file->getClientOriginalName());
+        $app['dao.commodity']->update($commodity);
+        $app['session']->getFlashBag()->add('success', 'Le produit a été mis à jour sur la carte.');
+    }
+    return $app['twig']->render('commodity_form.html.twig', array(
+        'title' => 'Ajout d\'un produit',
+        'commodityForm' => $commodityForm->createView()));
+})->bind('admin_commodity_add');
+
+// Delete a commodity (Admin)
+$app->get('/admin/commodity/{id}/delete', function($id, Request $request) use ($app) {
+    $app['dao.commodity']->delete($id);
+    $app['session']->getFlashBag()->add('success', 'Le produit a été supprimé de la base de données.');
+    // Redirect to admin home page
+    return $app->redirect($app['url_generator']->generate('admin'));
+})->bind('admin_commodity_delete');
