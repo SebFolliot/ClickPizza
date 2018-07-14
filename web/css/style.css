@@ -18,7 +18,9 @@ form {
     border: 3px solid #669900 !important;
 }
 
-input:focus {
+input:focus,
+textarea:focus,
+select:focus {
     border-color: #669900 !important;
     box-shadow: 0px 0px 4px #669900 !important;
 }
@@ -33,6 +35,21 @@ input:focus {
     background-color: #669900 !important;
     color: white !important;
     font-weight: bold !important;
+}
+
+.btn-danger {
+    font-weight: bold !important;
+    background-color: rgb(223, 22, 0) !important;
+}
+
+.btn-default:hover {
+    background-color: white !important;
+    color: #669900 !important;
+}
+
+.btn-danger:hover {
+    background-color: white !important;
+    color: rgb(223, 22, 0) !important;
 }
 
 #logo {
@@ -84,13 +101,16 @@ nav a {
     margin-top: -50px;
 }
 
-#info {
-    max-width: 40%;
+#info,
+#confirm_delete {
+    max-width: 50%;
     margin-left: 30%;
     margin-top: 20px;
 }
 
-.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:focus,
+.navbar-default .navbar-nav > .open > a:hover {
     background-color: #669900 !important;
 }
 
@@ -109,7 +129,8 @@ nav a {
     margin-bottom: 50px;
 }
 
-.modal-header {
+.modal-header,
+#tableProducts {
     background-color: #e9f8ba;
 }
 
@@ -126,18 +147,26 @@ section {
     text-align: center;
 }
 
-#list_menus a {
+#list_menus a,
+#list_menus_admin a {
     font-weight: bold;
     color: #669900;
     text-align: left;
     font-size: 18px;
 }
 
-#list_menus a:hover {
-    background-color: #669900;
-    color: white;
+#actionsAdmin a {
+    font-weight: bold;
+    color: #669900;
+    font-size: 18px;
 }
 
+#list_menus a:hover,
+#actionsAdmin a:hover,
+#list_menus_admin a:hover {
+    background-color: #669900 !important;
+    color: white;
+}
 
 #googlemap h3,
 #googlemap p {
