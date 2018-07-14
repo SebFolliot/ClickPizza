@@ -112,4 +112,22 @@ class UserDAO extends DAO implements UserProviderInterface
         $this->getDb()->delete('t_user', array('user_id' => $id));
     }
     
+     /**
+     * Returns a list of all users, sorted by role and name.
+     *
+     * @return array A list of all users.
+     */
+    public function allUsers() {
+        $sql = "select * from t_user order by user_role, user_name";
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Convert query result to an array of entity objects
+        $entities = array();
+        foreach ($result as $row) {
+            $id = $row['user_id'];
+            $entities[$id] = $this->buildEntityObject($row);
+        }
+        return $entities;
+    }
+    
 }
