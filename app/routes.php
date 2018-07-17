@@ -60,6 +60,17 @@ $app->get('/admin', function () use ($app) {
         'title' => 'Administration'));
 })->bind('admin');
 
+// Add an admin account
+$app->match('/admin/user/add', "ClickPizza\Controller\AdminController::createAdminAccountAction")
+    ->bind('admin_user_add');
+
+// Delete an account user/admin 
+$app->match('/admin/user/{id}/delete', "ClickPizza\Controller\AdminController::deleteAction")
+    ->bind('admin_user_delete'); 
+
+// Edit a admin account 
+$app->match('/admin/user/{id}/edit', "ClickPizza\Controller\AdminController::editAdminAccountAction")->bind('admin_user_edit');
+
 // Edit a commodity (Admin)
 $app->match('/admin/commodity/{id}/edit', function($id, Request $request) use ($app) {
     $commodity = $app['dao.commodity']->commodityId($id);
