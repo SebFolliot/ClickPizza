@@ -19,7 +19,10 @@
 <div id="title_message">
     <h1 id="clickpizza"><strong>ClickPizza</strong></h1><span id="slogan"> c'est un click pour commander <i class="fas fa-info-circle" data-toggle="tooltip" style="color: #669900" title="Connexion à l'espace client obligatoire pour pouvoir commander en ligne"></i> et une commande prête à être récupérée en mois de 30 minutes</span>
 </div>
-<hr /> {% endif %}
+<hr />
+
+
+{% endif %}
 
 <section class="row">
     {% if is_granted('ROLE_ADMIN') %}
@@ -33,7 +36,7 @@
     </aside>
     {% else %}
     <aside id="menu_aside" class="col-lg-2">
-        <img id="menu_map" src="../web/images/menu_carte.png" alt="carte des menus" title="la carte" style="margin: 10px 0" />
+        <img id="menu_map" src="/../web/images/menu_carte.png" alt="carte des menus" title="la carte" style="margin: 10px 0" />
         <ul class="nav navbar-nav" id="list_menus">
             <li><a href="{{ path('home') }}">Nos pizzas</a></li>
             <li><a href="{{ path('salad') }}">Nos salades</a></li>
@@ -51,7 +54,7 @@
                 <p style="font-weight: bold">Prix : {{ commodity.price }} €</p>
                 <thead>
                     <tr>
-                        <th><img src="../web/images/upload/{{ commodity.picture }}" title="{{ commodity.title }}" alt="{{ commodity.title }}" /></th>
+                        <th><img src="/../web/images/upload/{{ commodity.picture }}" title="{{ commodity.title }}" alt="{{ commodity.title }}" /></th>
                         <th>{{ commodity.description }}</th>
                     </tr>
                 </thead>
@@ -66,7 +69,7 @@
                                 <p style="font-weight: bold">Prix : {{ commodity.price }} €</p>
                                 <thead>
                                     <tr>
-                                        <th><img src="../web/images/upload/{{ commodity.picture }}" title="{{ commodity.title }}" alt="{{ commodity.title }}" /></th>
+                                        <th><img src="/../web/images/upload/{{ commodity.picture }}" title="{{ commodity.title }}" alt="{{ commodity.title }}" /></th>
                                         <th>{{ commodity.description }}</th>
                                     </tr>
                                 </thead>
@@ -77,9 +80,7 @@
 
                                             <tr>
                                                 <td colspan="3" align="center">
-
-                                                    <a id="message" class="ajax" href="{{ path('caddy_add', { 'c': commodity.title, 'q': 'amount', 'p': commodity.price }) }}"><button class="btn btn-default">Ajouter au panier</button></a>
-
+                                                    <a id="addCaddy" class="ajax" href="{{ path('caddy_add', { 'c': commodity.title, 'q': 'amount', 'p': commodity.price }) }}"><button class="btn btn-default">Ajouter au panier</button></a>
                                                 </td>
                                             </tr>
                                             {% endif %}{% endif %}
