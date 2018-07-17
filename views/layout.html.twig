@@ -34,6 +34,8 @@
                         <li class="dropdown">
                             <a data-toggle="dropdown"><i class="fas fa-user-plus fa-2x"></i><br /> {{ app.user.username }} </a>
                             <ul class="dropdown-menu">
+                                <li><a href="{{ path('home') }}"><i class="fas fa-home"></i> La carte</a>
+                                </li>
                                 <li class="nav navbar-nav"><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Portail admin</a></li>
                                 <li><a href="{{ path('logout') }}"><i class="fas fa-power-off"></i> Se déconnecter</a>
                                 </li>
@@ -50,7 +52,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a id="basket" href="../views/vue_caddy_test.php"><i class="fas fa-shopping-basket fa-2x"></i><br />Mon panier</a>
+                            <a id="basket" href="/../views/vue_caddy_test.php"><i class="fas fa-shopping-basket fa-2x"></i><br />Mon panier</a>
                         </li>
                     </ul>
 
@@ -66,7 +68,7 @@
         {% if app.user and is_granted('ROLE_ADMIN') %}{%else%}
         <footer class="footer">
             <div id="logo_contact">
-                <img id="logo_footer" src="../web/images/logo_min.png" alt="logo clickpizza" title="ClickPizza" />
+                <img id="logo_footer" src="/../web/images/logo_min.png" alt="logo clickpizza" title="ClickPizza" />
                 <div id="contact">
                     <p><strong>Suivez-nous</strong></p>
                     <p><a target="_blank" href="https://www.facebook.com" style="color: white"><i class="fab fa-facebook-f" style="margin-right: 10px" title="Facebook"></i></a><a target="_blank" href="https://www.twitter.com" style="color: white"><i class="fab fa-twitter" style="margin-right: 10px" title="Twitter"></i></a><a target="_blank" href="https://www.googleplus.com" style="color: white"><i class="fab fa-google-plus-g" title="Google+"></i></a></p>
@@ -82,7 +84,7 @@
         <script type="text/javascript" src="/../web/lib/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/../web/js/tooltip.js"></script>
         <script type="text/javascript" src="/../web/js/chrono.js"></script>
-        <script type="text/javascript" src="/../web/js/messageAddCaddy.js"></script>
+
 </body>
 
 </html>
