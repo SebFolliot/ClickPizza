@@ -1,11 +1,15 @@
 {% extends 'layout.html.twig' %} {% block title %}{{ title }}{% endblock %} {% block content %}
 <h2 class="text-center" style="font-weight: bold">{{ block('title') }}</h2>
 {% for flashMessage in app.session.flashbag.get('success') %}
-<div class="alert alert-success">
+<div class="alert alert-success" style="text-align: center">
+    {{ flashMessage }}
+</div>
+{% endfor %} {% for flashMessage in app.session.flashbag.get('warning') %}
+<div class="alert alert-warning" style="text-align: center">
     {{ flashMessage }}
 </div>
 {% endfor %} {% if form_errors(userForm.password.first) %}
-<div class="alert alert-danger">
+<div class="alert alert-danger" style="text-align: center">
     {{ form_errors(userForm.password.first) }}
 </div>
 {% endif %}
