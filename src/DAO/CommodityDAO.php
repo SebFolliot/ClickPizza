@@ -87,11 +87,13 @@ class CommodityDAO extends DAO
     }
 
     
-    /**
-     * Internal method that instantiates an object of the Commodity class     from an SQL result line.
+     /**
+     * Internal method that instantiates an object of the Commodity class from an SQL result line.
      */
     protected function buildEntityObject(array $row) {
         $commodity = new Commodity();
+        $commodity->setId($row['com_id']);
+        $commodity->setType($row['com_type']);
         $commodity->setTitle($row['com_title']);
         $commodity->setDescription($row['com_description']);
         $commodity->setPicture($row['com_picture']);
