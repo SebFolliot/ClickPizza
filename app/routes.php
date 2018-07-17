@@ -3,7 +3,7 @@
 use Symfony\Component\HttpFoundation\Request;
 use ClickPizza\Entity\User;
 use ClickPizza\Entity\Commodity;
-use ClickPizza\Form\CreateAccountUserType;
+use ClickPizza\Form\Type\CreateAccountUserType;
 use ClickPizza\DAO\CaddyDAO;
 use ClickPizza\Form\Type\CommodityType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
