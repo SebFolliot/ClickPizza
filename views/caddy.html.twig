@@ -1,0 +1,38 @@
+{% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
+
+<div>
+    <h2 style="color: #669900; font-weight: bold; text-align: center; font-size:30px; margin-bottom: 30px">Votre Panier</h2>
+</div>
+<form>
+    <table class="table table-striped table-condensed table-hover" style="text-align:center">
+        <thead>
+            <tr style="font-weight: bold; background-color: #669900; color:white">
+                <th style="text-align:center">Nom du produit</th>
+                <th style="text-align:center">Prix</th>
+                <th style="text-align:center">Quantité</th>
+                <th style="text-align:center">Action</th>
+            </tr>
+        </thead>
+        <tbody id="caddy-table"></tbody>
+        <tr style="font-weight: bold">
+            <td colspan="2"></td>
+            <td>Sous total :</td>
+            <td id="subtotal"></td>
+        </tr>
+        <tr style="font-weight: bold">
+            <td colspan="2"></td>
+            <td>Remise fidélité :</td>
+            <td data-discount="0" id="discount">0<span> %</span></td>
+        </tr>
+        <tr style="font-weight: bold">
+            <td colspan="2"></td>
+            <td>Total :</td>
+            <td id="total"></td>
+        </tr>
+    </table>
+
+    <button class="btn btn-default pull-right" id="confirm-command" style="margin-top: 30px">Valider la commande</button>
+
+</form>
+
+{% endblock %}
