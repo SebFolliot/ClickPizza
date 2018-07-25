@@ -42,6 +42,13 @@ $app->get('/dessert', function () use ($app) {
     ));
 })->bind('dessert');
 
+// Caddy
+$app->match('/caddy', function() use ($app) {
+    return $app['twig']->render('caddy.html.twig', array(
+        'title' => 'Votre panier'
+    ));
+})->bind('caddy');
+
 // Login form
 $app->get('/login', "ClickPizza\Controller\UserController::loginAction")
     ->bind('login');
