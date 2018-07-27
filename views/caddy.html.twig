@@ -1,10 +1,15 @@
 {% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
 
-<div>
+<p id="caddy-empty" style="text-align:center; margin-top:100px; margin-bottom: 250px; color:red; font-size:28px"><i class="fas fa-shopping-basket fa-spin"></i> Votre panier est vide <i class="fas fa-shopping-basket fa-spin"></i></p>
+
+<div id="caddy-title">
     <h2 style="color: #669900; font-weight: bold; text-align: center; font-size:30px; margin-bottom: 30px">Votre Panier</h2>
 </div>
-<form>
+
+<form id="caddy-full" action="{{ path('order') }}">
+
     <table class="table table-striped table-condensed table-hover" style="text-align:center">
+
         <thead>
             <tr style="font-weight: bold; background-color: #669900; color:white">
                 <th style="text-align:center">Nom du produit</th>
@@ -14,6 +19,7 @@
             </tr>
         </thead>
         <tbody id="caddy-table"></tbody>
+
         <tr style="font-weight: bold">
             <td colspan="2"></td>
             <td>Sous total :</td>
@@ -32,7 +38,6 @@
     </table>
 
     <button class="btn btn-default pull-right" id="confirm-command" style="margin-top: 30px">Valider la commande</button>
-
 </form>
 
 {% endblock %}
