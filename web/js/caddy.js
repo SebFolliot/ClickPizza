@@ -126,6 +126,16 @@ if (window.location.pathname == '/caddy') {
     var total = 0;
     var discount = $("#discount").attr('data-discount');
 
+    if (caddyProductsNumber > 0) {
+        $('#caddy-empty').hide();
+        $('#caddy-full').show();
+        $('#caddy-title').show();
+    } else {
+        $('#caddy-empty').show();
+        $('#caddy-full').hide();
+        $('#caddy-title').hide();
+    }
+
 
     caddyProducts.forEach(function (v) {
 
@@ -136,6 +146,7 @@ if (window.location.pathname == '/caddy') {
              <a class="delete-product pull-right" style="margin-left:20%"><i class="fas fa-eraser" style="color:#669900" title="Supprimer l\'article"></i></a></td></tr>';
 
         subTotal += v.price * v.qt;
+
     });
 
     total = subTotal - ((subTotal * discount) / 100);
@@ -170,7 +181,7 @@ if (window.location.pathname == '/caddy') {
 
         $('#subtotal').html(subTotal.toFixed(2) + ' €');
         $('#total').html(total.toFixed(2) + ' €');
-        saveCaddy(caddyProductsNumber, caddyProducts);
+        saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
     });
 
     // Decreases the number of products
@@ -198,7 +209,7 @@ if (window.location.pathname == '/caddy') {
 
             $('#subtotal').html(subTotal.toFixed(2) + ' €');
             $('#total').html(total.toFixed(2) + ' €');
-            saveCaddy(caddyProductsNumber, caddyProducts);
+            saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
         }
     });
 
@@ -213,6 +224,17 @@ if (window.location.pathname == '/caddy') {
         caddyProductsNumber -= qt;
         $('#caddy-products-num').html(caddyProductsNumber);
 
+        if (caddyProductsNumber > 0) {
+            $('#caddy-empty').hide();
+            $('#caddy-full').show();
+            $('#caddy-title').show();
+        } else {
+            $('#caddy-empty').show();
+            $('#caddy-full').hide();
+            $('#caddy-title').hide();
+        }
+
+
         // Delete the product of the DOM
         $this.parent().parent().hide(700);
         $('#' + id).remove();
@@ -222,7 +244,6 @@ if (window.location.pathname == '/caddy') {
 
             if (v.id == id) {
 
-                console.log(qt);
                 subTotal -= v.price * qt;
                 total = subTotal - ((subTotal * discount) / 100);
                 caddyProducts.splice(arrayId, 1);
@@ -234,15 +255,10 @@ if (window.location.pathname == '/caddy') {
 
         $('#subtotal').html(subTotal.toFixed(2) + ' €');
         $('#total').html(total.toFixed(2) + ' €');
-        saveCaddy(caddyProductsNumber, caddyProducts);
+        saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
+
 
         caddyInformation();
+
     });
 }
-
-/*
-// Delete the cookie
-function deleteCookie(cName) {
-        createCookie(cName;'',-1);
-}
-*/
