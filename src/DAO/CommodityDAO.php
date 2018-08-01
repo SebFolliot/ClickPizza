@@ -22,7 +22,7 @@ class CommodityDAO extends DAO
     }
     
     /**
-     * @return \ClickPizza\Entity\Commodity or an exception if no user found
+     * @return \ClickPizza\Entity\Commodity or an exception if no commodity found
      */
     public function commodityId($id) {
         $sql = "SELECT * FROM commodity WHERE com_id=?";
@@ -37,7 +37,7 @@ class CommodityDAO extends DAO
      /**
      * Returns a list of all commodities, sorted by role and name.
      *
-     * @return array A list of all users.
+     * @return array A list of all commodities.
      */
     public function allCommodities() {
         $sql = "SELECT * FROM commodity ORDER BY com_type";
