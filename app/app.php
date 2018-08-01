@@ -52,6 +52,8 @@ $app['dao.user'] = function ($app) {
     return new ClickPizza\DAO\UserDAO($app['db']);
 };
 
-$app['dao.caddy'] = function ($app) {
-    return new ClickPizza\DAO\CaddyDAO($app['db']);
+$app['dao.order'] = function ($app) {
+    $orderDAO = new ClickPizza\DAO\OrderDAO($app['db']);
+    $orderDAO->setUserDAO($app['dao.user']);
+    return $orderDAO;
 };
