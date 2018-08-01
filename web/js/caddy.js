@@ -12,10 +12,14 @@ function createCookie(cName, cValue, days) {
 }
 
 // Save all our caddy
-function saveCaddy(caddyProductsNumber, caddyProducts) {
+function saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser) {
     createCookie('caddyProductsNumber', caddyProductsNumber, 1);
     createCookie('caddyProducts', JSON.stringify(caddyProducts), 1);
+    createCookie('caddyPrice', total, 1);
+    createCookie('caddyUser', caddyUser, 1);
 }
+
+
 
 // Takes as parameter the name of the cookie and returns its value
 function readCookie(cName) {
@@ -39,9 +43,12 @@ function readCookie(cName) {
     return false;
 }
 
-// variables to store the number of products and their names
+
+// variables to store the number of products, their names and the total price
 var caddyProductsNumber;
 var caddyProducts;
+var caddyPrice;
+var caddyUser;
 
 // show/hide information about the caddy
 function caddyInformation() {
@@ -57,7 +64,9 @@ function caddyInformation() {
 // retrieves information stored in cookies
 caddyProductsNumber = parseInt(readCookie('caddyProductsNumber') ? readCookie('caddyProductsNumber') : 0);
 caddyProducts = readCookie('caddyProducts') ? JSON.parse(readCookie('caddyProducts')) : [];
+caddyPrice = parseInt(readCookie('caddyPrice') ? readCookie('caddyPrice') : 0);
 
+caddyUser = parseInt(readCookie('caddyUser') ? readCookie('caddyUser') : 0);
 
 caddyInformation();
 
@@ -72,6 +81,7 @@ caddyProducts.forEach(function (v) {
 
 $('#caddy-dropdown').prepend(products);
 
+
 // Add a product in the caddy
 $('.add-caddy').click(function () {
 
@@ -81,6 +91,10 @@ $('.add-caddy').click(function () {
     var name = $this.attr('data-name');
     var price = $this.attr('data-price');
     var qt = 1;
+
+    var caddyUser = $this.attr('data-user-id');
+
+
     caddyProductsNumber += qt;
 
     // Update the number of products in the widget
@@ -110,12 +124,22 @@ $('.add-caddy').click(function () {
     }
 
     // Save the caddy
-    saveCaddy(caddyProductsNumber, caddyProducts);
+    saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
 
     // Displays the contents of the caddy if it is the first article
     caddyInformation();
+
 });
 
+// reinitialize the caddy
+$('#disconnect').click(function () {
+    caddyProductsNumber = 0;
+    caddyPrice = 0;
+    caddyProducts = [];
+    caddyUser = 0;
+
+    saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
+});
 
 
 // Caddy page
@@ -124,7 +148,19 @@ if (window.location.pathname == '/caddy') {
     var products = '';
     var subTotal = 0;
     var total = 0;
-    var discount = $("#discount").attr('data-discount');
+    var orderNumber = parseInt($('#discount').parent().attr('data-discount')) + 1;
+
+
+    orderNumber %= 3;
+    if (orderNumber == 0) {
+        // Applied discount if multiple of 3
+        $('#discount').html(10);
+    } else {
+        $('#discount').html(0);
+    }
+
+    var discount = $('#discount').html();
+
 
     if (caddyProductsNumber > 0) {
         $('#caddy-empty').hide();
@@ -234,7 +270,6 @@ if (window.location.pathname == '/caddy') {
             $('#caddy-title').hide();
         }
 
-
         // Delete the product of the DOM
         $this.parent().parent().hide(700);
         $('#' + id).remove();
@@ -261,4 +296,7 @@ if (window.location.pathname == '/caddy') {
         caddyInformation();
 
     });
+
+    saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
+
 }
