@@ -4,7 +4,7 @@ namespace ClickPizza\Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use ClickPizza\Entity\User;
-use ClickPizza\Form\CreateAccountUserType;
+use ClickPizza\Form\Type\CreateAccountUserType;
 
 class UserController {
     
