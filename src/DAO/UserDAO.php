@@ -112,7 +112,7 @@ class UserDAO extends DAO implements UserProviderInterface
         $this->getDb()->delete('t_user', array('user_id' => $id));
     }
     
-     /**
+    /**
      * Returns a list of all users, sorted by role and name.
      *
      * @return array A list of all users.
@@ -130,7 +130,7 @@ class UserDAO extends DAO implements UserProviderInterface
         return $entities;
     }
     
-     /**
+    /**
      * Update an commodity into the database
      *
      */
@@ -150,6 +150,21 @@ class UserDAO extends DAO implements UserProviderInterface
             $this->getDb()->update('t_user', $userData, array('user_id' => $user->getId()));
         }
     
+    }
+    
+    /**
+     * Update the number of order into the database
+     *
+     */
+    public function updateOrderNumber(User $user) {
+        $userData = array(
+            'user_order_number' => $user->getOrderNumber(),
+        );
+       if($user->getId()) {
+            // Update if user already registered
+            $this->getDb()->update('t_user', $userData, array('user_id' => $user->getId()));
+        } 
+        
     }
     
 }
