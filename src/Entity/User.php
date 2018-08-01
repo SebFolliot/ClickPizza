@@ -4,6 +4,9 @@ namespace ClickPizza\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * @ORM\Entity
+ */
 class User implements UserInterface
 {
     /**
@@ -44,7 +47,8 @@ class User implements UserInterface
      /**
       * User email
       *
-      @ var string
+      * @ var string
+      * 
       */
     private $email;
     
@@ -204,5 +208,10 @@ class User implements UserInterface
     public function eraseCredentials() {
         
     }
-
+    
+    
+    // à vérifier 
+    public function __toString() {
+        return $this->getId();
+    } 
 }
