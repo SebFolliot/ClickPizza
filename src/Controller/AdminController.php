@@ -68,4 +68,21 @@ class AdminController {
             'title' => 'Modifier le compte administrateur',
             'userForm' => $userForm->createView()));
         }
+    
+    /**
+     * Admin home page controller
+     *
+     * @param Application $app Silex application
+     */
+    public function adminHomePageAction(Application $app) {
+        $users = $app['dao.user']->allUsers();
+        $commodities = $app['dao.commodity']->allCommodities();
+        $orders = $app['dao.order']->allOrders();
+                
+        return $app['twig']->render('admin.html.twig', array(
+            'users' => $users,
+            'commodities' => $commodities,
+            'orders' => $orders,
+            'title' => 'Administration'));
+    }
 }
