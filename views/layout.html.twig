@@ -47,7 +47,7 @@
                         <li class="dropdown">
                             <a data-toggle="dropdown"><i class="fas fa-user fa-2x"></i><br /> {{ app.user.username }} </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ path('logout') }}"><i class="fas fa-power-off"></i> Se déconnecter</a>
+                                <li><a id="disconnect" href="{{ path('logout') }}"><i class="fas fa-power-off"></i> Se déconnecter</a>
                                 </li>
                             </ul>
                         </li>
@@ -65,7 +65,6 @@
                             </ul>
                         </li>
                     </ul>
-
 
 
                 </div> {% else %}
@@ -92,7 +91,6 @@
         </footer>{% endif %}
 
         <script type="text/javascript" src="/../web/lib/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="/../web/js/ajax.js"></script>
         <script type="text/javascript" src="/../web/lib/bootstrap/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/../web/js/tooltip.js"></script>
         <script type="text/javascript" src="/../web/js/caddy.js"></script>
