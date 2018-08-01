@@ -31,11 +31,18 @@ select:focus {
     margin-bottom: 40px;
 }
 
-.btn-default {
+.btn-default,
+.label-default {
     background-color: #669900 !important;
     color: white !important;
     font-weight: bold !important;
 }
+
+.label-default,
+.fa-eraser {
+    cursor: pointer;
+}
+
 
 .btn-danger {
     font-weight: bold !important;
@@ -102,7 +109,7 @@ nav a {
 }
 
 #info,
-#confirm_delete {
+#confirm_validate {
     max-width: 50%;
     margin-left: 30%;
     margin-top: 20px;
