@@ -25,8 +25,8 @@ class UserController {
      * Create a user account controller
      *
      * @param Application $app Silex application
-     */
-    public function createAccountAction(Request $request, Application $app) {
+     */ 
+    public function createUserAccountAction(Request $request, Application $app) {
         $user = new User();
         $userForm = $app['form.factory']->create(CreateAccountUserType::class, $user);
         $userForm->handleRequest($request);
@@ -38,11 +38,12 @@ class UserController {
             $password = $encoder->encodePassword($simplePassword, $user->getSalt());
             $user->setPassword($password);
             $app['dao.user']->add($user);
+            
             $app['session']->getFlashBag()->add('success', 'L\'utilisateur a été créé avec succès.');
         }
         return $app['twig']->render('user_form.html.twig', array(
-            'title' => 'Création d\'un compte',
+            'title' => 'Création d\'un compte utilisateur',
             'userForm' => $userForm->createView()
         ));
-    }
+    }  
 }
