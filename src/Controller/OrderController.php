@@ -23,10 +23,8 @@ class OrderController
             $cookie_products = $_COOKIE['caddyProducts'];
             $products_record = utf8_encode(base64_decode($cookie_products)); 
             
-            // à améliorer 
+
             $test = json_decode($products_record, true);
-            
-            
                     
             $cookie_price = $_COOKIE['caddyPrice'];
             $removebase64Price = base64_decode($cookie_price);
@@ -35,10 +33,7 @@ class OrderController
             $status = 'En cours';
             
             $order->setUser($user);
-       //     $order->setContent($products_record);
-            
- 
-            // à améliorer
+
             if (isset($test)) {
                 foreach ($test as $i => $v) {
                     $products[$i] = $v['qt'] . ' ' . $v['name'] . '<br />';
