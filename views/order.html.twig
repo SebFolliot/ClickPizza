@@ -1,5 +1,5 @@
 {% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
-<h2 style="text-align: center; color: #669900">Commande validée</h2>
+<h2 style="text-align: center">Commande validée</h2>
 <hr />
 <blockquote style="margin-bottom: 80px; border-color: #669900">
     <p style="text-align: center">Nous vous remercions de votre commande, celle-ci {% if is_granted('IS_AUTHENTICATED_FULLY') %} est réservée dans le nom de {{ app.user.civility }} {{ app.user.name }} et {% endif %} sera prête à être récupérée d'ici 1/2h dans notre pizzeria.</p>
