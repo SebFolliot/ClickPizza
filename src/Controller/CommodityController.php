@@ -19,7 +19,7 @@ class CommodityController
         $commodityForm = $app['form.factory']->create(CommodityType::class, $commodity);
         $commodityForm->handleRequest($request);
         if ($commodityForm->isSubmitted() && $commodityForm->isValid()) {
-            $directory = __DIR__.'/../web/images/upload';
+            $directory = __DIR__.'/../../web/images/upload';
             $file = $commodityForm['picture']->getData();
             $file->move($directory, $file->getClientOriginalName());
             $commodity->setPicture($file->getClientOriginalName());
@@ -42,7 +42,7 @@ class CommodityController
         $commodityForm = $app['form.factory']->create(CommodityType::class, $commodity);
         $commodityForm->handleRequest($request);
         if ($commodityForm->isSubmitted() && $commodityForm->isValid()) {
-            $directory = __DIR__.'/../web/images/upload';
+            $directory = __DIR__.'/../../web/images/upload';
             $file = $commodityForm['picture']->getData();
             $file->move($directory, $file->getClientOriginalName());
             $commodity->setPicture($file->getClientOriginalName());
