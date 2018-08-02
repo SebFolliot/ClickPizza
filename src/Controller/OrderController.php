@@ -61,4 +61,40 @@ class OrderController
         'title' => 'Confirmation de commande'            
         ));
     }
+    
+    /**
+     * Update a validate order controller
+     *
+     * @param Application $app Silex application
+     */
+    public function updateStatusValidateAction ($id, Request $request, Application $app) {
+        $order = $app['dao.order']->orderList($id);
+        $order->setStatus('Validée');
+        $app['dao.order']->updateStatus($order);
+        $app['session']->getFlashBag()->add('success', 'La commande est validée.');
+    
+    // Redirect to admin home page
+        return $app->redirect($app['url_generator']->generate('admin'));
+    } 
+    
+    /**
+     * Update a cancel order controller
+     *
+     * @param Application $app Silex application
+     */
+    public function updateStatusCancelAction ($idOrder, $idUser, Request $request, Application $app) {
+        $order = $app['dao.order']->orderList($idOrder);
+        $user = $app['dao.user']->userList($idUser);
+        $number_order = $user->getOrderNumber();
+        $number_order--;
+        $user->setOrderNumber($number_order);
+
+        $order->setStatus('Annulée');
+        $app['dao.order']->updateStatus($order);
+        $app['dao.user']->updateOrderNumber($user);
+        $app['session']->getFlashBag()->add('success', 'La commande est annulée.');
+    
+    // Redirect to admin home page
+        return $app->redirect($app['url_generator']->generate('admin'));
+    } 
 }
