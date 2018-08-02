@@ -63,7 +63,7 @@
             </table>
         </div>
         {% else %}
-        <div class="alert alert-warning">Pas de produit trouvé.</div>
+        <div class="alert alert-warning" style="text-align: center">Pas de produit trouvé.</div>
         {% endif %}
         <div style="text-align: center; margin-bottom: 20px"> <a href="{{ path('admin_commodity_add') }}" title="Ajouter"><button class="btn btn-default"><i  class="fas fa-plus" style="margin-right:5px; color:white"></i> Ajouter</button></a></div>
     </div>
@@ -81,6 +81,7 @@
                         <th style="text-align: center">Etat</th>
                     </tr>
                 </thead>
+
                 {% for order in orders %}
                 <tr>
                     <td>{{ order.user.civility }} {{ order.user.name }}</td>
@@ -93,7 +94,7 @@
             </table>
         </div>
         {% else %}
-        <div class="alert alert-warning">Pas de produit trouvé.</div>
+        <div class="alert alert-warning" style="text-align: center">Pas de commande enregistrée.</div>
         {% endif %}
     </div>
 
@@ -137,14 +138,13 @@
                                 </div>
                             </div>
                         </div>
-
                     </td>
                 </tr>
                 {% endif %}{% endfor %}
             </table>
         </div>
         {% else %}
-        <div class="alert alert-warning">Pas d'utilisateur enregistré.</div>
+        <div class="alert alert-warning" style="text-align: center">Pas d'utilisateur enregistré.</div>
         {% endif %}
     </div>
 
@@ -194,7 +194,7 @@
             </table>
         </div>
         {% else %}
-        <div class="alert alert-warning">Pas d'administrateur enregistré.</div>
+        <div class="alert alert-warning" style="text-align: center">Pas d'administrateur enregistré.</div>
         {% endif %}
         <div style="text-align: center; margin-bottom: 20px"> <a href="{{ path('admin_user_add') }}" title="Ajouter"><button class="btn btn-default"><i  class="fas fa-plus" style="margin-right:5px; color:white"></i> Ajouter</button></a></div>
     </div>
