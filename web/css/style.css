@@ -3,6 +3,12 @@ body {
     font-size: 15px !important;
 }
 
+h2 {
+    font-weight: bold !important;
+    margin-bottom: 50px !important;
+    color: #669900 !important;
+}
+
 a {
     text-decoration: none !important;
 }
