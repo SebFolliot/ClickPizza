@@ -48,6 +48,34 @@ class OrderDAO extends DAO
     }
     
     /**
+     * @return \ClickPizza\Entity\Order or an exception if no order found
+     */
+    public function orderList($id) {
+    $sql = "SELECT * FROM t_order WHERE ord_id=?";
+    $row = $this->getDb()->fetchAssoc($sql, array($id));
+
+    if ($row) {
+        return $this->buildEntityObject($row); }
+    else {
+        throw new \Exception("Aucun identifiant correspondant à la commande " . $id);
+        }
+    }
+    
+    /**
+     * Update the status of the order into the database
+     *
+     */
+    public function updateStatus(Order $order) {
+        $userData = array(
+            'ord_status' => $order->getStatus()
+        );
+       if($order->getId()) {
+            // Update if order already registered
+            $this->getDb()->update('t_order', $userData, array('ord_id' => $order->getId()));
+        } 
+     }
+    
+    /**
      * Creates an Order object based on a DB row.
      *
      * @param array $row the DB row containing Order data.
