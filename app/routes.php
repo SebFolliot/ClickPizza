@@ -50,6 +50,14 @@ $app->match('/admin/commodity/add', "ClickPizza\Controller\CommodityController::
 $app->get('/admin/commodity/{id}/delete', "ClickPizza\Controller\CommodityController::deleteCommodityAction")
     ->bind('admin_commodity_delete');
 
+// Update the status validate of the order (Admin)
+$app->get('/admin/order/validate/{id}/update', "ClickPizza\Controller\OrderController::updateStatusValidateAction")
+    ->bind('admin_order_validate_update');
+
+// Update the status cancel of the order (Admin)
+$app->get('/admin/order/cancel/{idOrder}/{idUser}/update', "ClickPizza\Controller\OrderController::updateStatusCancelAction")
+    ->bind('admin_order_cancel_update');
+
 // home page
 // List of pizza
 $app->get('/', function () use ($app) {
