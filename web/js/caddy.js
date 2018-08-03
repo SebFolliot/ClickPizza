@@ -129,6 +129,11 @@ $('.add-caddy').click(function () {
     // Displays the contents of the caddy if it is the first article
     caddyInformation();
 
+    var messageAddCaddy = $('#add_caddy_message');
+    messageAddCaddy.show();
+    messageAddCaddy.html('<p class="alert alert-success top" style="text-align: center">' + name + ' a été ajouté au panier</p>');
+    messageAddCaddy.fadeOut(2000, 'swing');
+
 });
 
 // reinitialize the caddy
