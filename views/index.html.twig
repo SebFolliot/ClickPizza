@@ -18,6 +18,7 @@
 <div id="title_message">
     <h1 id="clickpizza"><strong>ClickPizza</strong></h1><span id="slogan"> c'est un click pour commander <i class="fas fa-info-circle" data-toggle="tooltip" style="color: #669900" title="Connexion à l'espace client obligatoire pour pouvoir commander en ligne"></i> et une commande prête à être récupérée en mois de 30 minutes</span>
 </div>
+<div id="add_caddy_message"></div>
 <hr /> {% endif %}
 
 <section class="row">
@@ -77,7 +78,7 @@
                                             <tr>
                                                 <td colspan="3" align="center">
 
-                                                    <button type="button" class="add-caddy btn btn-default" data-id="{{ commodity.id }}" data-user-id="{{ app.user.id }}" data-name="{{ commodity.title }}" data-price="{{ commodity.price }}">Ajouter au panier</button>
+                                                    <a href="#top"><button type="button" class="add-caddy btn btn-default" data-id="{{ commodity.id }}" data-user-id="{{ app.user.id }}" data-name="{{ commodity.title }}" data-price="{{ commodity.price }}">Ajouter au panier</button></a>
 
                                                 </td>
                                             </tr>
