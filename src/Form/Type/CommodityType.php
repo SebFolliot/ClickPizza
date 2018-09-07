@@ -48,7 +48,15 @@ class CommodityType extends AbstractType
                 new Assert\Image(array(
                 'mimeTypes' => array(
                     'image/jpeg', 'image/png'),
-                'mimeTypesMessage' => 'Le format du fichier image doit être au format jpeg ou au format png.'                
+                'mimeTypesMessage' => 'Le format du fichier image doit être au format jpeg ou au format png.',
+                'minWidth' => '195',
+                'maxWidth' => '205',
+                'minHeight' => '135',
+                'maxHeight' => '145',
+                'minWidthMessage' => 'La largeur de l\'image est trop petite. La largeur minimale attendue est 195 px.',
+                'maxWidthMessage' => 'La largeur de l\'image est trop grande. La largeur maximale attendue est 205 px.',
+                'minHeightMessage' => 'La hauteur de l\'image est trop petite. La hauteur minimale attendue est 135 px.', 
+                'maxHeightMessage' => 'La hauteur de l\'image est trop grande. La hauteur maximale attendue est 145 px.'    
                 )),
                 new Assert\File(array(
                 'maxSize' => '1024k',
@@ -67,7 +75,6 @@ class CommodityType extends AbstractType
                 ))),
                 ));
     }
-    
 
 
     public function getName() {
