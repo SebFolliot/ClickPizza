@@ -20,7 +20,6 @@ class OrderDAO extends DAO
      public function add(Order $order) {
         $orderData = array(
             'user_id' => $order->getUser(),
-            'ord_content' => $order->getContent(),
             'ord_status' => $order->getStatus(),
             'ord_price' => $order->getPrice()
          );
@@ -85,7 +84,6 @@ class OrderDAO extends DAO
         $order = new Order();
        
         $order->setId($row['ord_id']);
-        $order->setContent($row['ord_content']);
         $order->setStatus($row['ord_status']);
         $order->setPrice($row['ord_price']);        
         $order->setOrderDate($row['ord_date']);
