@@ -38,7 +38,7 @@ class OrderController
             $order->setUser($user);
             $order->setStatus($status);
             $order->setPrice($price_record);
-                      
+
             $app['dao.order']->add($order);
             
             $cookie_comId = $_COOKIE['caddyComId'];
@@ -47,7 +47,7 @@ class OrderController
                 
             // instantiation of an OrderCommodity object
             $orderCommodity = new OrderCommodity();
-             
+
             foreach ($products_record as $v) {
                     
                 // We recover the products
@@ -73,6 +73,7 @@ class OrderController
                    
             $app['dao.user']->updateOrderNumber($user);
             
+            setcookie('caddyProductsNumber', 0, 1 * 24 * 60 * 60 * 1000);
             setcookie('caddyProducts', '', 1 * 24 * 60 * 60 * 1000);
        }
         return $app['twig']->render('order.html.twig', array(
