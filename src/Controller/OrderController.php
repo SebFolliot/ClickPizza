@@ -73,7 +73,6 @@ class OrderController
                    
             $app['dao.user']->updateOrderNumber($user);
             
-            setcookie('caddyProductsNumber', 0, 1 * 24 * 60 * 60 * 1000);
             setcookie('caddyProducts', '', 1 * 24 * 60 * 60 * 1000);
        }
         return $app['twig']->render('order.html.twig', array(
