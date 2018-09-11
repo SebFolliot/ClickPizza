@@ -57,3 +57,10 @@ $app['dao.order'] = function ($app) {
     $orderDAO->setUserDAO($app['dao.user']);
     return $orderDAO;
 };
+
+$app['dao.orderCommodity'] = function ($app) {
+    $orderCommodityDAO = new ClickPizza\DAO\OrderCommodityDAO($app['db']);
+    $orderCommodityDAO->setOrderDAO($app['dao.order']);
+    $orderCommodityDAO->setCommodityDAO($app['dao.commodity']);
+    return $orderCommodityDAO;
+};
