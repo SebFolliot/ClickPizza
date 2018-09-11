@@ -76,7 +76,6 @@
                 <thead>
                     <tr style="font-weight: bold; background-color: #669900; color:white">
                         <th style="text-align: center">Nom du client</th>
-                        <th style="text-align: center">Contenu de la commande</th>
                         <th style="text-align: center">Prix</th>
                         <th style="text-align: center">Date</th>
                         <th style="text-align: center">Action</th>
@@ -86,42 +85,62 @@
                 {% for order in orders %}{% if order.status == 'En cours' %}
                 <tr>
                     <td>{{ order.user.civility }} {{ order.user.name }}</td>
-                    <td>{{ order.content | raw }}</td>
                     <td>{{ order.price }} €</td>
                     <td>Le {{ order.orderDate | date('d/m/Y') }} à {{ order.orderDate | date('H\\hi') }}</td>
                     <td><a title="Valider la commande" data-toggle="modal" data-target="#confirmValidation{{ order.id }}"><i class="fas fa-thumbs-up" style="margin-right:5px; color:#669900"></i></a>
-                        <div class="modal fade" id="confirmValidation{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="confirmValidation{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="orderModal" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                        <h4 class="modal-title" id="orderModal">Confirmation</h4>
                                     </div>
                                     <div class="modal-body">
                                         Confirmez-vous que cette commande est acquittée ?
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="{{ path('admin_order_validate_update', {'id': order.id }) }}"><button class="btn btn-danger" >Oui</button></a>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                        <a href="{{ path('admin_order_validate_update', {'id': order.id }) }}"><button class="btn btn-default" >Oui</button></a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Non</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <a title="Annuler la commande" data-toggle="modal" data-target="#confirmCancellation{{ order.id }}"><i class="fas fa-thumbs-down" style="color:#669900"></i></a>
-                        <div class="modal fade" id="confirmCancellation{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <a title="Annuler la commande" data-toggle="modal" data-target="#confirmCancellation{{ order.id }}"><i class="fas fa-thumbs-down" style="color:#669900; margin-right:5px"></i></a>
+                        <div class="modal fade" id="confirmCancellation{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                        <h4 class="modal-title" id="deleteOrderModal">Confirmation</h4>
                                     </div>
                                     <div class="modal-body">
                                         Confirmez-vous l'annulation de cette commande ?
                                     </div>
 
                                     <div class="modal-footer">
-                                        <a href="{{ path('admin_order_cancel_update', {'idOrder': order.id, 'idUser': order.user.id }) }}"><button class="btn btn-danger" >Oui</button></a>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                        <a href="{{ path('admin_order_cancel_update', {'idOrder': order.id, 'idUser': order.user.id }) }}"><button class="btn btn-default" >Oui</button></a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Non</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a title="Détail de la commande" data-toggle="modal" data-target="#orderDetail{{ order.id }}"><i class="fas fa-search-plus" style="color:#669900"></i></a>
+                        <div class="modal fade" id="orderDetail{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="detailOrderModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="detailOrderModal">Détail de la commande {{ order.id }}</h4>
+                                    </div>
+                                    {% for orderCommodity in ordersCommodities %} {% if order.id == orderCommodity.order.id %}
+                                    <div class="modal-body">
+                                        <ul class="nav navbar-nav">
+                                            <li>
+                                                {{ orderCommodity.quantity }} {{ orderCommodity.commodity.title }}</li>
+                                        </ul>
+                                    </div>{% endif %} {% endfor %}
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
                                     </div>
                                 </div>
                             </div>
@@ -136,21 +155,43 @@
                 <thead>
                     <tr style="font-weight: bold; background-color: #669900; color:white">
                         <th style="text-align: center">Nom du client</th>
-                        <th style="text-align: center">Contenu de la commande</th>
+                        <th style="text-align: center">Email</th>
                         <th style="text-align: center">Prix</th>
                         <th style="text-align: center">Date</th>
-                        <th style="text-align: center">Nbre de commande</th>
-
+                        <th style="text-align: center">Action</th>
                     </tr>
                 </thead>
+
+                <hr style="margin-bottom: 40px" />
                 <h4>Commandes validées</h4>
                 {% for order in orders %}{% if order.status == 'Validée' %}
                 <tr>
+                    <td>{{ order.user.civility }} {{ order.user.name }}</td>
                     <td>{{ order.user.email }}</td>
-                    <td>{{ order.content | raw }}</td>
                     <td>{{ order.price }} €</td>
                     <td>Le {{ order.orderDate | date('d/m/Y') }} à {{ order.orderDate | date('H\\hi') }}</td>
-                    <td>{{ order.user.orderNumber }}</td>
+                    <td> <a title="Détail de la commande" data-toggle="modal" data-target="#orderDetail{{ order.id }}"><i class="fas fa-search-plus" style="color:#669900"></i></a>
+                        <div class="modal fade" id="orderDetail{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="detailValidateOrderModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="detailValidateOrderModal">Détail de la commande {{ order.id }}</h4>
+                                    </div>
+                                    {% for orderCommodity in ordersCommodities %} {% if order.id == orderCommodity.order.id %}
+                                    <div class="modal-body">
+                                        <ul class="nav navbar-nav">
+                                            <li>
+                                                {{ orderCommodity.quantity }} {{ orderCommodity.commodity.title }}</li>
+                                        </ul>
+                                    </div>{% endif %} {% endfor %}
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 {% endif %} {% endfor %}
             </table>
@@ -160,20 +201,42 @@
                 <thead>
                     <tr style="font-weight: bold; background-color: #669900; color:white">
                         <th style="text-align: center">Nom du client</th>
-                        <th style="text-align: center">Contenu de la commande</th>
+                        <th style="text-align: center">Email</th>
                         <th style="text-align: center">Prix</th>
                         <th style="text-align: center">Date</th>
-                        <th style="text-align: center">Nbr de commande</th>
+                        <th style="text-align: center">Action</th>
                     </tr>
                 </thead>
+                <hr style="margin-bottom: 40px" />
                 <h4>Commandes annulées</h4>
                 {% for order in orders %} {% if order.status == 'Annulée' %}
                 <tr>
+                    <td>{{ order.user.civility }} {{ order.user.name }}</td>
                     <td>{{ order.user.email }}</td>
-                    <td>{{ order.content | raw }}</td>
                     <td>{{ order.price }} €</td>
                     <td>Le {{ order.orderDate | date('d/m/Y') }} à {{ order.orderDate | date('H\\hi') }}</td>
-                    <td>{{ order.user.orderNumber }}</td>
+                    <td> <a title="Détail de la commande" data-toggle="modal" data-target="#orderDetail{{ order.id }}"><i class="fas fa-search-plus" style="color:#669900"></i></a>
+                        <div class="modal fade" id="orderDetail{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="detaildeleteOrderModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <h4 class="modal-title" id="detaildeleteOrderModal">Détail de la commande {{ order.id }}</h4>
+                                    </div>
+                                    {% for orderCommodity in ordersCommodities %} {% if order.id == orderCommodity.order.id %}
+                                    <div class="modal-body">
+                                        <ul class="nav navbar-nav">
+                                            <li>
+                                                {{ orderCommodity.quantity }} {{ orderCommodity.commodity.title }}</li>
+                                        </ul>
+                                    </div>{% endif %} {% endfor %}
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 {% endif %} {% endfor %}
             </table>
@@ -206,12 +269,12 @@
                     <td hidden>{{ user.orderNumber }}</td>
                     <td>
                         <a title="Supprimer" data-toggle="modal" data-target="#confirmDeletionUser{{ user.id }}"><i class="fas fa-eraser" style="color:#669900"></i></a>
-                        <div class="modal fade" id="confirmDeletionUser{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="confirmDeletionUser{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteUserModal" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                        <h4 class="modal-title" id="deleteUserModal">Confirmation</h4>
                                     </div>
                                     <div class="modal-body">
                                         Confirmez-vous la suppression de cet utilisateur ?
@@ -255,12 +318,12 @@
                     <td>
                         <a href="{{ path('admin_user_edit', { 'id': user.id }) }}" title="Modifier"><i class="fas fa-edit" style="margin-right:5px; color:#669900"></i></a>
                         <a title="Supprimer" data-toggle="modal" data-target="#confirmDeletionAdmin{{ user.id }}"><i class="fas fa-eraser" style="color:#669900"></i></a>
-                        <div class="modal fade" id="confirmDeletionAdmin{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="confirmDeletionAdmin{{ user.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteAdminModal" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title" id="myModalLabel">Confirmation</h4>
+                                        <h4 class="modal-title" id="deleteAdminModal">Confirmation</h4>
                                     </div>
                                     <div class="modal-body">
                                         Confirmez-vous la suppression de cet administrateur ?
@@ -272,7 +335,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </td>
                 </tr>
                 {% endif %}{% endfor %}
@@ -284,5 +346,4 @@
         <div style="text-align: center; margin-bottom: 20px"> <a href="{{ path('admin_user_add') }}" title="Ajouter"><button class="btn btn-default"><i  class="fas fa-plus" style="margin-right:5px; color:white"></i> Ajouter</button></a></div>
     </div>
 </div>
-
 {% endblock %}
