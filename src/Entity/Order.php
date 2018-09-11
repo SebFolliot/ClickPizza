@@ -19,13 +19,6 @@ class Order
     protected $user;
     
     /**
-    * Order content
-    *
-    * @var string
-    */
-    protected $content;
-    
-    /**
      * Order price
      *
      * @var decimal
@@ -55,10 +48,6 @@ class Order
         return $this->user;
     }
     
-    public function getContent() {
-        return $this->content;
-    }
-    
     public function getPrice() {
         return $this->price;
     }
@@ -78,11 +67,6 @@ class Order
     
     public function setUser(User $user) {
         $this->user = $user;
-        return $this;
-    }
-    
-    public function setContent($content) {
-        $this->content = $content;
         return $this;
     }
     
