@@ -12,13 +12,13 @@ function createCookie(cName, cValue, days) {
 }
 
 // Save all our caddy
-function saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser) {
+function saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser, caddyComId) {
     createCookie('caddyProductsNumber', caddyProductsNumber, 1);
     createCookie('caddyProducts', JSON.stringify(caddyProducts), 1);
     createCookie('caddyPrice', total, 1);
     createCookie('caddyUser', caddyUser, 1);
+    createCookie('caddyComId', JSON.stringify(caddyComId), 1);
 }
-
 
 
 // Takes as parameter the name of the cookie and returns its value
@@ -49,6 +49,7 @@ var caddyProductsNumber;
 var caddyProducts;
 var caddyPrice;
 var caddyUser;
+var caddyComId;
 
 // show/hide information about the caddy
 function caddyInformation() {
@@ -61,12 +62,13 @@ function caddyInformation() {
     }
 }
 
+
 // retrieves information stored in cookies
 caddyProductsNumber = parseInt(readCookie('caddyProductsNumber') ? readCookie('caddyProductsNumber') : 0);
 caddyProducts = readCookie('caddyProducts') ? JSON.parse(readCookie('caddyProducts')) : [];
 caddyPrice = parseInt(readCookie('caddyPrice') ? readCookie('caddyPrice') : 0);
-
 caddyUser = parseInt(readCookie('caddyUser') ? readCookie('caddyUser') : 0);
+caddyComId = readCookie('caddyComId') ? JSON.parse(readCookie('caddyComId')) : [];
 
 caddyInformation();
 
@@ -78,6 +80,7 @@ var products = '';
 caddyProducts.forEach(function (v) {
     products += '<li style="text-align:center" id="' + v.id + '"><strong>' + v.name + '</strong><br><small>Quantité : <span class="qt">' + v.qt + '</span></small></li>';
 });
+
 
 $('#caddy-dropdown').prepend(products);
 
@@ -93,7 +96,6 @@ $('.add-caddy').click(function () {
     var qt = 1;
 
     var caddyUser = $this.attr('data-user-id');
-
 
     caddyProductsNumber += qt;
 
@@ -112,6 +114,7 @@ $('.add-caddy').click(function () {
         }
     });
 
+
     // If it is new, it is added
     if (newProduct) {
         $('#caddy-dropdown').prepend('<li style="text-align:center" id="' + id + '"><strong>' + name + '</strong><br><small>Quantité : <span class="qt">' + qt + '</span></small></li>');
@@ -121,10 +124,16 @@ $('.add-caddy').click(function () {
             price: price,
             qt: qt,
         });
+
+        caddyComId.push({
+            id: id
+        });
+
     }
 
     // Save the caddy
-    saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
+    saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser, caddyComId);
+
 
     // Displays the contents of the caddy if it is the first article
     caddyInformation();
@@ -142,8 +151,9 @@ $('#disconnect').click(function () {
     caddyPrice = 0;
     caddyProducts = [];
     caddyUser = 0;
+    caddyComId = [];
 
-    saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
+    saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser, caddyComId);
 });
 
 
@@ -187,8 +197,8 @@ if (window.location.pathname == '/caddy') {
              <a class="delete-product pull-right" style="margin-left:20%"><i class="fas fa-eraser" style="color:#669900" title="Supprimer l\'article"></i></a></td></tr>';
 
         subTotal += v.price * v.qt;
-
     });
+
 
     total = subTotal - ((subTotal * discount) / 100);
 
@@ -222,8 +232,9 @@ if (window.location.pathname == '/caddy') {
 
         $('#subtotal').html(subTotal.toFixed(2) + ' €');
         $('#total').html(total.toFixed(2) + ' €');
-        saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
+        saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser, caddyComId);
     });
+
 
     // Decreases the number of products
     $('.less').click(function () {
@@ -250,7 +261,7 @@ if (window.location.pathname == '/caddy') {
 
             $('#subtotal').html(subTotal.toFixed(2) + ' €');
             $('#total').html(total.toFixed(2) + ' €');
-            saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
+            saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser, caddyComId);
         }
     });
 
@@ -295,13 +306,10 @@ if (window.location.pathname == '/caddy') {
 
         $('#subtotal').html(subTotal.toFixed(2) + ' €');
         $('#total').html(total.toFixed(2) + ' €');
-        saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
 
-
+        saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser, caddyComId);
         caddyInformation();
-
     });
 
-    saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser);
-
+    saveCaddy(caddyProductsNumber, caddyProducts, caddyPrice, caddyUser, caddyComId);
 }
