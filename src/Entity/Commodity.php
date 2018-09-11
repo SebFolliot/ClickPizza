@@ -46,6 +46,10 @@ class Commodity
     */
     private $type;
     
+    public function __toString() {
+        return (string)$this->id;
+    }
+    
     // Getters
     public function getId() {
         return $this->id;
