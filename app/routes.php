@@ -20,6 +20,9 @@ $app->match('/create_account', "ClickPizza\Controller\UserController::createUser
 $app->match('/caddy/{c}/{q}/{p}/add', "ClickPizza\Controller\CaddyController::addCaddyAction")
     ->bind('caddy_add');
 
+// Order
+$app->match('/order', "ClickPizza\Controller\OrderController::addOrderAction")
+    ->bind('order');
 
 // Admin home page (Admin)
 $app->get('/admin', "ClickPizza\Controller\AdminController::adminHomePageAction")
@@ -100,6 +103,4 @@ $app->match('/caddy', function() use ($app) {
 })->bind('caddy');
 
 
-// Order
-$app->match('/order', "ClickPizza\Controller\OrderController::addOrderAction")
-    ->bind('order');
+
