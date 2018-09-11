@@ -78,11 +78,13 @@ class AdminController {
         $users = $app['dao.user']->allUsers();
         $commodities = $app['dao.commodity']->allCommodities();
         $orders = $app['dao.order']->allOrders();
+        $ordersCommodities = $app['dao.orderCommodity']->allOrdersCommodities();
                 
         return $app['twig']->render('admin.html.twig', array(
             'users' => $users,
             'commodities' => $commodities,
             'orders' => $orders,
+            'ordersCommodities' => $ordersCommodities,
             'title' => 'Administration'));
     }
 }
