@@ -37,9 +37,20 @@ class UserController {
             $encoder = $app['security.encoder.bcrypt'];
             $password = $encoder->encodePassword($simplePassword, $user->getSalt());
             $user->setPassword($password);
-            $app['dao.user']->add($user);
             
-            $app['session']->getFlashBag()->add('success', 'L\'utilisateur a été créé avec succès.');
+            $login = $user->getUsername();
+            $email = $user->getEmail();
+            
+            $row = $app['dao.user']->checkLoginEmail($login, $email);
+            
+            if ($row['count1'] > 0) {
+                $app['session']->getFlashBag()->add('warning', 'Le login ' .$login. ' existe déjà, merci d\'en choisir un autre.');
+            } elseif ($row['count2'] > 0) {
+                $app['session']->getFlashBag()->add('warning', 'L\'adresse mail ' .$email. ' existe déjà, merci d\'en choisir une autre.');
+            } else {                
+                $app['dao.user']->add($user);
+                $app['session']->getFlashBag()->add('success', 'L\'utilisateur a été créé avec succès.');
+            }
         }
         return $app['twig']->render('user_form.html.twig', array(
             'title' => 'Création d\'un compte utilisateur',
