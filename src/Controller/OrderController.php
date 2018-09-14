@@ -47,7 +47,7 @@ class OrderController
                 
             // instantiation of an OrderCommodity object
             $orderCommodity = new OrderCommodity();
-
+            
             foreach ($products_record as $v) {
                     
                 // We recover the products
@@ -63,7 +63,7 @@ class OrderController
                 
                 // each commodity is with so much amount
                 $orderCommodity->setQuantity($quantity);
-
+                
                 $app['dao.orderCommodity']->add($orderCommodity);
             } 
                               
