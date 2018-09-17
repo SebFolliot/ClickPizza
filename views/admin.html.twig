@@ -1,7 +1,7 @@
 {% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
 <h2 class="text-center" style="margin-bottom: 50px">Bienvenue {{ app.user.civility ~ " " ~ app.user.name }} sur le portail d'administration</h2>
 {% for flashMessage in app.session.flashbag.get('success') %}
-<div class="alert alert-success" style="text-align: center">
+<div class="alert alert-success">
     {{ flashMessage }}
 </div>
 {% endfor %}
@@ -50,8 +50,8 @@
                                         Confirmez-vous la suppression de ce produit ?
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="{{ path('admin_commodity_delete', {'id': commodity.id }) }}"><button class="btn btn-danger" >Oui</button></a>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                        <a href="{{ path('admin_commodity_delete', {'id': commodity.id }) }}"><button class="btn btn-default" >Oui</button></a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Non</button>
                                     </div>
                                 </div>
                             </div>
@@ -280,8 +280,8 @@
                                         Confirmez-vous la suppression de cet utilisateur ?
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="{{ path('admin_user_delete', {'id': user.id }) }}"><button class="btn btn-danger" >Oui</button></a>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                        <a href="{{ path('admin_user_delete', {'id': user.id }) }}"><button class="btn btn-default" >Oui</button></a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Non</button>
                                     </div>
                                 </div>
                             </div>
@@ -329,12 +329,13 @@
                                         Confirmez-vous la suppression de cet administrateur ?
                                     </div>
                                     <div class="modal-footer">
-                                        <a href="{{ path('admin_user_delete', {'id': user.id }) }}"><button class="btn btn-danger" >Oui</button></a>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Non</button>
+                                        <a href="{{ path('admin_user_delete', {'id': user.id }) }}"><button class="btn btn-default" >Oui</button></a>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Non</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </td>
                 </tr>
                 {% endif %}{% endfor %}
