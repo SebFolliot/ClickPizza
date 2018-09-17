@@ -8,7 +8,7 @@
                 <h4 id="modalTitre" class="modal-title">Plus d'informations sur le programme de fidélité</h4>
             </div>
             <div class="modal-body">
-                <blockquote>Toutes les 3 commandes, vous bénéficiez d'une remise de 10% sur le total de votre commande.
+                <blockquote>Toutes les 3 commandes, vous bénéficiez d'une remise de 10% sur le total de votre commande.<br />{% if is_granted('IS_AUTHENTICATED_FULLY') %}<span style="font-weight: bold">{{ app.user.firstname }} {{ app.user.name }}</span>,{% if app.user.orderNumber == 0 %} il s'agit de votre 1ère commande sur notre site, toute l'équipe de ClickPizza vous souhaite la bienvenue !!! {% elseif ((app.user.orderNumber + 1)%3 == 0) %} il s'agit de votre {{ app.user.orderNumber + 1 }}ème commande chez ClickPizza, vous bénéficiez donc d'une remise de 10% de remise sur cette commande.{% else %} il s'agit de votre {{ app.user.orderNumber + 1 }}ème commande chez ClickPizza.{% endif %}{% endif %}
                     <hr />
                     <small class="pull-right">L'équipe ClickPizza</small></blockquote>
             </div>
