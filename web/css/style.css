@@ -261,6 +261,12 @@ footer a:hover {
     #logo {
         top: 20px;
     }
+    table {
+        font-size: 13px;
+    }
+    iframe {
+        width: 340px;
+    }
 }
 
 /* Any type of screen whose width is at most 380px */
@@ -277,11 +283,12 @@ footer a:hover {
         font-size: 12px !important;
         padding-left: 5px !important;
     }
-    #commodity_description {
+    #commodity_description,
+    table {
         font-size: 11px;
     }
     iframe {
-        width: 320px;
+        width: 280px;
     }
 }
 
@@ -292,6 +299,6 @@ footer a:hover {
         font-size: 1Opx;
     }
     iframe {
-        width: 300px;
+        width: 240px;
     }
 }
