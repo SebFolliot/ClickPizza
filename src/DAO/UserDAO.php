@@ -30,7 +30,7 @@ class UserDAO extends DAO implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $sql = "select * from t_user where user_login=?";
+        $sql = "select * from t_user where user_login COLLATE utf8_bin=?";
         $row = $this->getDb()->fetchAssoc($sql, array($username));
 
         if ($row)
@@ -132,7 +132,6 @@ class UserDAO extends DAO implements UserProviderInterface
     
     /**
      * Update an commodity into the database
-     *
      */
     public function update(User $user) {
         $userData = array(
@@ -154,7 +153,6 @@ class UserDAO extends DAO implements UserProviderInterface
     
     /**
      * Update the number of order into the database
-     *
      */
     public function updateOrderNumber(User $user) {
         $userData = array(
@@ -164,7 +162,17 @@ class UserDAO extends DAO implements UserProviderInterface
             // Update if user already registered
             $this->getDb()->update('t_user', $userData, array('user_id' => $user->getId()));
         } 
+    }
+    
+    /**
+     * Check the login and the email in the database
+     */
+    public function checkLoginEmail($login, $email) {
         
+        $sql = "SELECT(SELECT COUNT(*) FROM t_user WHERE user_login COLLATE utf8_bin='$login') AS count1, (SELECT COUNT(*) FROM t_user WHERE user_email='$email') AS count2";
+        $row = $this->getDb()->fetchAssoc($sql);
+
+        return $row;
     }
     
 }
