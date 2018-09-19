@@ -64,6 +64,9 @@ class OrderController
                 // each commodity is with so much amount
                 $orderCommodity->setQuantity($quantity);
                 
+                // Preparing the message for the mail
+                $message[] = $v['qt'] . ' ' . $v['name'] ."\r\n" ;
+                
                 $app['dao.orderCommodity']->add($orderCommodity);
             } 
                               
@@ -75,6 +78,20 @@ class OrderController
             
             setcookie('caddyProductsNumber', 0, 1 * 24 * 60 * 60 * 1000);
             setcookie('caddyProducts', '', 1 * 24 * 60 * 60 * 1000);
+            
+            $headers  = 'MIME-Version: 1.0' . "\r\n";
+		    $headers .= 'From: ClickPizza'. "\r\n" .				
+				'Content-Type: text/plain; charset="utf-8"; DelSp="Yes"; format=flowed '."\r\n" .
+				'Content-Disposition: inline'. "\r\n" .
+				'Content-Transfer-Encoding: 7bit'." \r\n" .
+				'X-Mailer:PHP/'.phpversion();
+            
+            $to = $user->getEmail();
+            $ord_id = $order->getId();
+            $object = 'Récapitulatif de votre commande ';           
+            $messageOrd = "N° de commande : " . $ord_id . "\r\n\r\n" . implode('', $message) . "\r\n\r\nClickPizza vous remercie de votre commande et vous souhaite un bon appétit.";
+            // Sending the order by mail
+            mail($to, $object, $messageOrd, $headers);
        }
         return $app['twig']->render('order.html.twig', array(
         'title' => 'Confirmation de commande'
