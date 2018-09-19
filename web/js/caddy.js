@@ -103,6 +103,8 @@ $('.add-caddy').click(function () {
     $('#caddy-products-num').html(caddyProductsNumber);
 
     var newProduct = true;
+    
+    var regAccentE = new RegExp('[éèêë]', 'gi');
 
     // Check if the product is not already in the caddy
     caddyProducts.forEach(function (v) {
@@ -120,7 +122,7 @@ $('.add-caddy').click(function () {
         $('#caddy-dropdown').prepend('<li style="text-align:center" id="' + id + '"><strong>' + name + '</strong><br><small>Quantité : <span class="qt">' + qt + '</span></small></li>');
         caddyProducts.push({
             id: id,
-            name: name,
+            name: name.replace(regAccentE, 'e'),
             price: price,
             qt: qt,
         });
