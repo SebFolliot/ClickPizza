@@ -2,9 +2,9 @@
 <h2 style="text-align: center">Commande validée</h2>
 <hr />
 <blockquote style="margin-bottom: 80px; border-color: #669900">
-    <p style="text-align: center">Nous vous remercions de votre commande, celle-ci {% if is_granted('IS_AUTHENTICATED_FULLY') %} est réservée dans le nom de {{ app.user.civility }} {{ app.user.name }} et {% endif %} sera prête à être récupérée d'ici 1/2h dans notre pizzeria.</p>
+    <p style="text-align: center">Nous vous remercions de votre commande.<br />{% if is_granted('IS_AUTHENTICATED_FULLY') %} Elle est enregistrée dans le nom de {{ app.user.civility }} {{ app.user.name }} et {% endif %} sera prête à être récupérée d'ici 1/2h dans notre pizzeria.<br/><br />
+        <em>Le récapitulatif de votre commande a été envoyé par mail à l'adresse {{ app.user.email }}</em></p>
     <hr />
     <small class="pull-right">L'équipe ClickPizza</small>
 </blockquote>
-
 {% endblock %}
