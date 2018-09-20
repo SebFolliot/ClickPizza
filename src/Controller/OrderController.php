@@ -65,7 +65,7 @@ class OrderController
                 $orderCommodity->setQuantity($quantity);
                 
                 // Preparing the message for the mail
-                $message[] = $v['qt'] . ' ' . $v['name'] ."\r\n" ;
+                $message[] = '<li>' . $v['qt'] . ' ' . $v['name'] . '</li>';
                 
                 $app['dao.orderCommodity']->add($orderCommodity);
             } 
@@ -81,15 +81,17 @@ class OrderController
             
             $headers  = 'MIME-Version: 1.0' . "\r\n";
 		    $headers .= 'From: ClickPizza'. "\r\n" .				
-				'Content-Type: text/plain; charset="utf-8"; DelSp="Yes"; format=flowed '."\r\n" .
+				'Content-Type: text/html; charset="utf-8"; DelSp="Yes"; format=flowed '."\r\n" .
 				'Content-Disposition: inline'. "\r\n" .
 				'Content-Transfer-Encoding: 7bit'." \r\n" .
 				'X-Mailer:PHP/'.phpversion();
             
             $to = $user->getEmail();
             $ord_id = $order->getId();
+            $civility = $user->getCivility();
+            $name = $user->getName();
             $object = 'Récapitulatif de votre commande ';           
-            $messageOrd = "N° de commande : " . $ord_id . "\r\n\r\n" . implode('', $message) . "\r\n\r\nClickPizza vous remercie de votre commande et vous souhaite un bon appétit.";
+            $messageOrd = "<p><span style='font-weight :bold'>" . $civility . " " . $name ."</span>, voici le récapitulatif de votre commande.</p><p style='color :#669900'><span style='text-decoration :underline'>N° de commande</span> : " . $ord_id . "</p><ul>" . implode('', $message) . "</ul><p style='color :#669900'><span='text-decoration :underline'>Montant total de votre facture :</span> " . $price_record . " €.</p><em><strong>ClickPizza</strong> vous remercie de votre commande et vous souhaite un bon appétit.</em>";
             // Sending the order by mail
             mail($to, $object, $messageOrd, $headers);
        }
