@@ -2,10 +2,28 @@
 
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
+use Symfony\Component\HttpFoundation\Request;
 
 // Save global errors and exception handlers
 ErrorHandler::register();
 ExceptionHandler::register();
+
+// Register error handler
+$app->error(function (\Exception $e, Request $request, $code) use ($app) {
+    switch ($code) {
+        case 403:
+            $message = 'Acces refusé.';
+            break;
+        case 404:
+            $message = 'La page demandée n\'a pas pu être trouvée.';
+            break;
+        default:
+            $message = 'Cette page ne s\'ouvre pas';
+            break;
+    }
+    return $app['twig']->render('error.html.twig', array(
+        'message' => $message));
+});
 
 // Register service providers
 $app->register(new Silex\Provider\DoctrineServiceProvider());
