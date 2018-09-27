@@ -1,0 +1,10 @@
+{% extends "layout.html.twig" %}{% block title %}Erreur sur la page{% endblock %}{% block content %}
+<div class="row">
+    <div class="col-xs-5">
+        <img class="img-responsive" src="{{ asset('/web/images/erreur.png') }}" alt="Bouftou mangeant une pizza" />
+    </div>
+    <div class="col-xs-5">
+        <h2>Beurk...<br><small>{{ message }}</small></h2>
+        <a href="{{ path('home') }}"><button class="btn btn-default">Retour à la carte</button></a>
+    </div>
+</div>{% endblock %}
