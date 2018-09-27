@@ -132,6 +132,10 @@ nav a {
     margin-top: 20px;
 }
 
+#authenticated_admin, #authenticated_user {
+    margin-right: 70px;
+}
+
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:focus,
 .navbar-default .navbar-nav > .open > a:hover {
@@ -168,7 +172,9 @@ nav a {
     font-size: 20px;
 }
 
-section, .alert-danger, .alert-success {
+section,
+.alert-danger,
+.alert-success {
     text-align: center;
 }
 
@@ -203,6 +209,7 @@ footer {
     position: absolute;
     left: 0;
     right: 0;
+    margin-top: 70px;
 }
 
 .footer {
@@ -250,6 +257,9 @@ footer a:hover {
         max-width: 80%;
         margin-left: 10%;
     }
+    #authenticated_admin, #authenticated_user {
+        margin-right: 0;
+    }
 }
 
 /* Any type of screen whose width is at most 500px */
@@ -289,6 +299,9 @@ footer a:hover {
     }
     iframe {
         width: 280px;
+    }
+    button {
+        font-size: 11px !important;
     }
 }
 
