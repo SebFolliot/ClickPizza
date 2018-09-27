@@ -1,6 +1,13 @@
 {% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
 
-<p id="caddy-empty" style="text-align:center; margin-top:40px; margin-bottom:180px; color:#669900; font-size:28px"><i class="fas fa-shopping-basket fa-spin"></i> Votre panier est vide<img src="/../web/images/panier.png" alt="panier vide"/></p>
+<div class="row" style="text-align: center" id="caddy-empty">
+    <div class="col-xs-6">
+        <img src="{{ asset('/web/images/panier.png') }}" class="img-responsive pull-right" alt="panier vide" /></div>
+    <div class="col-xs-6">
+        <h2><i class="fas fa-shopping-basket fa-spin"></i><br /><small>Votre panier est vide !!!</small></h2>
+    </div>
+    <div><a href="{{ path('home') }}"><button class="btn btn-default">Retour à la carte</button></a></div>
+</div>
 
 <div id="caddy-title">
     <h2 style="text-align: center; font-size:30px">Votre Panier</h2>
