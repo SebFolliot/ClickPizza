@@ -42,7 +42,6 @@
                     <a id="logo" class="navbar-brand" href="{{ path('home') }}"><img src="/../web/images/logo.png" alt="logo reastaurant clickpizza" title="Retour à la carte"/></a>
                 </div>
                 <div id="menu_header" class="collapse navbar-collapse pull-right">
-
                     {% if app.user and is_granted('ROLE_ADMIN') %}
                     <ul class="nav navbar-nav" id="authenticated_admin" style="text-align:center">
                         <li class="dropdown">
@@ -65,7 +64,6 @@
                                 </li>
                             </ul>
                         </li>
-
                         <li class="dropdown">
                             <a id="caddy" data-toggle="dropdown">
                                 <i class="fas fa-shopping-basket fa-2x"></i>
@@ -79,8 +77,6 @@
                             </ul>
                         </li>
                     </ul>
-
-
                 </div> {% else %}
                 <p id="menu_connection"><strong>ESPACE CLIENT</strong></p>
                 <a href="{{ path('login') }}">Se connecter</a>
@@ -88,7 +84,6 @@
                 <a href="{{ path('create_account') }}">Créer un compte</a> {% endif %} {% endif %}
             </div>
         </nav>
-
         <div id="content">{% block content %}{% endblock %}</div>
         {% if app.user and is_granted('ROLE_ADMIN') %}{%else%}
         <footer class="footer">
@@ -103,11 +98,13 @@
             </p>
             <p>Site créé pour projet personnel - OpenClassrooms</p>
         </footer>{% endif %}
+    </div>
 
-        <script type="text/javascript" src="/../web/lib/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="/../web/lib/bootstrap/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/../web/js/tooltip.js"></script>
-        <script type="text/javascript" src="/../web/js/caddy.js"></script>
+    <script type="text/javascript" src="{{ asset('/web/lib/jquery/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/web/lib/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/web/js/tooltip.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/web/js/caddy.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/web/js/message.js') }}"></script>
 
 </body>
 

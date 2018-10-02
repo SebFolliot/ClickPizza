@@ -1,0 +1,115 @@
+{% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
+<div class="table-responsive">
+    <table id="tableProducts" class="table table-striped table-condensed table-hover" style="text-align:center; border: 1px solid #669900">
+        {% if orders %}
+        <thead>
+            <tr style="font-weight: bold; background-color: #669900; color:white">
+                <th style="text-align: center">Nom du client</th>
+                <th style="text-align: center">N° de téléphone</th>
+                <th class="order-price-th-table"style="text-align: center">Prix</th>
+                <th class="order-date-th-table" style="text-align: center">Date</th>
+                <th style="text-align: center">Action</th>
+            </tr>
+        </thead>
+        <hr style="margin-bottom: 40px" />
+        <h4>Commandes en cours</h4>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.user.civility }} {{ order.user.name }}</td>
+            <td>{{ order.user.phoneNumber }}</td>
+            <td class="order-price-td-table">{{ order.price }} €</td>
+            <td class="order-date-td-table">Le {{ order.orderDate | date('d/m/Y') }} à {{ order.orderDate | date('H\\hi') }}</td>
+            <td><a title="Valider la commande" data-toggle="modal" data-target="#confirmValidation{{ order.id }}"><i class="fas fa-thumbs-up" style="margin-right:5px; color:#669900"></i></a>
+                <div class="modal fade" id="confirmValidation{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="orderModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="orderModal">Confirmation</h4>
+                            </div>
+                            <div class="modal-body">
+                                Confirmez-vous que cette commande est acquittée ?
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{{ path('admin_order_validate_update', {'id': order.id }) }}"><button class="btn btn-default" >Oui</button></a>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Non</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a title="Annuler la commande" data-toggle="modal" data-target="#confirmCancellation{{ order.id }}"><i class="fas fa-thumbs-down" style="color:#669900; margin-right:5px"></i></a>
+                <div class="modal fade" id="confirmCancellation{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteOrderModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="deleteOrderModal">Confirmation</h4>
+                            </div>
+                            <div class="modal-body">
+                                Confirmez-vous l'annulation de cette commande ?
+                            </div>
+                            <div class="modal-footer">
+                                <a href="{{ path('admin_order_cancel_update', {'idOrder': order.id, 'idUser': order.user.id }) }}"><button class="btn btn-default" >Oui</button></a>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Non</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a title="Détail de la commande" data-toggle="modal" data-target="#orderDetail{{ order.id }}"><i class="fas fa-search-plus" style="color:#669900"></i></a>
+                <div class="modal fade" id="orderDetail{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="detailOrderModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="detailOrderModal">Détail de la commande {{ order.id }}</h4>
+                            </div> <div>Commande effectuée le {{ order.orderDate | date('d/m/Y') }} à {{ order.orderDate | date('H\\hi') }}<br />Montant de la commande : {{ order.price }} €</div>
+                            {% for orderCommodity in ordersCommodities %}{% if order.id == orderCommodity.order.id %} 
+                            <div class="modal-body">
+                                <ul class="nav navbar-nav">
+                                    <li style="text-align: left; margin: 0 0 0 10px">
+                                        <span class="badge">{{ orderCommodity.quantity }}</span> {{ orderCommodity.commodity.title }}</li>
+                                </ul>
+                            </div> {% endif %}{% endfor %}
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}{% else %}
+        <div class="alert alert-warning" style="text-align: center">Pas de commande en cours.</div>
+        {% endif %}
+    </table>
+</div>
+
+<div class="paging">
+    <div class="paging-order">
+        {% if numberOfPages>1 %}{% if currentPage == 1 %}{% else %}
+            <a href="{{ path ('admin_order_page',{ 'currentPage': 1, 'status': 'En cours'}) }}"><i class="fas fa-angle-double-left"></i></a>
+            <a href="{{ path ('admin_order_page',{'currentPage': currentPage-1, 'status': 'En cours'}) }}"><i class="fas fa-angle-left"></i></a>{% endif %}
+            {% for p in range(max(currentPage-3, 1), min(currentPage+3, numberOfPages)) %}
+                <a {% if p == currentPage %} class="current-page" {% endif %} href="{{ path ('admin_order_page',{ 'currentPage': p, 'status': 'En cours'}) }}"> {{ p }}</a>
+            {% endfor %}
+            {% if currentPage < numberOfPages %}
+                <a href="{{ path ('admin_order_page',{'currentPage': currentPage+1, 'status': 'En cours'}) }}"><i class="fas fa-angle-right"></i></a>
+                <a href="{{ path ('admin_order_page',{'currentPage': numberOfPages, 'status': 'En cours'}) }}"><i class="fas fa-angle-double-right"></i></a>
+            {% endif %}
+        {% endif %} 
+    </div>
+</div>
+<div class="paging-small-screen">
+    <div class="paging-order">
+        {% if numberOfPages>1 %}{% if currentPage == 1 %}{% else %}
+            <a href="{{ path ('admin_order_page',{ 'currentPage': 1, 'status': 'En cours'}) }}"><i class="fas fa-angle-double-left"></i></a>{% endif %}
+            {% for p in range(max(currentPage-1, 1), min(currentPage+1, numberOfPages)) %}
+                <a {% if p == currentPage %} class="current-page" {% endif %} href="{{ path ('admin_order_page',{ 'currentPage': p, 'status': 'En cours'}) }}"> {{ p }}</a>
+            {% endfor %}
+            {% if currentPage < numberOfPages %}
+                <a href="{{ path ('admin_order_page',{'currentPage': numberOfPages, 'status': 'En cours'}) }}"><i class="fas fa-angle-double-right"></i></a>
+            {% endif %}
+        {% endif %} 
+    </div>
+</div>
+{% endblock %}

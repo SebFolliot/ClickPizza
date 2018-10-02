@@ -1,0 +1,50 @@
+{% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
+<div class="table-responsive">
+    <table id="tableProducts" class="table table-striped table-condensed table-hover" style="text-align:center; border: 1px solid #669900">
+        {% if orders %}
+            <thead>
+                <tr style="font-weight: bold; background-color: #669900; color:white">
+                    <th class="order-price-th-email" style="text-align: center">Mail</th>
+                    <th style="text-align: center">Commande</th>
+                    <th style="text-align: center">Date</th>
+                    <th style="text-align: center">Action</th>
+                </tr>
+            </thead>
+            <hr style="margin-bottom: 40px" />
+            <h4>Commandes annulées</h4>
+            {% include "template_order.html.twig" %}
+        {% else %}
+            <div class="alert alert-warning" style="text-align: center">Pas de commande annulée.</div>
+        {% endif %}
+    </table>
+</div>
+    
+<div class="paging">
+    <div class="paging-order">
+        {% if numberOfPages>1 %}{% if currentPage == 1 %}{% else %}
+            <a href="{{ path ('admin_order_cancelled_page',{ 'currentPage': 1, 'status': 'Annulée'}) }}"><i class="fas fa-angle-double-left"></i></a>
+            <a href="{{ path ('admin_order_cancelled_page',{'currentPage': currentPage-1, 'status': 'Annulée'}) }}"><i class="fas fa-angle-left"></i></a>{% endif %}
+            {% for p in range(max(currentPage-3, 1), min(currentPage+3, numberOfPages)) %}
+                <a {% if p == currentPage %} class="current-page" {% endif %} href="{{ path ('admin_order_cancelled_page',{ 'currentPage': p, 'status': 'Annulée'}) }}"> {{ p }}</a>
+            {% endfor %}
+            {% if currentPage < numberOfPages %}
+                <a href="{{ path ('admin_order_cancelled_page',{'currentPage': currentPage+1, 'status': 'Annulée'}) }}"><i class="fas fa-angle-right"></i></a>
+                <a href="{{ path ('admin_order_cancelled_page',{'currentPage': numberOfPages, 'status': 'Annulée'}) }}"><i class="fas fa-angle-double-right"></i></a>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+<div class="paging-small-screen">
+    <div class="paging-order">
+        {% if numberOfPages>1 %}{% if currentPage == 1 %}{% else %}
+            <a href="{{ path ('admin_order_cancelled_page',{ 'currentPage': 1, 'status': 'Annulée'}) }}"><i class="fas fa-angle-double-left"></i></a>{% endif %}
+            {% for p in range(max(currentPage-1, 1), min(currentPage+1, numberOfPages)) %}
+                <a {% if p == currentPage %} class="current-page" {% endif %} href="{{ path ('admin_order_cancelled_page',{ 'currentPage': p, 'status': 'Annulée'}) }}"> {{ p }}</a>
+            {% endfor %}
+            {% if currentPage < numberOfPages %}
+                <a href="{{ path ('admin_order_cancelled_page',{'currentPage': numberOfPages, 'status': 'Annulée'}) }}"><i class="fas fa-angle-double-right"></i></a>
+            {% endif %}
+        {% endif %} 
+    </div>
+</div>
+{% endblock %}
