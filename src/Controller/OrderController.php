@@ -104,12 +104,14 @@ class OrderController
      * Update a validate order controller
      *
      * @param Application $app Silex application
+     * @param integer $id Order id
      */
     public function updateStatusValidateAction ($id, Request $request, Application $app) {
         $order = $app['dao.order']->orderList($id);
         $order->setStatus('Validée');
         $app['dao.order']->updateStatus($order);
-        $app['session']->getFlashBag()->add('success', 'La commande est validée.');
+        $ord_id = $order->getId();
+        $app['session']->getFlashBag()->add('success', 'La commande ' .$ord_id. ' est validée.');
     
     // Redirect to admin home page
         return $app->redirect($app['url_generator']->generate('admin'));
@@ -119,6 +121,8 @@ class OrderController
      * Update a cancel order controller
      *
      * @param Application $app Silex application
+     * @param integer $idOrder Order id
+     * @param integer $idUser User id
      */
     public function updateStatusCancelAction ($idOrder, $idUser, Request $request, Application $app) {
         $order = $app['dao.order']->orderList($idOrder);
@@ -130,7 +134,8 @@ class OrderController
         $order->setStatus('Annulée');
         $app['dao.order']->updateStatus($order);
         $app['dao.user']->updateOrderNumber($user);
-        $app['session']->getFlashBag()->add('success', 'La commande est annulée.');
+        $ord_id = $order->getId();
+        $app['session']->getFlashBag()->add('success', 'La commande '.$ord_id.' est annulée.');
     
     // Redirect to admin home page
         return $app->redirect($app['url_generator']->generate('admin'));
