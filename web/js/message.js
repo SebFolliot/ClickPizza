@@ -1,0 +1,1 @@
+$('#messageAdmin').fadeOut(3000,'swing');
