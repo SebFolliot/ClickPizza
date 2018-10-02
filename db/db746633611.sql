@@ -1,4 +1,3 @@
-
 -- Version de PHP :  5.4.45-0+deb7u14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
