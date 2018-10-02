@@ -61,6 +61,20 @@ $app->get('/admin/order/validate/{id}/update', "ClickPizza\Controller\OrderContr
 $app->get('/admin/order/cancel/{idOrder}/{idUser}/update', "ClickPizza\Controller\OrderController::updateStatusCancelAction")
     ->bind('admin_order_cancel_update');
 
+// Pending order (Admin)
+$app->get('/admin/order/page/{currentPage}/{status}', "ClickPizza\Controller\AdminController::orderPageAction")
+    ->bind('admin_order_page');
+
+// Cancelled order (Admin)
+$app->get('/admin/order/cancelled/page/{currentPage}/{status}',
+         "ClickPizza\Controller\AdminController::orderPageAction")
+    ->bind('admin_order_cancelled_page');
+
+// Validated order (Admin)
+$app->get('/admin/order/validated/page/{currentPage}/{status}',
+         "ClickPizza\Controller\AdminController::orderPageAction")
+    ->bind('admin_order_validated_page');
+
 // home page
 // List of pizza
 $app->get('/', function () use ($app) {
