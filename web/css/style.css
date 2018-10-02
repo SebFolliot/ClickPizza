@@ -53,13 +53,20 @@ select:focus {
     background-color: #669900 !important;
     color: white !important;
     font-weight: bold !important;
+    border-color: #669900 !important;
+}
+
+.btn-warning {
+    background-color: #ed8f14 !important;
+    color: white !important;
+    font-weight: bold !important;
+    border-color: #ed8f14 !important;
 }
 
 .label-default,
 .fa-eraser {
     cursor: pointer;
 }
-
 
 .btn-danger {
     font-weight: bold !important;
@@ -74,6 +81,11 @@ select:focus {
 .btn-danger:hover {
     background-color: white !important;
     color: rgb(223, 22, 0) !important;
+}
+
+.btn-warning:hover {
+    background-color: white !important;
+    color: #ed8f14 !important;
 }
 
 #logo {
@@ -107,7 +119,8 @@ nav a {
     background-color: rgb(124, 185, 0) !important;
 }
 
-.navbar-toggle {
+.navbar-toggle,
+.badge {
     border-color: #669900 !important;
     background-color: #669900 !important;
 }
@@ -132,7 +145,8 @@ nav a {
     margin-top: 20px;
 }
 
-#authenticated_admin, #authenticated_user {
+#authenticated_admin,
+#authenticated_user {
     margin-right: 70px;
 }
 
@@ -205,6 +219,36 @@ section,
     font-weight: bold;
 }
 
+.info-email {
+    display: none;
+}
+
+.paging-small-screen {
+    display: none;
+}
+
+div .paging {
+    margin: 20px 0 20px 40%;
+}
+
+.paging-order a {
+    color: #669900;
+    border: 1px solid rgba(102, 153, 0, 0.6);
+    padding: 10px;
+    border-bottom: 3px solid #669900;
+    font-weight: bold;
+}
+
+.paging-order a:hover {
+    color: white;
+    background-color: #669900;
+}
+
+.current-page {
+    background-color: #e9f8ba !important;
+    pointer-events: none;
+}
+
 footer {
     position: absolute;
     left: 0;
@@ -249,17 +293,59 @@ footer a:hover {
 
 /* Media queries */
 
+/* Any type of screen whose width is at most 1024) */
+@media all and (max-width: 1024px) {
+    div .paging {
+        margin-left: 35%;
+    }
+}
+
 /* Any type of screen whose width is at most 768px), tablet type */
 
 @media all and (max-width: 768px) {
+
     #info,
     #confirm_validate {
         max-width: 80%;
         margin-left: 10%;
     }
-    #authenticated_admin, #authenticated_user {
+
+    #authenticated_admin,
+    #authenticated_user {
         margin-right: 0;
     }
+
+    div .paging {
+        margin-left: 25%;
+    }
+}
+
+/* Any type of screen whose width is at most 650px */
+
+@media all and (max-width: 650px) {
+
+    .paging,
+    .order-price-td-table,
+    .order-price-th-table,
+    .order-date-td-table,
+    .order-date-th-table,
+    .order-price-th-email,
+    .order-price-td-email {
+        display: none;
+    }
+
+    .paging-small-screen {
+        display: block;
+    }
+
+    div .paging-small-screen {
+        margin-left: 35%;
+    }
+
+    .info-email {
+        display: block;
+    }
+
 }
 
 /* Any type of screen whose width is at most 500px */
@@ -268,14 +354,21 @@ footer a:hover {
     nav img {
         width: 60%;
     }
+
     #logo {
         top: 20px;
     }
+
     table {
         font-size: 13px;
     }
+
     iframe {
         width: 340px;
+    }
+
+    div .paging-small-screen {
+        margin-left: 30%;
     }
 }
 
@@ -285,23 +378,32 @@ footer a:hover {
     nav img {
         width: 40%;
     }
+
     #logo {
         top: -10px;
         left: -10px;
     }
+
     .modal-body {
         font-size: 12px !important;
         padding-left: 5px !important;
     }
+
     #commodity_description,
     table {
         font-size: 11px;
     }
+
     iframe {
         width: 280px;
     }
+
     button {
         font-size: 11px !important;
+    }
+
+    div .paging-small-screen {
+        margin-left: 25%;
     }
 }
 
@@ -311,7 +413,12 @@ footer a:hover {
     #commodity_description {
         font-size: 1Opx;
     }
+
     iframe {
         width: 240px;
+    }
+
+    div .paging-small-screen {
+        margin-left: 17%;
     }
 }

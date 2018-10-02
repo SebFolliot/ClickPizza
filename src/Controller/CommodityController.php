@@ -34,7 +34,7 @@ class CommodityController
     /**
      * Update a product controller
      *
-     * @param integer $id User id
+     * @param integer $id Commodity id
      * @param Application $app Silex application
      */    
     public function editCommodityAction ($id, Request $request, Application $app) {
@@ -57,7 +57,7 @@ class CommodityController
     /**
      * Delete a product controller
      *
-     * @param integer $id User id
+     * @param integer $id Commodity id
      * @param Application $app Silex application
      */
     public function deleteCommodityAction ($id, Request $request, Application $app) {
