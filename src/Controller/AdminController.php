@@ -87,4 +87,57 @@ class AdminController {
             'ordersCommodities' => $ordersCommodities,
             'title' => 'Administration'));
     }
+    
+    /**
+     * Update an admin account controller
+     *
+     * @param Application $app Silex application
+     * @param integer $currentPage
+     * @param string $status
+     */
+    public function orderPageAction ($currentPage, $status, Request $request, Application $app) {
+        $users = $app['dao.user']->allUsers();
+        $commodities = $app['dao.commodity']->allCommodities();
+        $numberOfPages = $app['dao.order']->numberOfPagesForOrders($status);       
+            
+        if(isset($currentPage)) {
+            $currentPage = intval($currentPage);
+                  
+            if($currentPage>$numberOfPages) {
+                $currentPage = $numberOfPages;
+            }
+        } else {
+            $currentPage = 1;
+        }
+        $orders = $app['dao.order']->getListOrders($currentPage, $status);
+        $ordersCommodities = $app['dao.orderCommodity']->allOrdersCommodities();
+        if ($status == "Validée") {        
+            return $app['twig']->render('validated_order.html.twig', array(
+                'users' => $users,
+                'commodities' => $commodities,
+                'orders' => $orders,
+                'numberOfPages' => $numberOfPages,
+                'currentPage' => $currentPage,
+                'ordersCommodities' => $ordersCommodities,
+                'title' => 'Commandes validées'));
+        } elseif ($status == "Annulée") {
+            return $app['twig']->render('cancelled_order.html.twig', array(
+                'users' => $users,
+                'commodities' => $commodities,
+                'orders' => $orders,
+                'numberOfPages' => $numberOfPages,
+                'currentPage' => $currentPage,
+                'ordersCommodities' => $ordersCommodities,
+                'title' => 'Commandes annulées'));            
+        } else {
+            return $app['twig']->render('pending_order.html.twig', array(
+                'users' => $users,
+                'commodities' => $commodities,
+                'orders' => $orders,
+                'numberOfPages' => $numberOfPages,
+                'currentPage' => $currentPage,
+                'ordersCommodities' => $ordersCommodities,
+                'title' => 'Commandes en cours'));            
+        }        
+    }
 }
