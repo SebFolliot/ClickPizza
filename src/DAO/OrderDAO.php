@@ -75,6 +75,44 @@ class OrderDAO extends DAO
      }
     
     /**
+     * Returns the number of pages for 10 orders per page, sorted by status.
+     *
+     * @param string $status
+     */     
+    public function numberOfPagesForOrders($status) {
+        $sql = 'SELECT COUNT(*) AS total FROM t_order WHERE ord_status="'.$status.'"';
+        $result = $this->getDb()->fetchAssoc($sql);
+        $total = (int)$result['total'];
+        $orderByPage = 10;
+        // number of pages
+        $numberOfPages = ceil($total/$orderByPage);
+
+        return $numberOfPages;
+    }
+    
+    /**
+     * Get a list of 10 orders per page, sorted by status.
+     *
+     * @param integer $currentPage
+     * @param string $status
+     * @return array
+     */
+    public function getListOrders($currentPage, $status) {
+        $orderByPage = 10;
+        $firstEntry = ($currentPage-1)*$orderByPage;
+        $sql = ('SELECT * FROM t_order WHERE ord_status="'.$status.'" ORDER BY ord_id DESC LIMIT '.$firstEntry.','.$orderByPage.'');
+
+        $result = $this->getDb()->fetchAll($sql);
+        // Convert query result to an array of entity objects
+        $entities = array();
+        foreach ($result as $row) {
+            $id = $row['ord_id'];
+            $entities[$id] = $this->buildEntityObject($row);
+        }
+        return $entities;        
+    }
+    
+    /**
      * Creates an Order object based on a DB row.
      *
      * @param array $row the DB row containing Order data.
