@@ -1,0 +1,24 @@
+{% extends 'layout.html.twig' %} {% block title %}{{ title }}{% endblock %} {% block content %}
+<h2 class="text-center">{{ block('title') }}</h2>
+{% for flashMessage in app.session.flashbag.get('warning') %}
+<div class="alert alert-warning" style="text-align: center">
+    {{ flashMessage }}
+</div>
+{% endfor %}
+
+<div>
+    {{ form_start(resetPwdForm, { 'attr': {'class': 'form-horizontal well'} }) }}
+    <div class="form-group">
+        {{ form_label(resetPwdForm.username, null, { 'label': 'Votre login :', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
+        <div class="col-sm-4">
+            {{ form_errors(resetPwdForm.username) }} {{ form_widget(resetPwdForm.username, { 'attr': { 'class': 'form-control' }}) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-5 col-sm-3">
+            <input type="submit" class="btn btn-default" value="Réinitialiser le mot de passe" />
+        </div>
+    </div>
+    {{ form_end(resetPwdForm) }}
+</div>
+{% endblock %}

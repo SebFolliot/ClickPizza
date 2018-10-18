@@ -1,11 +1,15 @@
 {% extends 'layout.html.twig' %} {% block title %}{{ title }}{% endblock %} {% block content %}
-
 <h2 class="text-center">{{ block ('title') }}</h2>
 {% if error %}
 <div class="alert alert-danger">
     <strong>Erreur d'authentification</strong>
 </div>
 {% endif %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+<div class="alert alert-success" style="text-align: center">
+    {{ flashMessage }}
+</div>
+{% endfor %} 
 <form class="well form-horizontal" role="form" method="post" action="{{ path('login_check') }}">
     <div class="form-group">
         <label class="col-sm-5 control-label" id="login">Votre login :</label>
@@ -21,7 +25,8 @@
     </div>
     <div class="form-group">
         <div style="text-align: center">
-            <button type="submit" class="btn btn-default">Valider</button>
+            <button type="submit" class="btn btn-default" style="width: 120px; margin-bottom: 20px">Valider</button>
+            <a href="{{ path('reset_password') }}"><button type="submit" class="btn btn-default" style="width: 120px; margin-bottom: 20px">Mdp oublié</button></a>
         </div>
     </div>
 </form>

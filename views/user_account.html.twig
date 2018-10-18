@@ -1,0 +1,16 @@
+{% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
+<div style="display: flex; justify-content: center">
+    <div style="border: 10px double #669900; padding: 10px">
+        <h2>Mes informations personnelles</h2>
+        <ul class="nav nav-navbar">
+            <li><span style="font-weight: bold">Nom :</span> {{ app.user.name }}</li>
+            <li><span style="font-weight: bold">Prénom :</span> {{ app.user.firstname }}</li>
+            <li><span style="font-weight: bold">Pseudo :</span> {{ app.user.username }}</li>
+            <li><span style="font-weight: bold">@ mail :</span> {{ app.user.email }}</li>
+            <li><span style="font-weight: bold">N° tel :</span> {{ app.user.phoneNumber }}</li>
+            <li><span style="font-weight: bold">Nombre de commande chez ClickPizza :</span> {{ app.user.orderNumber }}</li>
+        </ul>
+        <p style="text-align: center; margin-top: 15px"><a href="{{ path('edit_account', {'id': app.user.id }) }}"><button class="btn btn-default">Modifier votre compte</button></a></p>
+    </div>      
+</div>
+{% endblock %}

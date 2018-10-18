@@ -2,7 +2,7 @@
 
 <h2 class="text-center">{{ block('title') }}</h2>
 {% for flashMessage in app.session.flashbag.get('success') %}
-<div class="alert alert-success">
+<div class="alert alert-success" style="text-align: center">
     {{ flashMessage }}
 </div>
 {% endfor %}
@@ -29,7 +29,7 @@
     </div>
     <div class="form-group">
         {{ form_label(commodityForm.picture, null, { 'label': 'Image', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
-        <div class="col-sm-4">
+        <div class="col-sm-4" id="inputForPicture">
             {{ form_errors(commodityForm.picture) }} {{ form_widget(commodityForm.picture, { 'attr': { 'class': 'form-control', 'style': 'height: 50px' }}) }}
         </div>
     </div>

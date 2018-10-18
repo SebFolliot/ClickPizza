@@ -47,9 +47,9 @@
                         <li class="dropdown">
                             <a data-toggle="dropdown"><i class="fas fa-user-plus fa-2x"></i><br /> {{ app.user.username }} </a>
                             <ul class="dropdown-menu">
-                                <li><a href="{{ path('home') }}"><i class="fas fa-home"></i> La carte</a>
-                                </li>
-                                <li><a href="{{ path('admin') }}"><span class="glyphicon glyphicon-cog"></span> Portail admin</a></li>
+                                <li><a href="{{ path('home') }}"><i class="fas fa-home"></i> La carte</a></li>
+                                <li><a href="{{ path('admin_order_page', {'currentPage': 1, 'status': 'Toutes' }) }}"><i class="fas fa-shopping-cart"></i> Les commandes</a></li>
+                                <li><a href="{{ path ('admin') }}"><span class="glyphicon glyphicon-cog"></span> Portail admin</a></li>
                                 <li><a id="disconnect" href="{{ path('logout') }}"><i class="fas fa-power-off"></i> Se déconnecter</a>
                                 </li>
                             </ul>
@@ -60,6 +60,8 @@
                         <li class="dropdown">
                             <a data-toggle="dropdown"><i class="fas fa-user fa-2x"></i><br /> {{ app.user.username }} </a>
                             <ul class="dropdown-menu">
+                                <li><a id="user_account" href="{{ path('user_account') }}"><i class="fas fa-id-card"></i> Mon compte</a>
+                                </li>
                                 <li><a id="disconnect" href="{{ path('logout') }}"><i class="fas fa-power-off"></i> Se déconnecter</a>
                                 </li>
                             </ul>
@@ -105,6 +107,8 @@
     <script type="text/javascript" src="{{ asset('/web/js/tooltip.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/web/js/caddy.js') }}"></script>
     <script type="text/javascript" src="{{ asset('/web/js/message.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/web/js/confirm_order.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('/web/js/filter_search_order.js') }}"></script>
 
 </body>
 

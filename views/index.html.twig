@@ -89,7 +89,9 @@
                 </tfoot>{% endif %}
             </table>
         </div>{% endif %}
-    </article>{% endfor %} {% if is_granted('ROLE_ADMIN') %} {% else %}
+    </article>
+
+    {% endfor %} {% if is_granted('ROLE_ADMIN') %} {% else %}
     <aside id="googlemap" class="col-lg-12 col-md-12" style="margin-top: 50px">
         <hr class="col-sm-12" />
         <div class="col-lg-6 col-md-6" style="margin-bottom: 30px">
