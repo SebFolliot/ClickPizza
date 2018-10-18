@@ -81,7 +81,7 @@ class OrderController
             
             $headers  = 'MIME-Version: 1.0' . "\r\n";
 		    $headers .= 'From: ClickPizza'. "\r\n" .				
-				'Content-Type: text/html; charset="utf-8"; DelSp="Yes"; format=flowed '."\r\n" .
+				'Content-Type: text/html; charset="utf-8"; DelSp="Yes"; image/png; format=flowed '."\r\n" .
 				'Content-Disposition: inline'. "\r\n" .
 				'Content-Transfer-Encoding: 7bit'." \r\n" .
 				'X-Mailer:PHP/'.phpversion();
@@ -91,7 +91,8 @@ class OrderController
             $civility = $user->getCivility();
             $name = $user->getName();
             $object = 'Récapitulatif de votre commande ';           
-            $messageOrd = "<p><span style='font-weight :bold'>" . $civility . " " . $name ."</span>, voici le récapitulatif de votre commande.</p><p style='color :#669900'><span style='text-decoration :underline'>N° de commande</span> : " . $ord_id . "</p><ul>" . implode('', $message) . "</ul><p style='color :#669900'><span='text-decoration :underline'>Montant total de votre facture :</span> " . $price_record . " €.</p><em><strong>ClickPizza</strong> vous remercie de votre commande et vous souhaite un bon appétit.</em>";
+            $messageOrd = "<div style='background-color: #669900; height: 102px; margin-bottom: 140px'><div><img src='http://www.clickpizza.construksite.fr/web/images/logo.png' alt='logo clickpizza' title='ClickPizza' /></div></div><p><span style='font-weight :bold'>" . $civility . " " . $name ."</span>, voici le récapitulatif de votre commande.</p><p style='color :#669900'><span style='text-decoration :underline'>N° de commande</span> : " . $ord_id . "</p><ul>" . implode('', $message) . "</ul><p style='color :#669900'><span='text-decoration :underline'>Montant total de votre facture :</span> " . $price_record . " €.</p><div style='text-align: center; background-color: rgba(0, 0, 0, 0.7); margin-top: 30px'><img src='http://www.clickpizza.construksite.fr/web/images/logo_min.png' alt='logo clickpizza' title='ClickPizza' /><div style='color: white'><em><strong>ClickPizza</strong> vous remercie de votre commande et vous souhaite un bon appétit.</em><div><p style='font-style: italic; font-size: x-small'>Pour votre santé, évitez de manger entre les repas, <a href='http://www.mangerbouger.fr' target='_blank'>www.mangerbouger.fr</a><br /> L’abus d’alcool est dangereux pour la santé. Sachez consommer et apprécier avec modération</p>
+            <p style='font-style: italic'>Site créé pour projet personnel - OpenClassrooms</p></div></div>";
             // Sending the order by mail
             mail($to, $object, $messageOrd, $headers);
        }
