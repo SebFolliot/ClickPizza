@@ -81,5 +81,31 @@ class OrderCommodityDAO extends DAO
         } 
         return $orderCommodity;
     }
+    
+    /**
+     * @return \ClickPizza\Entity\OrderCommodity or an exception if no user found
+     */
+    public function orderCommodityOrderId($id) {
+        $sql = "SELECT * FROM order_commodity WHERE ord_id=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
+
+        if ($row) {
+            return $this->buildEntityObject($row);
+        } else {
+            throw new \Exception("Aucun identifiant correspondant à cette commande " . $id);
+        }
+    }
+    
+    /**
+     * @return \ClickPizza\Entity\OrderCommodity
+     */
+    public function orderCommodityCommodityId($id) {
+        $sql = "SELECT * FROM order_commodity WHERE com_id=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
+
+        if ($row) {
+            return $this->buildEntityObject($row);
+        }
+    }
 
 }
