@@ -61,8 +61,13 @@ class CommodityController
      * @param Application $app Silex application
      */
     public function deleteCommodityAction ($id, Request $request, Application $app) {
-        $app['dao.commodity']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'Le produit a été supprimé de la base de données.');
+        
+        if (($app['dao.orderCommodity']->orderCommodityCommodityId($id) !== null)) {
+            $app['session']->getFlashBag()->add('warning', 'Ce produit ne peut être supprimé car il est rattaché à des commandes existantes.');
+        } else {
+            $app['dao.commodity']->delete($id);
+            $app['session']->getFlashBag()->add('success', 'Le produit a été supprimé de la base de données.');
+        }
         // Redirect to admin home page
         return $app->redirect($app['url_generator']->generate('admin'));
     }
