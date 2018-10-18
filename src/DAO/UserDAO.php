@@ -175,4 +175,14 @@ class UserDAO extends DAO implements UserProviderInterface
         return $row;
     }
     
+    /**
+     * Check the login in the database
+     */
+    public function checkLogin($login) {
+        
+        $sql = "SELECT(SELECT COUNT(*) FROM t_user WHERE user_login COLLATE utf8_bin='$login') AS count";
+        $row = $this->getDb()->fetchAssoc($sql);
+
+        return $row;
+    }    
 }
