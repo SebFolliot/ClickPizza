@@ -5,6 +5,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use ClickPizza\Entity\User;
 use ClickPizza\Form\Type\CreateAccountUserType;
+use ClickPizza\Form\Type\SearchOrderType;
 
 class AdminController {
     
@@ -37,19 +38,34 @@ class AdminController {
     }
     
     /**
-     * Delete a account user/admin
+     * Delete a account user/admin controller
      *
      * @param integer $id User id
      * @param Application $app Silex application
      */
-    public function deleteAction($id, Request $request, Application $app) {
-        $app['dao.user']->delete($id);
-        $app['session']->getFlashBag()->add('success', 'Le compte a été supprimé de la base de données.');
+     public function deleteAction($id, Request $request, Application $app) {
+        
+        $orderNumber = $app['dao.user']->userList($id)->getOrderNumber();
+        $name = $app['dao.user']->userList($id)->getName();
+        $civility = $app['dao.user']->userList($id)->getCivility();
+        
+        if ($orderNumber == 0) {
+            $app['dao.user']->delete($id);
+            $app['session']->getFlashBag()->add('success', 'Le compte de '.$civility.' '.$name.' a été supprimé de la base de données.');
+        } else {
+            $app['session']->getFlashBag()->add('warning', 'Le compte de '.$civility.' '.$name.' ne peut pas être supprimé car il est lié à des commandes.');    
+        }
          
         // Redirect to admin home page
         return $app->redirect($app['url_generator']->generate('admin'));
     }
     
+    /**
+     * Update an admin account controller
+     *
+     * @param Application $app Silex application
+     * @param integer $id User id
+     */ 
     public function editAdminAccountAction($id, Request $request, Application $app) {
         $user = $app['dao.user']->userList($id);
         $userForm = $app['form.factory']->create(CreateAccountUserType::class, $user);
@@ -98,46 +114,96 @@ class AdminController {
     public function orderPageAction ($currentPage, $status, Request $request, Application $app) {
         $users = $app['dao.user']->allUsers();
         $commodities = $app['dao.commodity']->allCommodities();
-        $numberOfPages = $app['dao.order']->numberOfPagesForOrders($status);       
-            
-        if(isset($currentPage)) {
-            $currentPage = intval($currentPage);
-                  
-            if($currentPage>$numberOfPages) {
-                $currentPage = $numberOfPages;
-            }
-        } else {
-            $currentPage = 1;
-        }
-        $orders = $app['dao.order']->getListOrders($currentPage, $status);
         $ordersCommodities = $app['dao.orderCommodity']->allOrdersCommodities();
-        if ($status == "Validée") {        
-            return $app['twig']->render('validated_order.html.twig', array(
-                'users' => $users,
-                'commodities' => $commodities,
-                'orders' => $orders,
-                'numberOfPages' => $numberOfPages,
-                'currentPage' => $currentPage,
-                'ordersCommodities' => $ordersCommodities,
-                'title' => 'Commandes validées'));
-        } elseif ($status == "Annulée") {
-            return $app['twig']->render('cancelled_order.html.twig', array(
-                'users' => $users,
-                'commodities' => $commodities,
-                'orders' => $orders,
-                'numberOfPages' => $numberOfPages,
-                'currentPage' => $currentPage,
-                'ordersCommodities' => $ordersCommodities,
-                'title' => 'Commandes annulées'));            
+        
+        $formSearchOrder = $app['form.factory']->create(SearchOrderType::class);
+        $formSearchOrder->handleRequest($request);
+   
+        if ($formSearchOrder->isSubmitted() && $formSearchOrder->isValid()) {
+   
+            $data = $formSearchOrder->getData();
+            $numberOfPages = $app['dao.order']->numberOfPagesForStatusOrders($data['status']);
+            $currentPage = 1;
+            $orders = $app['dao.order']->searchListOrders($data['status'], $currentPage);
+                     
+            if($data['status'] || (($app['dao.order']->orderList($data['id']) !== null) && $data['status'])) {
+                
+               if (($app['dao.order']->orderList($data['id']) === null) && isset($data['id'])) {
+                   if($data['status'] === 'Toutes') {
+                       $numberOfPages = $app['dao.order']->numberOfPagesForOrders();
+                   }
+
+                $app['session']->getFlashBag()->add('warning', 'La commande n° '.$data['id'].' n\'existe pas');
+                
+                return $app['twig']->render('list_order.html.twig', array(
+                    'users' => $users,
+                    'status' => $data['status'],
+                    'formSearchOrder' => $formSearchOrder->CreateView(),
+                    'commodities' => $commodities,
+                    'orders' => $orders,
+                    'numberOfPages' => $numberOfPages,
+                    'currentPage' => $currentPage,
+                    'ordersCommodities' => $ordersCommodities,
+                    'title' => 'Les commandes'));
+                   
+               } 
+                
+               if(isset($data['id'])) {     
+               $thisStatus = $app['dao.order']->orderList($data['id'])->getStatus();
+                
+                    if (($thisStatus !== $data['status']) && ($data['status'] !== 'Toutes')) {
+                        $app['session']->getFlashBag()->add('warning', 'La commande n° '.$data['id']. ' n\'est pas une commande ' .mb_strtolower($data['status']).' mais une commande '.mb_strtolower($thisStatus));
+                
+                    return $app['twig']->render('list_order.html.twig', array(
+                        'users' => $users,
+                        'status' => $data['status'],
+                        'formSearchOrder' => $formSearchOrder->CreateView(),
+                        'commodities' => $commodities,
+                        'orders' => $orders,
+                        'numberOfPages' => $numberOfPages,
+                        'currentPage' => $currentPage,
+                        'ordersCommodities' => $ordersCommodities,
+                        'title' => 'Les commandes'));
+                  }
+               }
+                    
+                $numberOfPages = $app['dao.order']->numberOfPagesWithSearchOrders($data);
+                $currentPage = 1;
+                $orders = $app['dao.order']->searchListOrders($data, $currentPage);
+
+                return $app['twig']->render('list_order.html.twig', array(
+                    'users' => $users,
+                    'status' => $data['status'],
+                    'id' => $data['id'],
+                    'formSearchOrder' => $formSearchOrder->CreateView(),
+                    'commodities' => $commodities,
+                    'orders' => $orders,
+                    'numberOfPages' => $numberOfPages,
+                    'currentPage' => $currentPage,
+                    'ordersCommodities' => $ordersCommodities,
+                    'title' => 'Les commandes'));
+            }   
+
+
         } else {
-            return $app['twig']->render('pending_order.html.twig', array(
+            if($status === 'Toutes') {
+               $numberOfPages = $app['dao.order']->numberOfPagesForOrders();
+             } else {
+                $numberOfPages = $app['dao.order']->numberOfPagesForStatusOrders($status);
+            }
+                
+            $orders = $app['dao.order']->searchListOrders($status, $currentPage);
+            
+            return $app['twig']->render('list_order.html.twig', array(
                 'users' => $users,
+                'status' => $status,
+                'formSearchOrder' => $formSearchOrder->CreateView(),
                 'commodities' => $commodities,
                 'orders' => $orders,
                 'numberOfPages' => $numberOfPages,
                 'currentPage' => $currentPage,
                 'ordersCommodities' => $ordersCommodities,
-                'title' => 'Commandes en cours'));            
-        }        
+                'title' => 'Les commandes'));
+        }
     }
 }
