@@ -12,13 +12,22 @@ use ClickPizza\Entity\Order;
 $app->get('/login', "ClickPizza\Controller\UserController::loginAction")
     ->bind('login');
 
+// Reset password
+$app->match('/reset_password', "ClickPizza\Controller\UserController::resetPwdUserAction")
+    ->bind('reset_password');
+
+// User account
+$app->get('/user_account/', "ClickPizza\Controller\UserController::userAccountAction")
+    ->bind('user_account');
+
 // Create a user account
 $app->match('/create_account', "ClickPizza\Controller\UserController::createUserAccountAction")
     ->bind('create_account');
 
-// ajouter au panier (avec CaddyController) 
-$app->match('/caddy/{c}/{q}/{p}/add', "ClickPizza\Controller\CaddyController::addCaddyAction")
-    ->bind('caddy_add');
+// Update a user account
+$app->match('/edit_account/{id}',
+"ClickPizza\Controller\UserController::editUserAccountAction")
+    ->bind('edit_account');
 
 // Order
 $app->match('/order', "ClickPizza\Controller\OrderController::addOrderAction")
@@ -44,7 +53,6 @@ $app->match('/admin/user/{id}/edit', "ClickPizza\Controller\AdminController::edi
 $app->match('/admin/commodity/{id}/edit', "ClickPizza\Controller\CommodityController::editCommodityAction")
     ->bind('admin_commodity_edit');
 
-
 // Add a new commodity (Admin)
 $app->match('/admin/commodity/add', "ClickPizza\Controller\CommodityController::addCommodityAction")
     ->bind('admin_commodity_add');
@@ -62,18 +70,8 @@ $app->get('/admin/order/cancel/{idOrder}/{idUser}/update', "ClickPizza\Controlle
     ->bind('admin_order_cancel_update');
 
 // Pending order (Admin)
-$app->get('/admin/order/page/{currentPage}/{status}', "ClickPizza\Controller\AdminController::orderPageAction")
+$app->match('/admin/order/page/{currentPage}/{status}', "ClickPizza\Controller\AdminController::orderPageAction")
     ->bind('admin_order_page');
-
-// Cancelled order (Admin)
-$app->get('/admin/order/cancelled/page/{currentPage}/{status}',
-         "ClickPizza\Controller\AdminController::orderPageAction")
-    ->bind('admin_order_cancelled_page');
-
-// Validated order (Admin)
-$app->get('/admin/order/validated/page/{currentPage}/{status}',
-         "ClickPizza\Controller\AdminController::orderPageAction")
-    ->bind('admin_order_validated_page');
 
 // home page
 // List of pizza

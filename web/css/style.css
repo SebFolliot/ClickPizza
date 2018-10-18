@@ -63,10 +63,18 @@ select:focus {
     border-color: #ed8f14 !important;
 }
 
+.btn-info {
+    background-color: #829895 !important;
+    color: white !important;
+    font-weight: bold !important;
+    border-color: #829895 !important;
+}
+
 .label-default,
-.fa-eraser {
+.fa-eraser, .fa-filter {
     cursor: pointer;
 }
+
 
 .btn-danger {
     font-weight: bold !important;
@@ -86,6 +94,11 @@ select:focus {
 .btn-warning:hover {
     background-color: white !important;
     color: #ed8f14 !important;
+}
+
+.btn-info:hover {
+    background-color: white !important;
+    color: #829895 !important;
 }
 
 #logo {
@@ -119,8 +132,7 @@ nav a {
     background-color: rgb(124, 185, 0) !important;
 }
 
-.navbar-toggle,
-.badge {
+.navbar-toggle, .badge {
     border-color: #669900 !important;
     background-color: #669900 !important;
 }
@@ -223,27 +235,28 @@ section,
     display: none;
 }
 
+#commodityDescriptionSmallScreen {
+    display: none;
+}
+
 .paging-small-screen {
     display: none;
 }
 
 div .paging {
-    margin: 20px 0 20px 40%;
+    margin: 20px 0 20px 35%;
 }
-
 .paging-order a {
     color: #669900;
-    border: 1px solid rgba(102, 153, 0, 0.6);
+    border: 1px solid rgba(102,153,0,0.6);
     padding: 10px;
     border-bottom: 3px solid #669900;
     font-weight: bold;
 }
-
 .paging-order a:hover {
     color: white;
     background-color: #669900;
 }
-
 .current-page {
     background-color: #e9f8ba !important;
     pointer-events: none;
@@ -296,53 +309,40 @@ footer a:hover {
 /* Any type of screen whose width is at most 1024) */
 @media all and (max-width: 1024px) {
     div .paging {
-        margin-left: 35%;
+    margin-left: 30%;
     }
 }
 
 /* Any type of screen whose width is at most 768px), tablet type */
 
 @media all and (max-width: 768px) {
-
     #info,
     #confirm_validate {
         max-width: 80%;
         margin-left: 10%;
     }
-
     #authenticated_admin,
     #authenticated_user {
         margin-right: 0;
     }
-
     div .paging {
-        margin-left: 25%;
+    margin-left: 25%;
     }
 }
 
 /* Any type of screen whose width is at most 650px */
 
 @media all and (max-width: 650px) {
-
-    .paging,
-    .order-price-td-table,
-    .order-price-th-table,
-    .order-date-td-table,
-    .order-date-th-table,
-    .order-price-th-email,
-    .order-price-td-email {
+    .paging, .order-date-td-table, .order-date-th-table, .order-price-th-email, .order-price-td-email, .user-email-th-table, .user-email-td-table, #commodityDescriptionLargeScreen {
         display: none;
     }
-
     .paging-small-screen {
         display: block;
     }
-
     div .paging-small-screen {
         margin-left: 35%;
     }
-
-    .info-email {
+    .info-email, #commodityDescriptionSmallScreen {
         display: block;
     }
 
@@ -354,21 +354,20 @@ footer a:hover {
     nav img {
         width: 60%;
     }
-
     #logo {
         top: 20px;
     }
-
     table {
         font-size: 13px;
     }
-
     iframe {
         width: 340px;
     }
-
     div .paging-small-screen {
         margin-left: 30%;
+    }
+    .admin-pseudo-th-table, .admin-pseudo-td-table {
+        display: none;
     }
 }
 
@@ -378,32 +377,29 @@ footer a:hover {
     nav img {
         width: 40%;
     }
-
     #logo {
         top: -10px;
         left: -10px;
     }
-
     .modal-body {
         font-size: 12px !important;
         padding-left: 5px !important;
     }
-
     #commodity_description,
     table {
         font-size: 11px;
     }
-
     iframe {
         width: 280px;
     }
-
-    button {
+    button, #inputForPicture input {
         font-size: 11px !important;
     }
-
     div .paging-small-screen {
         margin-left: 25%;
+    }
+    .commodity-type-td-table, .commodity-type-th-table, .admin-firstname-td-table, .admin-firstname-th-table {
+        display: none;
     }
 }
 
@@ -413,12 +409,13 @@ footer a:hover {
     #commodity_description {
         font-size: 1Opx;
     }
-
     iframe {
         width: 240px;
     }
-
-    div .paging-small-screen {
-        margin-left: 17%;
+    .order-name-td-table, .order-name-th-table {
+        display: none;
+    }
+    #inputForPicture input {
+        font-size: 10px !important;
     }
 }
