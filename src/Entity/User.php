@@ -209,8 +209,6 @@ class User implements UserInterface
         
     }
     
-    
-    // à vérifier 
     public function __toString() {
         return $this->getId();
     } 

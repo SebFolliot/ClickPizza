@@ -29,11 +29,11 @@ class OrderDAO extends DAO
     } 
     
     
-     /**
-      * Returns a list of all orders, sorted by date.
-      *
-      * @return array A list of all orders.
-      */
+    /**
+     * Returns a list of all orders, sorted by date.
+     *
+     * @return array A list of all orders.
+     */
     public function allOrders() {
         $sql = "SELECT * FROM t_order ORDER BY ord_date DESC";
         $result = $this->getDb()->fetchAll($sql);
@@ -47,19 +47,151 @@ class OrderDAO extends DAO
     }
     
     /**
-     * @return \ClickPizza\Entity\Order or an exception if no order found
+     * Returns the number of pages for 10 orders per page
+     *
+     * @param $data
+     */    
+    public function numberOfPagesWithSearchOrders($data) {
+
+        $whereSqlExist = false;
+        $sql = 'SELECT COUNT(*) AS total FROM t_order';
+        
+        if (isset($data['status'])) {
+            
+            if ($data['status'] !== 'Toutes') {
+                $whereSqlExist = true;
+                $sql.= ' WHERE ord_status="'.$data['status'].'"';
+            }
+        }
+        
+        if (isset($data['id'])) {
+            if ($whereSqlExist === true) {
+                $sql.= ' AND ord_id= '.$data['id'];
+            } else {
+                $sql.= ' WHERE ord_id= '.$data['id'];
+                $whereSqlExist = true;
+            }
+        }
+        
+        $result = $this->getDb()->fetchAssoc($sql);
+        $total = (int)$result['total'];
+        $orderByPage = 10;
+        $numberOfPages = ceil($total/$orderByPage);
+
+        return $numberOfPages;
+    }
+    
+    /**
+     * Returns the number of pages for 10 orders per page
+     */ 
+    public function numberOfPagesForOrders() {
+        $sql = 'SELECT COUNT(*) AS total FROM t_order';
+        $result = $this->getDb()->fetchAssoc($sql);
+            
+        $total = (int)$result['total'];
+        $orderByPage = 10;
+        $numberOfPages = ceil($total/$orderByPage);
+
+        return $numberOfPages;
+    }
+    
+    /**
+     * Returns the number of pages for 10 orders per page
+     *
+     * @param string $status
+     */ 
+    public function numberOfPagesForStatusOrders($status) {
+        
+        $sql = 'SELECT COUNT(*) AS total FROM t_order WHERE ord_status = "'.$status.'"';    
+        $result = $this->getDb()->fetchAssoc($sql);
+            
+        $total = (int)$result['total'];
+        $orderByPage = 10;
+        $numberOfPages = ceil($total/$orderByPage);
+
+        return $numberOfPages;
+    }
+    
+    
+    /**
+     * @return \ClickPizza\Entity\Order
      */
     public function orderList($id) {
-    $sql = "SELECT * FROM t_order WHERE ord_id=?";
-    $row = $this->getDb()->fetchAssoc($sql, array($id));
+        $sql = "SELECT * FROM t_order WHERE ord_id=?";
+        $row = $this->getDb()->fetchAssoc($sql, array($id));
 
-    if ($row) {
-        return $this->buildEntityObject($row); }
-    else {
-        throw new \Exception("Aucun identifiant correspondant à la commande " . $id);
+        if ($row) {
+            return $this->buildEntityObject($row); 
         }
     }
     
+    /**
+     * Returns a list of orders, sort by status and/or id with 10 results  per page.
+     *
+     * @param $data
+     * @param integer $currentPage
+     * @return array a list of all orders.
+     */
+    public function searchListOrders($data, $currentPage) {
+        $orderByPage = 10;
+        $numberOfPages = $this->numberOfPagesWithSearchOrders($data);
+    
+        if(isset($currentPage)) {
+           $currentPage = intval($currentPage);
+                  
+           if($currentPage>$numberOfPages) {
+              $currentPage = $numberOfPages;
+           }
+        } else {
+            $currentPage = 1;
+        }
+    
+        $firstEntry = ($currentPage-1)*$orderByPage;
+        
+        if ($data === 'Toutes') {
+            $sql = 'SELECT * FROM t_order ORDER BY ord_id DESC LIMIT '.$firstEntry.','.$orderByPage.'';
+            
+        } elseif (($data === 'En cours') || ($data === 'Validée') || ($data === 'Annulée')) {
+
+            $sql = 'SELECT * FROM t_order WHERE ord_status = "'.$data.'" ORDER BY ord_id DESC LIMIT '.$firstEntry.','.$orderByPage.'';
+        } else {
+            
+            $whereSqlExist = false;  
+    
+            $sql = 'SELECT * FROM t_order';
+
+            if (isset($data['status'])) {
+                if ($data['status'] !== 'Toutes') {
+                    $whereSqlExist = true;           
+                    $sql.= ' WHERE ord_status="'.$data['status'].'"'; 
+                }
+            }
+        
+            if (isset($data['id'])) {
+                if ($whereSqlExist === true) {
+                    $sql.= ' AND ord_id= '.$data['id'];
+                } else {
+                    $sql.= ' WHERE ord_id= '.$data['id'];
+                    $whereSqlExist = true;
+                }        
+            }
+
+            $sql.= ' ORDER BY ord_id DESC LIMIT '.$firstEntry.','.$orderByPage;
+        }
+        $result = $this->getDb()->fetchAll($sql);
+
+        // Convert query result to an array of entity objects
+        $entities = array();
+        foreach ($result as $row) {
+            $id = $row['ord_id'];
+            $entities[$id] = $this->buildEntityObject($row);
+        }
+        $total = count($entities);
+        $numberOfPages = ceil($total/$orderByPage);
+        return $entities;
+    }
+    
+        
     /**
      * Update the status of the order into the database
      *
@@ -74,44 +206,7 @@ class OrderDAO extends DAO
         } 
      }
     
-    /**
-     * Returns the number of pages for 10 orders per page, sorted by status.
-     *
-     * @param string $status
-     */     
-    public function numberOfPagesForOrders($status) {
-        $sql = 'SELECT COUNT(*) AS total FROM t_order WHERE ord_status="'.$status.'"';
-        $result = $this->getDb()->fetchAssoc($sql);
-        $total = (int)$result['total'];
-        $orderByPage = 10;
-        // number of pages
-        $numberOfPages = ceil($total/$orderByPage);
 
-        return $numberOfPages;
-    }
-    
-    /**
-     * Get a list of 10 orders per page, sorted by status.
-     *
-     * @param integer $currentPage
-     * @param string $status
-     * @return array
-     */
-    public function getListOrders($currentPage, $status) {
-        $orderByPage = 10;
-        $firstEntry = ($currentPage-1)*$orderByPage;
-        $sql = ('SELECT * FROM t_order WHERE ord_status="'.$status.'" ORDER BY ord_id DESC LIMIT '.$firstEntry.','.$orderByPage.'');
-
-        $result = $this->getDb()->fetchAll($sql);
-        // Convert query result to an array of entity objects
-        $entities = array();
-        foreach ($result as $row) {
-            $id = $row['ord_id'];
-            $entities[$id] = $this->buildEntityObject($row);
-        }
-        return $entities;        
-    }
-    
     /**
      * Creates an Order object based on a DB row.
      *
