@@ -5,6 +5,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use ClickPizza\Entity\User;
 use ClickPizza\Form\Type\CreateAccountUserType;
+use ClickPizza\Form\Type\UpdateAccountType;
 use ClickPizza\Form\Type\SearchOrderType;
 
 class AdminController {
@@ -68,20 +69,16 @@ class AdminController {
      */ 
     public function editAdminAccountAction($id, Request $request, Application $app) {
         $user = $app['dao.user']->userList($id);
-        $userForm = $app['form.factory']->create(CreateAccountUserType::class, $user);
+        $users = $app['dao.user']->allUsers();
+        $userForm = $app['form.factory']->create(UpdateAccountType::class, $user);
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
-            $salt = substr(md5(time()), 0, 23);
-            $user->setSalt($salt);
-            $simplePassword = $user->getPassword();
-            $encoder = $app['security.encoder.bcrypt'];
-            $password = $encoder->encodePassword($simplePassword, $user->getSalt());
-            $user->setPassword($password);
             $app['dao.user']->update($user);
             $app['session']->getFlashBag()->add('success', 'Le compte administrateur a été mis à jour avec succès.');
         }
-        return $app['twig']->render('admin_form.html.twig', array(
+        return $app['twig']->render('user_form.html.twig', array(
             'title' => 'Modifier le compte administrateur',
+            'user' => $user,
             'userForm' => $userForm->createView()));
         }
     
