@@ -328,6 +328,9 @@ footer a:hover {
     div .paging {
     margin-left: 25%;
     }
+    #menu_map {
+        display: none;
+    }
 }
 
 /* Any type of screen whose width is at most 650px */
@@ -344,6 +347,9 @@ footer a:hover {
     }
     .info-email, #commodityDescriptionSmallScreen {
         display: block;
+    }
+    #listOrdersModal {
+        margin-bottom: -20px !important;
     }
 
 }
@@ -392,7 +398,7 @@ footer a:hover {
     iframe {
         width: 280px;
     }
-    button, #inputForPicture input {
+    button, #inputForPicture input, #inputForChangePwd {
         font-size: 11px !important;
     }
     div .paging-small-screen {
@@ -400,6 +406,12 @@ footer a:hover {
     }
     .commodity-type-td-table, .commodity-type-th-table, .admin-firstname-td-table, .admin-firstname-th-table {
         display: none;
+    }
+    #caddy-full td {
+        font-size: 10px !important;
+    }
+    #listOrdersModal {
+        margin-left: 10px;
     }
 }
 
@@ -417,5 +429,8 @@ footer a:hover {
     }
     #inputForPicture input {
         font-size: 10px !important;
+    }
+    #caddy-full td {
+        font-size: 8px !important;
     }
 }

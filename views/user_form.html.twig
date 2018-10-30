@@ -8,11 +8,11 @@
 <div class="alert alert-warning" style="text-align: center">
     {{ flashMessage }}
 </div>
-{% endfor %} {% if form_errors(userForm.password.first) %}
+{% endfor %} {% if is_granted('IS_AUTHENTICATED_FULLY') %}{% else %} {% if form_errors(userForm.password.first) %}
 <div class="alert alert-danger" style="text-align: center">
     {{ form_errors(userForm.password.first) }}
 </div>
-{% endif %}
+{% endif %}{% endif %}
 
 <div>
     {{ form_start(userForm, { 'attr': {'class': 'form-horizontal well'} }) }}
@@ -34,6 +34,7 @@
             {{ form_errors(userForm.civility) }} {{ form_widget(userForm.civility, { 'attr': { 'class': 'form-control' }}) }}
         </div>
     </div>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}{% else %}
     <div class="form-group">
         {{ form_label(userForm.username, null, { 'label': 'Votre login', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
         <div class="col-sm-4">
@@ -43,7 +44,7 @@
     <div class="form-group">
         {{ form_label(userForm.password.first, null, { 'label': 'Mot de passe', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
         <div class="col-sm-4">
-            {{ form_widget(userForm.password.first, { 'attr': { 'class': 'form-control' }}) }}
+            {{ form_widget(userForm.password.first, { 'attr': { 'class': 'form-control', 'title': 'Mot de passe avec au moins 8 caractères, une majuscule et un chiffre' }}) }}
         </div>
     </div>
     <div class="form-group">
@@ -52,6 +53,7 @@
             {{ form_widget(userForm.password.second, { 'attr': { 'class': 'form-control' }}) }}
         </div>
     </div>
+    {% endif %}
     <div class="form-group">
         {{ form_label(userForm.email, null, { 'label': 'Votre email', 'label_attr': { 'class': 'col-sm-5 control-label' }}) }}
         <div class="col-sm-4">
@@ -69,11 +71,20 @@
             {{ form_errors(userForm.role) }} {{ form_widget(userForm.role, { 'attr': { 'class': 'form-control', 'value': 'ROLE_USER' }}) }}
         </div>
     </div>
-    <div class="form-group">
-        <div class="col-sm-offset-5 col-sm-3">
-            <input type="submit" class="btn btn-default" value="Valider" />
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="form-group">
+            <div style="text-align: center">
+                <a><button type="submit" class="btn btn-default" style="width: 200px; margin: 0 10px 20px 0">Valider</button></a>
+                <a href="{{ path('admin_change_pwd', {'id': user.id }) }}"><input id="inputForChangePwd" type="button" class="btn btn-default" style="width: 200px; margin: 0 10px 20px 0" value="Changer de mot de passe" /></a>
+            </div>
         </div>
-    </div>
+     {% else %}
+        <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-3">
+                <input type="submit" class="btn btn-default" value="Valider" />
+            </div>
+        </div>
+    {% endif %}
     {{ form_end(userForm) }}
 </div>
 {% endblock %}

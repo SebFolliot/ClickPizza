@@ -8,7 +8,7 @@
                 <h4 id="modalTitre" class="modal-title">Plus d'informations sur le programme de fidélité</h4>
             </div>
             <div class="modal-body">
-                <blockquote>Toutes les 3 commandes, vous bénéficiez d'une remise de 10% sur le total de votre commande.<br />{% if is_granted('IS_AUTHENTICATED_FULLY') %}<span style="font-weight: bold">{{ app.user.firstname }} {{ app.user.name }}</span>,{% if app.user.orderNumber == 0 %} il s'agit de votre 1ère commande sur notre site, toute l'équipe de ClickPizza vous souhaite la bienvenue !!! {% elseif ((app.user.orderNumber + 1)%3 == 0) %} il s'agit de votre {{ app.user.orderNumber + 1 }}ème commande chez ClickPizza, vous bénéficiez donc d'une remise de 10% de remise sur cette commande.{% else %} il s'agit de votre {{ app.user.orderNumber + 1 }}ème commande chez ClickPizza.{% endif %}{% endif %}
+                <blockquote>Toutes les 3 commandes, vous bénéficiez d'une remise de 10% sur le total de votre commande.<br />{% if is_granted('IS_AUTHENTICATED_FULLY') %}<span style="font-weight: bold">{{ app.user.firstname }} {{ app.user.name }}</span>,{% if app.user.orderNumber == 0 %} il s'agit de votre 1ère commande sur notre site, toute l'équipe de ClickPizza vous souhaite la bienvenue !!! {% elseif ((app.user.orderNumber + 1)%3 == 0) %} il s'agit de votre {{ app.user.orderNumber + 1 }}ème commande chez ClickPizza, vous bénéficiez donc d'une remise de 10% sur cette commande.{% else %} il s'agit de votre {{ app.user.orderNumber + 1 }}ème commande chez ClickPizza.{% endif %}{% endif %}
                     <hr />
                     <small class="pull-right">L'équipe ClickPizza</small></blockquote>
             </div>
@@ -16,7 +16,7 @@
     </div>
 </div>
 <div id="title_message">
-    <h1 id="clickpizza"><strong>ClickPizza</strong></h1><span id="slogan"> c'est un click pour commander <i class="fas fa-info-circle" data-toggle="tooltip" style="color: #669900" title="Connexion à l'espace client obligatoire pour pouvoir commander en ligne"></i> et une commande prête à être récupérée dans notre pizzeria en mois de 30 minutes</span>
+    <h1 id="clickpizza"><strong>ClickPizza</strong></h1><span id="slogan"> C'est un click pour commander <i class="fas fa-info-circle" data-toggle="tooltip" style="color: #669900" title="Connexion à l'espace client obligatoire pour pouvoir commander en ligne"></i> et une commande prête à être récupérée dans notre pizzeria en mois de 30 minutes</span>
 </div>
 <div id="add_caddy_message"></div>
 <hr style="margin-bottom: 50px" /> {% endif %}
@@ -32,8 +32,8 @@
         </ul>
     </aside>
     {% else %}
-    <aside id="menu_aside" class="col-md-2">
-        <img id="menu_map" src="{{ asset('/web/images/menu_carte.png') }}" alt="carte des menus" title="la carte" style="margin: 10px 0" />
+    <aside id="menu_aside" style="justify-content: center; display: flex">
+        <img id="menu_map" src="{{ asset('/web/images/menu_carte_min.png') }}" alt="carte des menus" title="la carte" style="margin: 0 10px 10px 0" />
         <ul class="nav navbar-nav" id="list_menus">
             <li><a href="{{ path('home') }}">Nos pizzas</a></li>
             <li><a href="{{ path('salad') }}">Nos salades</a></li>
@@ -42,7 +42,7 @@
         </ul>
     </aside>
     {% endif %} {% for commodity in commodities %} {% if is_granted('ROLE_ADMIN') %}
-    <article class="col-lg-6">
+    <article class="col-lg-6 col-md-6">
         <div class="panel" style="border-color: #669900">
             <table class="table table-striped table-condensed">
                 <div class="panel-heading" style="background-color: #669900">
@@ -61,7 +61,7 @@
         </div>
     </article>
     {% else %}
-    <article class="col-lg-5 col-md-5">
+    <article class="col-lg-6 col-md-6">
         <div class="panel" style="border-color: #669900">
             <table class="table table-striped table-condensed">
                 <div class="panel-heading" style="background-color: #669900">
@@ -70,20 +70,22 @@
                 <p style="font-weight: bold">Prix : {{ commodity.price }} €</p>
                 <thead>
                     <div class="row">
-                        <div class="col-xs-5 col-md-4">
+                        <div class="col-xs-5 col-md-4 col-sm-3">
                             <img class="img-responsive" src="/../web/images/upload/{{ commodity.picture }}" title="{{ commodity.title }}" alt="{{ commodity.title }}" /></div>
-                        <div class="col-xs-7 col-md-8" style="margin-top: 5%"><strong>
+                        <div class="col-xs-7 col-md-8 col-sm-9" style="margin-top: 5%"><strong>
                             {{ commodity.description }}</strong></div>
                     </div>
                 </thead>{% endif %} {% if is_granted('ROLE_ADMIN') %} {% else %} {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <tfoot>
                     <tr>
                         <th style="text-align: center" colspan="2">
+
                             <tr>
                                 <td colspan="3" align="center">
                                     <a href="#top"><button type="button" class="add-caddy btn btn-default" data-id="{{ commodity.id }}" data-user-id="{{ app.user.id }}" data-name="{{ commodity.title }}" data-price="{{ commodity.price }}">Ajouter au panier</button></a>
                                 </td>
                             </tr>
+
                         </th>
                     </tr>
                 </tfoot>{% endif %}

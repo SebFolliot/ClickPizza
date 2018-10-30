@@ -8,7 +8,7 @@
 <div class="alert alert-warning" style="text-align: center">
     {{ flashMessage }}
 </div>
-{% endfor %} {% if form_errors(userForm.password.first) %}
+{% endfor %}{% if form_errors(userForm.password.first) %}
 <div class="alert alert-danger" style="text-align: center">
     {{ form_errors(userForm.password.first) }}
 </div>

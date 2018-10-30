@@ -61,7 +61,7 @@
                             </div>
                             <div><p style="font-weight: bold">Commande {{ order.status|lower }}</p>Commande effectuée le {{ order.orderDate | date('d/m/Y') }} à {{ order.orderDate | date('H\\hi') }}<br />Nom du client : {{ order.user.firstname }} {{ order.user.name }} <i class="fas fa-info-circle" data-toggle="tooltip" style="color: #669900" title="Tel : {{ order.user.phoneNumber }} {{ '&#013' }}"></i><br />Montant de la commande : {{ order.price }} €</div>
                             {% for orderCommodity in ordersCommodities %}{% if order.id == orderCommodity.order.id %} 
-                            <div class="modal-body">
+                            <div id="listOrdersModal" class="modal-body" style="margin-bottom: 10px">
                                 <ul class="nav navbar-nav">
                                     <li style="text-align: left; margin: 0 0 0 10px">
                                         <span class="badge">{{ orderCommodity.quantity }}</span> {{ orderCommodity.commodity.title }}</li>
