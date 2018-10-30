@@ -87,6 +87,13 @@ class User implements UserInterface
      */
     private $role;
     
+    /**
+     * User oldPassword
+     *
+     * @var string
+     */
+    public $oldPassword;
+    
     public function getId() {
         return $this->id;
     }
