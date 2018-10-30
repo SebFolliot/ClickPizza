@@ -65,14 +65,18 @@ class OrderController
                 $orderCommodity->setQuantity($quantity);
                 
                 // Preparing the message for the mail
-                $message[] = '<li>' . $v['qt'] . ' ' . $v['name'] . '</li>';
+                $message[] = '<tr><td style="text-align: center">' .$v['name']. '</td><td style="text-align: center">' .$v['price']. ' €</td><td style="text-align: center">' .$v['qt']. '</td><td style="text-align: center">' .$v['price']*$v['qt']. ' €</td></tr>';
                 
                 $app['dao.orderCommodity']->add($orderCommodity);
             } 
                               
             $number_order = $user->getOrderNumber();
             $number_order++;
-            $user->setOrderNumber($number_order); 
+            $user->setOrderNumber($number_order);
+            
+            if($number_order % 3 == 0) {
+                 $message[].='<br />Vous bénéficiez d\'une remise de 10% lors de cette commande.';
+             }
                    
             $app['dao.user']->updateOrderNumber($user);
             
@@ -91,7 +95,7 @@ class OrderController
             $civility = $user->getCivility();
             $name = $user->getName();
             $object = 'Récapitulatif de votre commande ';           
-            $messageOrd = "<div style='background-color: #669900; height: 102px; margin-bottom: 140px'><div><img src='http://www.clickpizza.construksite.fr/web/images/logo.png' alt='logo clickpizza' title='ClickPizza' /></div></div><p><span style='font-weight :bold'>" . $civility . " " . $name ."</span>, voici le récapitulatif de votre commande.</p><p style='color :#669900'><span style='text-decoration :underline'>N° de commande</span> : " . $ord_id . "</p><ul>" . implode('', $message) . "</ul><p style='color :#669900'><span='text-decoration :underline'>Montant total de votre facture :</span> " . $price_record . " €.</p><div style='text-align: center; background-color: rgba(0, 0, 0, 0.7); margin-top: 30px'><img src='http://www.clickpizza.construksite.fr/web/images/logo_min.png' alt='logo clickpizza' title='ClickPizza' /><div style='color: white'><em><strong>ClickPizza</strong> vous remercie de votre commande et vous souhaite un bon appétit.</em><div><p style='font-style: italic; font-size: x-small'>Pour votre santé, évitez de manger entre les repas, <a href='http://www.mangerbouger.fr' target='_blank'>www.mangerbouger.fr</a><br /> L’abus d’alcool est dangereux pour la santé. Sachez consommer et apprécier avec modération</p>
+            $messageOrd = "<div style='background-color: #669900; height: 102px; margin-bottom: 140px'><div><img src='http://www.clickpizza.construksite.fr/web/images/logo.png' alt='logo clickpizza' title='ClickPizza' /></div></div><p><span style='font-weight :bold'>" . $civility . " " . $name ."</span>, voici le récapitulatif de votre commande.</p><p style='color :#669900'><span style='text-decoration :underline'>N° de commande</span> : " . $ord_id . "</p><table><thead><tr style='font-weight: bold; background-color: #669900; color:white'><th style='text-align: center'>Nom du produit</th><th style='text-align: center'>Tarif unitaire</th><th style='text-align: center'>Quantité</th><th style='text-align: center'>Prix</th></tr></thead>" . implode('', $message) . "</table><p style='color :#669900'><span='text-decoration :underline'>Montant total de votre facture :</span> " . $price_record . " €.</p><em><strong>ClickPizza</strong> vous remercie de votre commande et vous souhaite un bon appétit.</em><div style='text-align: center; background-color: rgba(0, 0, 0, 0.7); margin-top: 30px'><img src='http://www.clickpizza.construksite.fr/web/images/logo_min.png' alt='logo clickpizza' title='ClickPizza' /><div style='color: white'><p style='font-style: italic; font-size: x-small'>Pour votre santé, évitez de manger entre les repas, <a href='http://www.mangerbouger.fr' target='_blank'>www.mangerbouger.fr</a><br /> L’abus d’alcool est dangereux pour la santé. Sachez consommer et apprécier avec modération</p>
             <p style='font-style: italic'>Site créé pour projet personnel - OpenClassrooms</p></div></div>";
             // Sending the order by mail
             mail($to, $object, $messageOrd, $headers);
