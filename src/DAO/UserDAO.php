@@ -135,20 +135,16 @@ class UserDAO extends DAO implements UserProviderInterface
      */
     public function update(User $user) {
         $userData = array(
-            'user_login' => $user->getUsername(),
             'user_civility' => $user->getCivility(),
             'user_name' => $user->getName(),
             'user_first_name' => $user->getFirstName(),
             'user_email' => $user->getEmail(),
-            'user_pwd' => $user->getPassword(),
-            'user_salt' => $user->getSalt(),
             'user_phone_number' => $user->getPhoneNumber(),
         );
        if($user->getId()) {
             // Update if user already registered
             $this->getDb()->update('t_user', $userData, array('user_id' => $user->getId()));
         }
-    
     }
     
     /**
@@ -184,5 +180,19 @@ class UserDAO extends DAO implements UserProviderInterface
         $row = $this->getDb()->fetchAssoc($sql);
 
         return $row;
-    }    
+    }
+    
+    /**
+     * Update a user's password into the database
+     */
+    public function updatePwd(User $user) {
+        $userData = array(
+            'user_pwd' => $user->getPassword(),
+            'user_salt' => $user->getSalt(),
+        );
+       if($user->getId()) {
+            // Update if user already registered
+            $this->getDb()->update('t_user', $userData, array('user_id' => $user->getId()));
+        }
+    }
 }
