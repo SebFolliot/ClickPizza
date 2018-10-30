@@ -16,6 +16,10 @@ $app->get('/login', "ClickPizza\Controller\UserController::loginAction")
 $app->match('/reset_password', "ClickPizza\Controller\UserController::resetPwdUserAction")
     ->bind('reset_password');
 
+// Change a user's password
+$app->match('/change_pwd/{id}', "ClickPizza\Controller\UserController::changePwdAction")
+    ->bind('change_pwd');
+
 // User account
 $app->get('/user_account/', "ClickPizza\Controller\UserController::userAccountAction")
     ->bind('user_account');
@@ -48,6 +52,10 @@ $app->match('/admin/user/{id}/delete', "ClickPizza\Controller\AdminController::d
 // Edit a admin account (Admin)
 $app->match('/admin/user/{id}/edit', "ClickPizza\Controller\AdminController::editAdminAccountAction")
     ->bind('admin_user_edit');
+
+// Change a admin's password
+$app->match('/admin/change_pwd/{id}', "ClickPizza\Controller\UserController::changePwdAction")
+    ->bind('admin_change_pwd');
 
 // Edit a commodity (Admin)
 $app->match('/admin/commodity/{id}/edit', "ClickPizza\Controller\CommodityController::editCommodityAction")
