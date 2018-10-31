@@ -69,16 +69,17 @@ $app['dao.commodity'] = function ($app) {
 $app['dao.user'] = function ($app) {
     return new ClickPizza\DAO\UserDAO($app['db']);
 };
-
 $app['dao.order'] = function ($app) {
     $orderDAO = new ClickPizza\DAO\OrderDAO($app['db']);
     $orderDAO->setUserDAO($app['dao.user']);
     return $orderDAO;
 };
-
 $app['dao.orderCommodity'] = function ($app) {
     $orderCommodityDAO = new ClickPizza\DAO\OrderCommodityDAO($app['db']);
     $orderCommodityDAO->setOrderDAO($app['dao.order']);
     $orderCommodityDAO->setCommodityDAO($app['dao.commodity']);
     return $orderCommodityDAO;
+};
+$app['service.decode'] = function () {
+    return new ClickPizza\Service\Decode();
 };
