@@ -5,6 +5,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use ClickPizza\Entity\Order;
 use ClickPizza\Entity\OrderCommodity;
+use ClickPizza\Service\Decode;
     
 class OrderController
 {
@@ -19,21 +20,17 @@ class OrderController
         if (isset($_COOKIE['caddyProducts']) && isset($_COOKIE['caddyUser']) && isset($_COOKIE['caddyPrice']) && isset($_COOKIE['caddyComId'])) {
             
             $cookie_userId = $_COOKIE['caddyUser'];
-            $removebase64UserId = base64_decode($cookie_userId);
-            $userId_record = json_decode($removebase64UserId, true);
+            $userId_record = $app['service.decode']->jsonDecode($cookie_userId);
     
             $user = $app['dao.user']->userList($userId_record);
             
             $cookie_price = $_COOKIE['caddyPrice'];
-            $removebase64Price = base64_decode($cookie_price);
-            $price_record = json_decode($removebase64Price, true);
+            $price_record = $app['service.decode']->jsonDecode($cookie_price);
             
             $status = 'En cours';
         
             $cookie_products = $_COOKIE['caddyProducts'];
-            $products = utf8_encode(base64_decode($cookie_products));
-            
-            $products_record = json_decode($products, true);
+            $products_record = $app['service.decode']->jsonDecode($cookie_products);
                      
             $order->setUser($user);
             $order->setStatus($status);
@@ -42,8 +39,7 @@ class OrderController
             $app['dao.order']->add($order);
             
             $cookie_comId = $_COOKIE['caddyComId'];
-            $removebase64ComId = base64_decode($cookie_comId);
-            $comId_record = json_decode($removebase64ComId, true);
+            $comId_record = $app['service.decode']->jsonDecode($cookie_comId);
                 
             // instantiation of an OrderCommodity object
             $orderCommodity = new OrderCommodity();
