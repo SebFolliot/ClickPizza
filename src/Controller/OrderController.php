@@ -5,7 +5,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use ClickPizza\Entity\Order;
 use ClickPizza\Entity\OrderCommodity;
-use ClickPizza\Service\Decode;
+
     
 class OrderController
 {
@@ -79,12 +79,7 @@ class OrderController
             setcookie('caddyProductsNumber', 0, 1 * 24 * 60 * 60 * 1000);
             setcookie('caddyProducts', '', 1 * 24 * 60 * 60 * 1000);
             
-            $headers  = 'MIME-Version: 1.0' . "\r\n";
-		    $headers .= 'From: ClickPizza'. "\r\n" .				
-				'Content-Type: text/html; charset="utf-8"; DelSp="Yes"; image/png; format=flowed '."\r\n" .
-				'Content-Disposition: inline'. "\r\n" .
-				'Content-Transfer-Encoding: 7bit'." \r\n" .
-				'X-Mailer:PHP/'.phpversion();
+            $headers = $app['service.email']->emailHeader();
             
             $to = $user->getEmail();
             $ord_id = $order->getId();
