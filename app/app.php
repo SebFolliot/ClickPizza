@@ -83,3 +83,6 @@ $app['dao.orderCommodity'] = function ($app) {
 $app['service.decode'] = function () {
     return new ClickPizza\Service\Decode();
 };
+$app['service.email'] = function () {
+    return new ClickPizza\Service\Email();
+};
