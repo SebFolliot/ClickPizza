@@ -5,6 +5,11 @@
     {{ flashMessage }}
 </div>
 {% endfor %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+<div class="alert alert-success messageAdmin" style="text-align: center">
+    {{ flashMessage }}
+</div>
+{% endfor %}
 
 <div id="search-form" style="margin-bottom: -80px; display:none">
      {{ form_start(formSearchOrder, { 'attr': {'class': 'form-horizontal well'} }) }}
