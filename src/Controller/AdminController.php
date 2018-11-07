@@ -50,7 +50,7 @@ class AdminController {
         $name = $app['dao.user']->userList($id)->getName();
         $civility = $app['dao.user']->userList($id)->getCivility();
         
-        if ($orderNumber == 0) {
+        if ($orderNumber === null) {
             $app['dao.user']->delete($id);
             $app['session']->getFlashBag()->add('success', 'Le compte de '.$civility.' '.$name.' a été supprimé de la base de données.');
         } else {
@@ -119,15 +119,15 @@ class AdminController {
         if ($formSearchOrder->isSubmitted() && $formSearchOrder->isValid()) {
    
             $data = $formSearchOrder->getData();
-            $numberOfPages = $app['dao.order']->numberOfPagesForStatusOrders($data['status']);
+            $numberOfPages = $app['dao.order']->numberOfPagesForStatusOrders($data['status'], $app);
             $currentPage = 1;
-            $orders = $app['dao.order']->searchListOrders($data['status'], $currentPage);
+            $orders = $app['dao.order']->searchListOrders($data['status'], $currentPage, $app);
                      
             if($data['status'] || (($app['dao.order']->orderList($data['id']) !== null) && $data['status'])) {
                 
                if (($app['dao.order']->orderList($data['id']) === null) && isset($data['id'])) {
                    if($data['status'] === 'Toutes') {
-                       $numberOfPages = $app['dao.order']->numberOfPagesForOrders();
+                       $numberOfPages = $app['dao.order']->numberOfPagesForOrders($app);
                    }
 
                 $app['session']->getFlashBag()->add('warning', 'La commande n° '.$data['id'].' n\'existe pas');
@@ -164,9 +164,9 @@ class AdminController {
                   }
                }
                     
-                $numberOfPages = $app['dao.order']->numberOfPagesWithSearchOrders($data);
+                $numberOfPages = $app['dao.order']->numberOfPagesWithSearchOrders($data, $app);
                 $currentPage = 1;
-                $orders = $app['dao.order']->searchListOrders($data, $currentPage);
+                $orders = $app['dao.order']->searchListOrders($data, $currentPage, $app);
 
                 return $app['twig']->render('list_order.html.twig', array(
                     'users' => $users,
@@ -184,12 +184,12 @@ class AdminController {
 
         } else {
             if($status === 'Toutes') {
-               $numberOfPages = $app['dao.order']->numberOfPagesForOrders();
+               $numberOfPages = $app['dao.order']->numberOfPagesForOrders($app);
              } else {
-                $numberOfPages = $app['dao.order']->numberOfPagesForStatusOrders($status);
+                $numberOfPages = $app['dao.order']->numberOfPagesForStatusOrders($status, $app);
             }
                 
-            $orders = $app['dao.order']->searchListOrders($status, $currentPage);
+            $orders = $app['dao.order']->searchListOrders($status, $currentPage, $app);
             
             return $app['twig']->render('list_order.html.twig', array(
                 'users' => $users,
