@@ -2,6 +2,7 @@
 namespace ClickPizza\DAO;
 
 use ClickPizza\Entity\Order;
+use Silex\Application;
 
 class OrderDAO extends DAO
 {
@@ -50,8 +51,9 @@ class OrderDAO extends DAO
      * Returns the number of pages for 10 orders per page
      *
      * @param $data
+     * @param Application $app Silex application
      */    
-    public function numberOfPagesWithSearchOrders($data) {
+    public function numberOfPagesWithSearchOrders($data, Application $app) {
 
         $whereSqlExist = false;
         $sql = 'SELECT COUNT(*) AS total FROM t_order';
@@ -74,23 +76,20 @@ class OrderDAO extends DAO
         }
         
         $result = $this->getDb()->fetchAssoc($sql);
-        $total = (int)$result['total'];
-        $orderByPage = 10;
-        $numberOfPages = ceil($total/$orderByPage);
+        $numberOfPages = $app['service.calculation']->calculNumberOfPages($result);
 
         return $numberOfPages;
     }
     
     /**
      * Returns the number of pages for 10 orders per page
+     *
+     * @param Application $app Silex application
      */ 
-    public function numberOfPagesForOrders() {
+    public function numberOfPagesForOrders(Application $app) {
         $sql = 'SELECT COUNT(*) AS total FROM t_order';
         $result = $this->getDb()->fetchAssoc($sql);
-            
-        $total = (int)$result['total'];
-        $orderByPage = 10;
-        $numberOfPages = ceil($total/$orderByPage);
+        $numberOfPages = $app['service.calculation']->calculNumberOfPages($result);
 
         return $numberOfPages;
     }
@@ -99,15 +98,13 @@ class OrderDAO extends DAO
      * Returns the number of pages for 10 orders per page
      *
      * @param string $status
+     * @param Application $app Silex application
      */ 
-    public function numberOfPagesForStatusOrders($status) {
+    public function numberOfPagesForStatusOrders($status, Application $app) {
         
         $sql = 'SELECT COUNT(*) AS total FROM t_order WHERE ord_status = "'.$status.'"';    
         $result = $this->getDb()->fetchAssoc($sql);
-            
-        $total = (int)$result['total'];
-        $orderByPage = 10;
-        $numberOfPages = ceil($total/$orderByPage);
+        $numberOfPages = $app['service.calculation']->calculNumberOfPages($result);
 
         return $numberOfPages;
     }
@@ -130,11 +127,12 @@ class OrderDAO extends DAO
      *
      * @param $data
      * @param integer $currentPage
+     * @param Application $app Silex application
      * @return array a list of all orders.
      */
-    public function searchListOrders($data, $currentPage) {
+    public function searchListOrders($data, $currentPage, Application $app) {
         $orderByPage = 10;
-        $numberOfPages = $this->numberOfPagesWithSearchOrders($data);
+        $numberOfPages = $this->numberOfPagesWithSearchOrders($data, $app);
     
         if(isset($currentPage)) {
            $currentPage = intval($currentPage);
