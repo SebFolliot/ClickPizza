@@ -109,8 +109,8 @@ class OrderController
         $ord_id = $order->getId();
         $app['session']->getFlashBag()->add('success', 'La commande ' .$ord_id. ' est validée.');
     
-    // Redirect to admin home page
-        return $app->redirect($app['url_generator']->generate('admin'));
+    // Redirect to orders page
+        return $app->redirect($app['url_generator']->generate('admin_order_page',array('currentPage' => 1, 'status' => 'Toutes')));
     } 
     
     /**
@@ -133,7 +133,7 @@ class OrderController
         $ord_id = $order->getId();
         $app['session']->getFlashBag()->add('success', 'La commande '.$ord_id.' est annulée.');
     
-    // Redirect to admin home page
-        return $app->redirect($app['url_generator']->generate('admin'));
+    // Redirect to orders page
+        return $app->redirect($app['url_generator']->generate('admin_order_page',array('currentPage' => 1, 'status' => 'Toutes')));
     } 
 }
