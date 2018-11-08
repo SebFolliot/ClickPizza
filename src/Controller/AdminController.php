@@ -75,6 +75,8 @@ class AdminController {
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             $app['dao.user']->update($user);
             $app['session']->getFlashBag()->add('success', 'Le compte administrateur a été mis à jour avec succès.');
+            // Redirect to admin home page
+            return $app->redirect($app['url_generator']->generate('admin'));
         }
         return $app['twig']->render('user_form.html.twig', array(
             'title' => 'Modifier le compte administrateur',
