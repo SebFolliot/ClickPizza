@@ -114,7 +114,7 @@ class UserController {
                 $app['session']->getFlashBag()->add('success', 'Nous vous avons fait parvenir un nouveau mot de passe à l\' adresse '.$email);
                 
             } else {
-                    $app['session']->getFlashBag()->add('warning', 'Le login '.$username. ' n\'existe pas.');
+                $app['session']->getFlashBag()->add('warning', 'Le login '.$username. ' n\'existe pas.');
             } 
         }
         return $app['twig']->render('reset_pwd_form.html.twig', array(
@@ -158,6 +158,7 @@ class UserController {
             $name = $user->getName();
             $civility = $user->getCivility();
             $app['session']->getFlashBag()->add('success', $civility. ' '.$name.', votre compte a été mis à jour avec succès.');
+            return $app->redirect($app['url_generator']->generate('user_account'));
         }
         }
         return $app['twig']->render('user_form.html.twig', array(
@@ -194,7 +195,15 @@ class UserController {
                 $app['dao.user']->updatePwd($user);
                 $name = $user->getName();
                 $civility = $user->getCivility();
+                $role = $user->getRole();
                 $app['session']->getFlashBag()->add('success', $civility. ' '.$name.', votre mot de passe a été mis à jour avec succès.');
+                if ($role === 'ROLE_ADMIN') {
+                    // Redirect to admin home page
+                    return $app->redirect($app['url_generator']->generate('admin'));
+                } else {
+                    // Redirect to the user card
+                    return $app->redirect($app['url_generator']->generate('user_account'));
+                }  
             }  else {
                 $app['session']->getFlashBag()->add('warning', 'Votre ancien mot de passe n\'est pas bon');
             } 
