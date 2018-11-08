@@ -1,4 +1,9 @@
 {% extends "layout.html.twig" %} {% block title %} {{ title }} {% endblock %} {% block content %}
+{% for flashMessage in app.session.flashbag.get('success') %}
+<div class="alert alert-success" style="text-align: center">
+    {{ flashMessage }}
+</div>
+{% endfor %}
 <div style="display: flex; justify-content: center">
     <div style="border: 10px double #669900; padding: 10px">
         <h2>Mes informations personnelles</h2>
