@@ -25,6 +25,8 @@ class CommodityController
             $commodity->setPicture($file->getClientOriginalName());
             $app['dao.commodity']->update($commodity);
             $app['session']->getFlashBag()->add('success', 'Le produit a été mis à jour sur la carte.');
+            // Redirect to admin home page
+            return $app->redirect($app['url_generator']->generate('admin'));
         }
         return $app['twig']->render('commodity_form.html.twig', array(
         'title' => 'Ajout d\'un produit',
@@ -48,6 +50,8 @@ class CommodityController
             $commodity->setPicture($file->getClientOriginalName());
             $app['dao.commodity']->update($commodity);
             $app['session']->getFlashBag()->add('success', 'Le produit a été mis à jour avec succès.');
+            // Redirect to admin home page
+            return $app->redirect($app['url_generator']->generate('admin'));
         }
         return $app['twig']->render('commodity_form.html.twig', array(
             'title' => 'Modifier le produit',
