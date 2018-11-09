@@ -75,6 +75,13 @@ caddyInformation();
 // show the number of product in the caddy icon
 $('#caddy-products-num').html(caddyProductsNumber);
 
+// puts a s to article if greater than 1
+if (caddyProductsNumber <= 1) {
+    $('#word-article').html(' article');
+} else {
+    $('#word-article').html(' articles');
+}
+
 // hydrate the caddy
 var products = '';
 caddyProducts.forEach(function (v) {
@@ -103,8 +110,15 @@ $('.add-caddy').click(function () {
     $('#caddy-products-num').html(caddyProductsNumber);
 
     var newProduct = true;
-    
+
     var regAccentE = new RegExp('[éèêë]', 'gi');
+
+    // puts a s to article if greater than 1
+    if (caddyProductsNumber <= 1) {
+        $('#word-article').html(' article');
+    } else {
+        $('#word-article').html(' articles');
+    }
 
     // Check if the product is not already in the caddy
     caddyProducts.forEach(function (v) {
@@ -222,6 +236,13 @@ if (window.location.pathname == '/caddy') {
         $('#caddy-products-num').html(caddyProductsNumber);
         $('#' + id + ' .qt').html(qt + 1);
 
+        // puts a s to article if greater than 1
+        if (caddyProductsNumber <= 1) {
+            $('#word-article').html(' article');
+        } else {
+            $('#word-article').html(' articles');
+        }
+
         // Update caddyProducts
         caddyProducts.forEach(function (v) {
 
@@ -251,6 +272,13 @@ if (window.location.pathname == '/caddy') {
             $('#caddy-products-num').html(caddyProductsNumber);
             $('#' + id + ' .qt').html(qt - 1);
 
+            // puts a s to article if greater than 1
+            if (caddyProductsNumber <= 1) {
+                $('#word-article').html(' article');
+            } else {
+                $('#word-article').html(' articles');
+            }
+
             // Update caddyProducts
             caddyProducts.forEach(function (v) {
 
@@ -277,6 +305,13 @@ if (window.location.pathname == '/caddy') {
         // Update the quantity
         caddyProductsNumber -= qt;
         $('#caddy-products-num').html(caddyProductsNumber);
+
+        // puts a s to article if greater than 1
+        if (caddyProductsNumber <= 1) {
+            $('#word-article').html(' article');
+        } else {
+            $('#word-article').html(' articles');
+        }
 
         if (caddyProductsNumber > 0) {
             $('#caddy-empty').hide();
