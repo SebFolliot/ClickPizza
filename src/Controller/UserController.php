@@ -52,17 +52,8 @@ class UserController {
                 $app['session']->getFlashBag()->add('warning', 'L\'adresse mail ' .$email. ' existe déjà, merci d\'en choisir une autre.');
             } else {                
                 $app['dao.user']->add($user);
-                
-                $headers = $app['service.email']->emailHeader();
-                $to = $email;
-                $civility = $user->getCivility();
-                $name = $user->getName();
-                $pseudo = $user->getUsername();
-                $object = 'Compte ClickPizza';         
-              
-                $messageOrd = "<div style='background-color: #669900; height: 102px; margin-bottom: 140px'><div><img src='http://www.clickpizza.construksite.fr/web/images/logo.png' alt='logo clickpizza' title='ClickPizza' /></div></div><blockquote><p><span style='font-weight :bold'>" . $civility . " " . $name ."</span>, bienvenue chez <strong>ClickPizza</strong>.<br />Votre compte a été créé avec succès.</p><p>Votre pseudo : <span style='font-weight :bold'>".$pseudo."</span><br /><br /><small style='float: right'>L'équipe ClickPizza</small></blockquote><div style='text-align: center; background-color: rgba(0, 0, 0, 0.7); margin-top: 30px'><img src='http://www.clickpizza.construksite.fr/web/images/logo_min.png' alt='logo clickpizza' title='ClickPizza' /><div style='color: white'><p style='font-style: italic; font-size: x-small'>Pour votre santé, évitez de manger entre les repas, <a href='http://www.mangerbouger.fr' target='_blank'>www.mangerbouger.fr</a><br /> L’abus d’alcool est dangereux pour la santé. Sachez consommer et apprécier avec modération</p>
-                <p style='font-style: italic'>Site créé pour projet personnel - OpenClassrooms</p></div></div>";              
-                mail($to, $object, $messageOrd, $headers);
+                // Sending an email confirming the creation of a user account
+                $app['service.email']->emailCreateUserAccount($user);
                 
                 $app['session']->getFlashBag()->add('success', 'L\'utilisateur a été créé avec succès.');
                 return $app->redirect($app['url_generator']->generate('login'));
@@ -99,20 +90,11 @@ class UserController {
                 $user->setPassword($password);  
                 $app['dao.user']->updatePwd($user);
              
-                $headers = $app['service.email']->emailHeader();            
-                $to = $email;
-                $civility = $user->getCivility();
-                $name = $user->getName();
-                $object = 'Réinitialisation du mot de passe';         
-                $messageOrd = "<div style='background-color: #669900; height: 102px; margin-bottom: 140px'><div><img src='http://www.clickpizza.construksite.fr/web/images/logo.png' alt='logo clickpizza' title='ClickPizza' /></div></div><blockquote><p><span style='font-weight :bold'>" . $civility . " " . $name ."</span>, votre nouveau mot de passe est " . $newPwd . "</p><br /><p>Nous vous invitons à le modifier dès votre prochaine connexion<small style='float: right'><br />L'équipe ClickPizza</small></blockquote><div style='text-align: center; background-color: rgba(0, 0, 0, 0.7); margin-top: 30px'><img src='http://www.clickpizza.construksite.fr/web/images/logo_min.png' alt='logo clickpizza' title='ClickPizza' /><div style='color: white'><p style='font-style: italic; font-size: x-small'>Pour votre santé, évitez de manger entre les repas, <a href='http://www.mangerbouger.fr' target='_blank'>www.mangerbouger.fr</a><br /> L’abus d’alcool est dangereux pour la santé. Sachez consommer et apprécier avec modération</p>
-                <p style='font-style: italic'>Site créé pour projet personnel - OpenClassrooms</p></div></div>";              
                 // Sending the new password by email
-                mail($to, $object, $messageOrd, $headers);
+                $app['service.email']->emailResetPwdUser($user, $newPwd);
                  
-                 $app['session']->getFlashBag()->add('success', 'Nous vous avons fait parvenir un nouveau mot de passe à l\' adresse '.$email);
-                return $app->redirect($app['url_generator']->generate('login'));
                 $app['session']->getFlashBag()->add('success', 'Nous vous avons fait parvenir un nouveau mot de passe à l\' adresse '.$email);
-                
+                return $app->redirect($app['url_generator']->generate('login'));
             } else {
                 $app['session']->getFlashBag()->add('warning', 'Le login '.$username. ' n\'existe pas.');
             } 
