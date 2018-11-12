@@ -89,3 +89,6 @@ $app['service.email'] = function () {
 $app['service.calculation'] = function () {
     return new ClickPizza\Service\Calculation();
 };
+$app['service.encode'] = function () {
+    return new ClickPizza\Service\Encode();
+};
