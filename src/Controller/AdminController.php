@@ -20,17 +20,10 @@ class AdminController {
         $userForm = $app['form.factory']->create(CreateAccountUserType::class, $user);
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
-            $salt = substr(md5(time()), 0, 23);
-            $user->setSalt($salt);
-            $simplePassword = $user->getPassword();
-            $encoder = $app['security.encoder.bcrypt'];
-            $password = $encoder->encodePassword($simplePassword, $user->getSalt());
-            $user->setPassword($password);
-
-            $app['dao.user']->add($user);
-       
+            $app['service.encode']->encodePasswordOfAccount($user, $app);
+            $app['dao.user']->add($user);       
             $app['session']->getFlashBag()->add('success', 'Le compte administrateur a été créé avec succès.');
-             }
+        }
         
         return $app['twig']->render('admin_form.html.twig', array(
             'title' => 'Création d\'un compte administrateur',
