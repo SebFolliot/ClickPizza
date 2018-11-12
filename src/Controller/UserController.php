@@ -34,16 +34,10 @@ class UserController {
         $userForm = $app['form.factory']->create(CreateAccountUserType::class, $user);
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
-            $salt = substr(md5(time()), 0, 23);
-            $user->setSalt($salt);
-            $simplePassword = $user->getPassword();
-            $encoder = $app['security.encoder.bcrypt'];
-            $password = $encoder->encodePassword($simplePassword, $user->getSalt());
-            $user->setPassword($password);
+            $password = $app['service.encode']->encodePasswordOfAccount($user, $app);
             
             $login = $user->getUsername();
-            $email = $user->getEmail();
-            
+            $email = $user->getEmail();            
             $row = $app['dao.user']->checkLoginEmail($login, $email);
             
             if ($row['count1'] > 0) {
@@ -82,14 +76,8 @@ class UserController {
                 $user = $app['dao.user']->loadUserByUsername($username);
                 $email = $user->getEmail();
                 $newPwd = bin2hex(random_bytes(5));
-                $salt = substr(md5(time()), 0, 23);
-                $user->setSalt($salt);
-                $encoder = $app['security.encoder.bcrypt'];
-                $password = $encoder->encodePassword($newPwd, $user->getSalt());
-       
-                $user->setPassword($password);  
-                $app['dao.user']->updatePwd($user);
-             
+                // Encode the new password
+                $app['service.encode']->encodePasswordWhenResetPwd($user, $newPwd, $app);
                 // Sending the new password by email
                 $app['service.email']->emailResetPwdUser($user, $newPwd);
                  
@@ -104,7 +92,6 @@ class UserController {
             'resetPwdForm' => $resetPwdForm->createView()
             ));        
     }
-    
     
     /**
      * User account controller
@@ -165,15 +152,12 @@ class UserController {
             $oldPassword = $data->oldPassword;
                
             $salt = substr(md5(time()), 0, 23);
-            $user->setSalt($salt);
-            $simplePassword = $user->getPassword();
             $encoder = $app['security.encoder.bcrypt'];
             // Check if the old password is the correct one
             $checkPwd = $encoder->isPasswordValid($currentPassword, $oldPassword, $salt);
 
             if($checkPwd === true) {
-                $password = $encoder->encodePassword($simplePassword, $user->getSalt());
-                $user->setPassword($password);
+                $app['service.encode']->encodePasswordOfAccount($user, $app);
                 $app['dao.user']->updatePwd($user);
                 $name = $user->getName();
                 $civility = $user->getCivility();
