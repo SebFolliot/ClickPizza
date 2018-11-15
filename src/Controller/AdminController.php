@@ -97,7 +97,7 @@ class AdminController {
     }
     
     /**
-     * Update an admin account controller
+     * Returns a maximum of 10 commands per page  based on the search filter
      *
      * @param Application $app Silex application
      * @param integer $currentPage
@@ -112,81 +112,18 @@ class AdminController {
         $formSearchOrder->handleRequest($request);
    
         if ($formSearchOrder->isSubmitted() && $formSearchOrder->isValid()) {
-   
-            $data = $formSearchOrder->getData();
-            $numberOfPages = $app['dao.order']->numberOfPagesForStatusOrders($data['status'], $app);
-            $currentPage = 1;
-            $orders = $app['dao.order']->searchListOrders($data['status'], $currentPage, $app);
-                     
-            if($data['status'] || (($app['dao.order']->orderList($data['id']) !== null) && $data['status'])) {
-                
-               if (($app['dao.order']->orderList($data['id']) === null) && isset($data['id'])) {
-                   if($data['status'] === 'Toutes') {
-                       $numberOfPages = $app['dao.order']->numberOfPagesForOrders($app);
-                   }
-
-                $app['session']->getFlashBag()->add('warning', 'La commande n° '.$data['id'].' n\'existe pas');
-                
-                return $app['twig']->render('list_order.html.twig', array(
-                    'users' => $users,
-                    'status' => $data['status'],
-                    'formSearchOrder' => $formSearchOrder->CreateView(),
-                    'commodities' => $commodities,
-                    'orders' => $orders,
-                    'numberOfPages' => $numberOfPages,
-                    'currentPage' => $currentPage,
-                    'ordersCommodities' => $ordersCommodities,
-                    'title' => 'Les commandes'));
-                   
-               } 
-                
-               if(isset($data['id'])) {     
-               $thisStatus = $app['dao.order']->orderList($data['id'])->getStatus();
-                
-                    if (($thisStatus !== $data['status']) && ($data['status'] !== 'Toutes')) {
-                        $app['session']->getFlashBag()->add('warning', 'La commande n° '.$data['id']. ' n\'est pas une commande ' .mb_strtolower($data['status']).' mais une commande '.mb_strtolower($thisStatus));
-                
-                    return $app['twig']->render('list_order.html.twig', array(
-                        'users' => $users,
-                        'status' => $data['status'],
-                        'formSearchOrder' => $formSearchOrder->CreateView(),
-                        'commodities' => $commodities,
-                        'orders' => $orders,
-                        'numberOfPages' => $numberOfPages,
-                        'currentPage' => $currentPage,
-                        'ordersCommodities' => $ordersCommodities,
-                        'title' => 'Les commandes'));
-                  }
-               }
-                    
-                $numberOfPages = $app['dao.order']->numberOfPagesWithSearchOrders($data, $app);
-                $currentPage = 1;
-                $orders = $app['dao.order']->searchListOrders($data, $currentPage, $app);
-
-                return $app['twig']->render('list_order.html.twig', array(
-                    'users' => $users,
-                    'status' => $data['status'],
-                    'id' => $data['id'],
-                    'formSearchOrder' => $formSearchOrder->CreateView(),
-                    'commodities' => $commodities,
-                    'orders' => $orders,
-                    'numberOfPages' => $numberOfPages,
-                    'currentPage' => $currentPage,
-                    'ordersCommodities' => $ordersCommodities,
-                    'title' => 'Les commandes'));
-            }   
-
-
+            // we recover the view to be displayed after searching the commands by filter
+            $view = $app['service.orderService']->orderListView($users, $commodities, $ordersCommodities, $formSearchOrder, $app);
+            return $view;  
         } else {
             if($status === 'Toutes') {
                $numberOfPages = $app['dao.order']->numberOfPagesForOrders($app);
              } else {
                 $numberOfPages = $app['dao.order']->numberOfPagesForStatusOrders($status, $app);
-            }
-                
-            $orders = $app['dao.order']->searchListOrders($status, $currentPage, $app);
+             }
+             $orders = $app['dao.order']->searchListOrders($status, $currentPage, $app);
             
-            return $app['twig']->render('list_order.html.twig', array(
+             return $app['twig']->render('list_order.html.twig', array(
                 'users' => $users,
                 'status' => $status,
                 'formSearchOrder' => $formSearchOrder->CreateView(),
