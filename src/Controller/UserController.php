@@ -120,30 +120,18 @@ class UserController {
         $changePwdForm->handleRequest($request);
         if ($changePwdForm->isSubmitted() && $changePwdForm->isValid()) {
             $data = $changePwdForm->getData();
-            $oldPassword = $data->oldPassword;
-               
-            $salt = substr(md5(time()), 0, 23);
-            $encoder = $app['security.encoder.bcrypt'];
-            // Check if the old password is the correct one
-            $checkPwd = $encoder->isPasswordValid($currentPassword, $oldPassword, $salt);
-
-            if($checkPwd === true) {
-                $app['service.encode']->encodePasswordOfAccount($user, $app);
-                $app['dao.user']->updatePwd($user);
-                $name = $user->getName();
-                $civility = $user->getCivility();
-                $role = $user->getRole();
-                $app['session']->getFlashBag()->add('success', $civility. ' '.$name.', votre mot de passe a été mis à jour avec succès.');
-                if ($role === 'ROLE_ADMIN') {
-                    // Redirect to admin home page
-                    return $app->redirect($app['url_generator']->generate('admin'));
-                } else {
-                    // Redirect to the user card
-                    return $app->redirect($app['url_generator']->generate('user_account'));
-                }  
-            }  else {
-                $app['session']->getFlashBag()->add('warning', 'Votre ancien mot de passe n\'est pas bon');
-            } 
+            $checkView = $app['service.check']->checkPwdForChangePwd($user, $data, $currentPassword, $app);
+            if ($checkView === 'adminView') {
+                // Redirect to admin home page
+                return $app->redirect($app['url_generator']->generate('admin'));
+            } elseif ($checkView === 'userView') {
+                // Redirects to the customer card
+                return $app->redirect($app['url_generator']->generate('user_account'));
+            } else {
+               return $app['twig']->render('change_pwd_form.html.twig', array(
+                'title' => 'Modification du mot de passe',
+                'changePwdForm' => $changePwdForm->createView())); 
+            }
         }
         return $app['twig']->render('change_pwd_form.html.twig', array(
             'title' => 'Modification du mot de passe',
