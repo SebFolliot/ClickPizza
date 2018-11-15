@@ -195,4 +195,15 @@ class UserDAO extends DAO implements UserProviderInterface
             $this->getDb()->update('t_user', $userData, array('user_id' => $user->getId()));
         }
     }
+    
+    /**
+     * Check the email in the database
+     */
+    public function checkEmail($email) {
+        
+        $sql = "SELECT(SELECT COUNT(*) FROM t_user WHERE user_email COLLATE utf8_bin='$email') AS count";
+        $row = $this->getDb()->fetchAssoc($sql);
+
+        return $row;
+    }
 }
