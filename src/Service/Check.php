@@ -86,12 +86,48 @@ class Check
      */
     public function checkLoginForCreateAdminAccount($user, Application $app) {
         $login = $user->getUsername();
-        $row = $app['dao.user']->checkLogin($login);    
+        $row = $app['dao.user']->checkLogin($login);
+        $bool = false;
         if ($row['count'] > 0) {
             $app['session']->getFlashBag()->add('warning', 'Le login ' .$login. ' existe déjà, merci d\'en choisir un autre.');
         } else {
+            $bool = true;
             $app['dao.user']->add($user);
             $app['session']->getFlashBag()->add('success', 'Le compte administrateur ' .$login. ' a été créé avec succès.');
+            return $bool;
         }                        
      }
+    
+    /**
+     * Check the old password and update it if the check is ok
+     *
+     * @param $user
+     * @param $data
+     * @param $currentPassword
+     * @param Application $app Silex application
+     */
+    public function checkPwdForChangePwd($user, $data, $currentPassword, Application $app) {
+        $oldPassword = $data->oldPassword;         
+        $salt = substr(md5(time()), 0, 23);
+        $encoder = $app['security.encoder.bcrypt'];
+        $checkPwd = $encoder->isPasswordValid($currentPassword, $oldPassword, $salt);
+        $view = '';
+        if($checkPwd === true) {
+            $app['service.encode']->encodePasswordOfAccount($user, $app);
+            $app['dao.user']->updatePwd($user);
+            $name = $user->getName();
+            $civility = $user->getCivility();
+            $role = $user->getRole();
+            $app['session']->getFlashBag()->add('success', $civility. ' '.$name.', votre mot de passe a été mis à jour avec succès.');
+            if ($role === 'ROLE_ADMIN') {
+                $view = 'adminView';
+                return $view;
+            } else {
+                $view = 'userView';
+                return $view;
+            }               
+        } else {
+            $app['session']->getFlashBag()->add('warning', 'Votre ancien mot de passe n\'est pas bon');
+        } 
+    }
 }
