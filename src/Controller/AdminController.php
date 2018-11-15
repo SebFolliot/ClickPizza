@@ -22,7 +22,11 @@ class AdminController {
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             $app['service.encode']->encodePasswordOfAccount($user, $app);
             // we check if the login already exists before creating an account
-            $app['service.check']->checkLoginForCreateAdminAccount($user, $app);
+            $bool = $app['service.check']->checkLoginForCreateAdminAccount($user, $app);
+            if ($bool === true) {
+                // Redirect to admin home page
+                return $app->redirect($app['url_generator']->generate('admin'));    
+            }
         }
         
         return $app['twig']->render('admin_form.html.twig', array(
