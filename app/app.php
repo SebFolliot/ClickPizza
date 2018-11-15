@@ -95,3 +95,6 @@ $app['service.encode'] = function () {
 $app['service.check'] = function () {
     return new ClickPizza\Service\Check();
 };
+$app['service.orderService'] = function () {
+    return new ClickPizza\Service\OrderService();
+};
