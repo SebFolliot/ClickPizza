@@ -21,8 +21,8 @@ class AdminController {
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             $app['service.encode']->encodePasswordOfAccount($user, $app);
-            $app['dao.user']->add($user);       
-            $app['session']->getFlashBag()->add('success', 'Le compte administrateur a été créé avec succès.');
+            // we check if the login already exists before creating an account
+            $app['service.check']->checkLoginForCreateAdminAccount($user, $app);
         }
         
         return $app['twig']->render('admin_form.html.twig', array(
