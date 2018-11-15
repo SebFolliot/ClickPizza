@@ -35,21 +35,9 @@ class UserController {
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
             $password = $app['service.encode']->encodePasswordOfAccount($user, $app);
-            
-            $login = $user->getUsername();
-            $email = $user->getEmail();            
-            $row = $app['dao.user']->checkLoginEmail($login, $email);
-            
-            if ($row['count1'] > 0) {
-                $app['session']->getFlashBag()->add('warning', 'Le login ' .$login. ' existe déjà, merci d\'en choisir un autre.');
-            } elseif ($row['count2'] > 0) {
-                $app['session']->getFlashBag()->add('warning', 'L\'adresse mail ' .$email. ' existe déjà, merci d\'en choisir une autre.');
-            } else {                
-                $app['dao.user']->add($user);
-                // Sending an email confirming the creation of a user account
-                $app['service.email']->emailCreateUserAccount($user);
-                
-                $app['session']->getFlashBag()->add('success', 'L\'utilisateur a été créé avec succès.');
+            // We check if the login and / or the email exists before creating a user account
+            $check = $app['service.check']->checkLoginEmailForCreateAccountUser($user, $app);
+            if ($check === true) {
                 return $app->redirect($app['url_generator']->generate('login'));
             }
         }
@@ -71,21 +59,12 @@ class UserController {
         $resetPwdForm->handleRequest($request);
         if ($resetPwdForm->isSubmitted() && $resetPwdForm->isValid()) {
             $username = $resetPwdForm['username']->getData();
-            $row = $app['dao.user']->checkLogin($username);
-            if ($row['count'] == 1) {
-                $user = $app['dao.user']->loadUserByUsername($username);
-                $email = $user->getEmail();
-                $newPwd = bin2hex(random_bytes(5));
-                // Encode the new password
-                $app['service.encode']->encodePasswordWhenResetPwd($user, $newPwd, $app);
-                // Sending the new password by email
-                $app['service.email']->emailResetPwdUser($user, $newPwd);
-                 
-                $app['session']->getFlashBag()->add('success', 'Nous vous avons fait parvenir un nouveau mot de passe à l\' adresse '.$email);
-                return $app->redirect($app['url_generator']->generate('login'));
-            } else {
-                $app['session']->getFlashBag()->add('warning', 'Le login '.$username. ' n\'existe pas.');
-            } 
+            // We check if the login exist before reset the password
+            $check = $app['service.check']->checkLoginForResetPwd($username, $app);
+            if($check === true) {
+                // Redirect to login home page
+                return $app->redirect($app['url_generator']->generate('login'));    
+            }
         }
         return $app['twig']->render('reset_pwd_form.html.twig', array(
             'title' => 'Réinitialisation du mot de passe',
@@ -112,23 +91,15 @@ class UserController {
      */ 
     public function editUserAccountAction($id, Request $request, Application $app) {
         $user = $app['dao.user']->userList($id);
+        $oldEmail = $user->getEmail();
         $userForm = $app['form.factory']->create(UpdateAccountType::class, $user);
         $userForm->handleRequest($request);
         if ($userForm->isSubmitted() && $userForm->isValid()) {
-            $login = $user->getUsername();
-            $email = $user->getEmail();
-            $row = $app['dao.user']->checkLoginEmail($login, $email);
-            if ($row['count1'] > 1) {
-                $app['session']->getFlashBag()->add('warning', 'Le login ' .$login. ' existe déjà, merci d\'en choisir un autre.');
-            } elseif ($row['count2'] > 1) {
-                $app['session']->getFlashBag()->add('warning', 'L\'adresse mail ' .$email. ' existe déjà, merci d\'en choisir une autre.');
-            } else {   
-            $app['dao.user']->update($user);
-            $name = $user->getName();
-            $civility = $user->getCivility();
-            $app['session']->getFlashBag()->add('success', $civility. ' '.$name.', votre compte a été mis à jour avec succès.');
-            return $app->redirect($app['url_generator']->generate('user_account'));
-        }
+            // We check if the email exist before edit a user account
+            $check = $app['service.check']->checkEmailForEditAccountUser($user, $oldEmail, $app);
+            if ($check === true) {
+                return $app->redirect($app['url_generator']->generate('user_account'));
+            }
         }
         return $app['twig']->render('user_form.html.twig', array(
             'title' => 'Modifier le compte utilisateur',
